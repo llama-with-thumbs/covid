@@ -214,6 +214,15 @@
 
     display: flex;
     align-items: center;
+    justify-content: space-between;
+
+    
+}
+.user-card__1,.user-card__5 {
+    transition: transform .3s;
+}
+.user-card__1:hover,.user-card__5:hover {
+    transform: scale(1, 1.7);
 }
 .slider__img-first, .slider__img-second{
     width: 407px;
