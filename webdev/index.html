@@ -78,7 +78,7 @@
         <article class="form-banner">
             <h2 class="h2--wight">sign up for our newsletter</h2>
             <form class="form" action="#">
-                <input class="form_email" type="email" placeholder="E-mail">
+                <input class="form_email" type="email" placeholder="E-mail"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
                 
                 <div class="form__submit">
                     <img class="form__submit-sign" alt="ok" src="./assets/images/check-icon.png">
@@ -87,5 +87,35 @@
             </form>>
         </article>
     </section>
+
+    <section class="sixth-section">
+        <h2 class="sixth-section__h2">Download the App</h2>
+        <p class="sixth-section__p">Machine code was the language of early programs, 
+            written in the instruction set of the particular machine, 
+            often in binary notation.</p>
+        <img class="sixth-section__button1" alt="adnroid" src="./assets/images/apple-pay.png">
+        <img class="sixth-section__button2 " alt="apple" src="./assets/images/android-pay.png">
+    </section>
+
+    <footer class="footer">
+        <nav class="footer__nav-menu">
+            <ul class="footer-nav-menu__list">
+                <li class="footer-nav-menu__item">
+                    <a class="nav-menu__link" href="#">Credits</a>
+                </li>
+                <li class="footer-nav-menu__item"><span class="nav-menu__separator">|</span></li>
+                </li>
+                <li class="footer-nav-menu__item">
+                    <a class="nav-menu__link" href="#">Privacy</a>
+                </li>
+                <li class="footer-nav-menu__item"><span class="nav-menu__separator">|</span></li>
+                <li class="footer-nav-menu__item">
+                    <a class="nav-menu__link" href="#">Our teams</a>
+                </li>
+            </ul>
+        </nav>
+        <img class="footer__logo" alt="logo" src="./assets/images/logo.png">
+        <p class="copyright">by TonYem for RSS at 2020</p>
+    </footer>
 </body>
 </html>

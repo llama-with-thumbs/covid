@@ -21,7 +21,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 95px;
 }
 .nav-menu__item {
@@ -313,5 +313,134 @@
     left: calc(50% - 16.52px/2);
     top: calc(50% - 13.22px/2);
  }
+ .sixth-section {
+    position: relative;
+    width: 1600px;
+    height: 464px;
 
+    background: #F5F6F7;
+ }
+ .sixth-section__h2 {
+    position: absolute;
+    width: 300px;
+    height: 28px;
+    left: 675px;
+    top: 120px;
 
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: #373737;
+ }
+
+ .sixth-section__p {
+    position: absolute;
+    width: 480px;
+    height: 40px;
+    left: 560px;
+    top: 168px;
+    
+    /* body-14-reg */
+    
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    /* or 20px */
+    
+    display: flex;
+    align-items: center;
+    text-align: center;
+    
+    color: #4E4E4E;
+ }
+ .sixth-section__button1 {
+     cursor: pointer;
+    position: absolute;
+    width: 186px;
+    height: 46px;
+    left: 599px;
+    top: 238px;
+ }
+ .sixth-section__button2 {
+     cursor: pointer;
+    position: absolute;
+    width: 186px;
+    height: 46px;
+    left: 815px;
+    top: 238px;
+ }
+ .sixth-section__button1:hover, .sixth-section__button2:hover {
+    box-shadow: 0px 0px 2px 1px #0078db;
+ }
+
+.footer {
+    display: inline-block;
+    position: relative;
+    background: #000000;
+    width: 1600px;
+    height: 185px;
+}
+.footer__logo {
+    position: absolute;
+    width: 44px;
+    height: 45px;
+    left: 778px;
+    top: 60px;
+}
+.nav-menu__separator {
+    color: #4E4E4E;
+}
+.footer__nav-menu {
+    position: absolute;
+
+    width: 236px;
+    height: 21px;
+
+    left: 160px;
+    top: 73px;    
+}
+.footer-nav-menu__list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.footer-nav-menu__item {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    transition: all 0.2s;
+}
+.nav-menu__separator {
+    font-size: 10px;
+    color: #fff;
+}
+.footer-nav-menu__item:hover{
+    border-bottom: 1px solid rgb(175, 163, 163);
+}
+.copyright {
+    position: absolute;
+    width: 170px;
+    height: 20px;
+    left: 1270px;
+    top: 73px;
+    text-align: center;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+
+    color: #818181;
+}
