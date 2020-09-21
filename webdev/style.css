@@ -1,7 +1,7 @@
 .body {
     padding: 0px;
     margin: 0px;
-    transition: all 0.1s;
+    transition: all 0.2s;
 }
 .header {
     color: #FFF;
@@ -27,9 +27,18 @@
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
+    transition: all 0.2s;
+
+}
+
+.nav-menu__item--active {
+    border-bottom: 1px solid #fff;
 }
 .nav-menu__item:hover{
-    text-decoration: underline;
+    border-bottom: 1px solid #fff;
+}
+.nav-menu__logo:hover {
+    border-bottom: none;
 }
 
 .nav-menu__link {
