@@ -1,7 +1,10 @@
 .body {
     padding: 0px;
-    margin: 0px;
     transition: all 0.2s;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    width: 1600px;
 }
 .header {
     color: #FFF;
@@ -81,7 +84,7 @@
     padding-bottom: 20px;
 }
 .first-section__text{
-    font-family: Roboto;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
@@ -96,7 +99,7 @@
     padding: 15px 47px;
     background: #00AFDB;
     text-align: center;
-    font-family: Roboto;
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -106,10 +109,10 @@
     outline:none;
     color: #FFF;
     transition: all 0.3s;
+    text-transform: uppercase;
 }
 .button:hover {
-    box-shadow:0px 0px 1px 1px #FFF;
-    opacity: .9;
+    box-shadow:0px 0px 5px 0px #0078db inset, 0px 0px 2px 0px #0078db;
 }
 .sm-block {
     margin-top: 183px;
@@ -135,14 +138,180 @@
 
 .second-section {
     height: 842px;
-    max-width: 1600px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
-.second-seciton__text-content{
-    height: 233px;
-    width: 407px;
+    width: 1600px;
+    position: relative;
 
 }
+.second-seciton__text-content{
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    width: 407px;
+    height: 233px;
+    left: 269px;
+    top: 295px;
+}
+.h2 {
+    font-family: 'Roboto', sans-serif;
+    padding-right: 20px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 29px;
+    display: flex;
+    align-items: flex-end;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: #373737;
+}
+.second-section__p {
+    padding-top: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #4E4E4E;
+}
+.strong {
+    font-weight: bold;
+}
+
+.second-section__banner {
+    position: absolute;
+    width: 407px;
+    height: 582px;
+    left: 924px;
+    top: 120px;
+}
+.third-seciton {
+    position: relative;
+    width: 1600px;
+    height: 504px;
+    background-color: #F5F6F7;
+}
+.user-card {
+    position: absolute;
+    width: 298px;
+    height: 175px;
+    left: 269px;
+    top: 155px;
+}
+.galery-control {
+    position: absolute;
+    width: 83px;
+    height: 18px;
+    right: 269px;
+    top: 82px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+}
+.left-arrow,.right-arrow {
+    transform: rotate(135deg);
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  .right-arrow {
+    transform: rotate(-45deg);
+  }
+  
+  .fourth-seciton {
+    position: relative;
+    width: 1600px;
+    height: 842px;
+  }
+  .fourth-section__content-img2 {
+    position: absolute;
+    width: 407px;
+    height: 582px;
+    left: 269px;
+    top: 120px;
+  }
+  .fourth-section__content-block {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    width: 407px;
+    height: 184px;
+    left: 815px;
+    top: 319px;
+  }
+ .fifth-section {
+    position: relative;
+    width: 1600px;
+    height: 524px;
+    background-image: url(./assets/images/pexels-christina-morillo-1181675\ 1.png);
+ }
+
+ .form-banner {
+    position: relative;
+    width: 406px;
+    height: 104px;
+    left: 597px;
+    top: 200px;
+    text-align: center;
+ }
+ .h2--wight {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+ }
+ .form {
+    position: absolute;
+    width: 406px;
+    height: 46px;
+    left: 0px;
+    top: 58px;    
+ }
+ .form_email {
+     display: inline-block;
+    position: absolute;
+    width: 313px;
+    height: 40px;
+    left: 0px;
+    top: 0px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: rgba(55,55,55,.5);
+    
+    padding-left: 24px;
+ }
+ .form__submit {
+    cursor: pointer;
+    position: absolute;
+    width: 66px;
+    height: 46px;
+
+    left: 340px;
+    top: 0px;
+
+    background: #00AFDB;
+ }
+ .form__submit:hover{
+    box-shadow: 0px 0px 3px 1px #0078db inset;
+ }
+ .form__submit-sign {
+    position: absolute;
+    width: 16.52px;
+    height: 13.22px;
+    left: calc(50% - 16.52px/2);
+    top: calc(50% - 13.22px/2);
+ }
+
+
