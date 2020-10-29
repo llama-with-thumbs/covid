@@ -1,31 +1,46 @@
 // DOM Elements
-const time = document.querySelector('.time'),
-  greeting = document.querySelector('.greeting'),
-  name = document.querySelector('.name'),
-  focus = document.querySelector('.focus');
+const time = document.querySelector('.time')
+const greeting = document.querySelector('.greeting')
+const name = document.querySelector('.name')
+const focus = document.querySelector('.focus');
+
+const timeOfImage = document.querySelector('.time-of-image')
+const imageNumber = document.querySelector('.image-number')
+const startNum = Math.floor(Math.random() * 5) + 1
+
+const nextButton = document.querySelector('.next-image')
+
+const nextQuote = document.querySelector('.next-quote')
+const blockquote = document.querySelector('.blockquote')
 
 
+let imageQueue = []
+let imageDir = './assets/images/'
+let allDayNames = ['night', 'morning', 'day', 'evening' ]
 
-// Options
-const showAmPm = true;
+function createImageQueue() {
+  for (let i = 0; i < 4; i++) {
+    for (let j = 1; j <= 6; j++) {
+      imageQueue.push('url("' + imageDir +  allDayNames[i] + '/' + j + '.jpg")')
+    }
+  }
+}
 
 // Show Time
 function showTime() {
   let today = new Date(),
     hour = today.getHours(),
     min = today.getMinutes(),
-    sec = today.getSeconds();
+    sec = today.getSeconds()
 
-  // Set AM or PM
-  const amPm = hour >= 12 ? 'PM' : 'AM';
-
-  // 12hr Format
+  let dateAndMonth = today.toGMTString().match(/^[a-z]+, \d{1,2} [a-z]+/gi);
   hour = hour % 12 || 12;
 
-  // Output Time
-  time.innerHTML = `${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(
-    sec
-  )} ${showAmPm ? amPm : ''}`;
+  if (sec === 0 && min === 0) {
+    setBackImg()
+    nextImage()
+  }
+  time.innerHTML = `${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(sec)} ${dateAndMonth}`;
 
   setTimeout(showTime, 1000);
 }
@@ -35,104 +50,126 @@ function addZero(n) {
   return (parseInt(n, 10) < 10 ? '0' : '') + n;
 }
 
-
 //
-function changetImage() {
-  function nextFromArray(arr, partOfDay, currentImg) {
-    let currNum = currentImg.slice(-7)[0]
-    let addres = currentImg
+function nextImage() {
+  let curImg = document.body.style.backgroundImage;
+  let nextIndex = imageQueue.indexOf(curImg) + 1
+  nextIndex = nextIndex > 23 ? 0 : nextIndex
+  document.body.style.backgroundImage = imageQueue[nextIndex]
 
-    console.log(addres.match(/\.\/[a-z]+\/[a-z]+\//gi))
+  nextButton.disabled = true;
+  setTimeout(function() { nextButton.disabled = false }, 1000);
+  updateNote()
+}
 
-    if (parseInt(currNum) > arr.length - 1) {
-      currNum = 1
-    } else {
-      currNum ++
-    }
-    return currentImg.replace(/\d\./g, currNum + '.')
-  }
-  const body = document.querySelector('.body')
+function getTimeName(param) {
   let today = new Date()
   let hour = today.getHours()
-  const images = ['1.jpg', '2.jpg', '3.jpg', '5.jpg', '6.jpg']
-  let timeOfDay
-  if ( hour > 0 && hour < 24) {
-    timeOfDay = 'morning'
+  if (hour >= 6 && hour < 12) {
+    return param ? 6 : 'morning'
+  } else if (hour >= 12 && hour < 18) {
+    return param ? 12 : 'day'
+  } else if (hour >= 18 && hour < 24) {
+    return param ? 18 : 'evening'
+  } else if (hour < 6) {
+    return param ? 0 : 'night'  
   }
-  document.body.style.backgroundImage = nextFromArray(images, timeOfDay, document.body.style.backgroundImage)
+}
+
+//set Greeting
+function setGreet() {
+  greeting.textContent = 'Good ' + getTimeName() + ', '
+  setTimeout(setGreet, 1000);
 }
 
 // Set Background and Greeting
-function setBgGreet() {
-  let today = new Date()
-  let hour = today.getHours()
+function setBackImg() {
+  setTimeout(function() { nextButton.disabled = false }, 1000)
+  document.body.style.backgroundImage = imageQueue[getTimeName('num') + startNum]
+  updateNote()
+}
 
-  if (hour > 0 && hour < 24) {
-    document.body.style.backgroundImage = 
-  "url('./assets/images/morning/morning-1.jpg')"
-    greeting.textContent = 'Good Time, ';
+function inputBlur(e) {
+  const targetClass = e.target.classList[0]
+  if (e.target.value === '') {
+    e.target.value = localStorage.getItem(targetClass)
+  } else {
+    localStorage.setItem(targetClass, e.target.value)
   }
 }
 
-
-
+function clearInput(e) {
+  setTimeout(() => e.target.value = '', 200);
+}
 
 // Get Name
 function getName() {
-  if (localStorage.getItem('name') === null) {
-    name.textContent = '[Enter Name]';
-  } else {
-    name.textContent = localStorage.getItem('name');
+  if (localStorage.getItem('name') !== null && localStorage.getItem('name') !== '') {
+    name.value = localStorage.getItem('name');
   }
 }
 
 // Set Name
-function setName(e) {
-  if (e.type === 'keypress') {
-    // Make sure enter is pressed
-    if (e.which == 13 || e.keyCode == 13) {
-      localStorage.setItem('name', e.target.innerText);
-      name.blur();
-    }
+function setInputValue(e) {
+  const targetClass = e.target.classList[0]
+  if (e.type === 'keypress' && (e.which == 13 || e.keyCode == 13)) {
+    if (e.target.value === '') e.target.value = localStorage.getItem(targetClass)
+
+    localStorage.setItem(targetClass, e.target.value)
+    e.target.blur()
   } else {
-    localStorage.setItem('name', e.target.innerText);
+    localStorage.getItem(targetClass)
   }
 }
 
 // Get Focus
 function getFocus() {
-  if (localStorage.getItem('focus') === null) {
-    focus.textContent = '[Enter Focus]';
-  } else {
-    focus.textContent = localStorage.getItem('focus');
+  if (localStorage.getItem('focus') !== null && localStorage.getItem('focus') !== '') {
+    focus.value = localStorage.getItem('focus');
   }
 }
 
-// Set Focus
-function setFocus(e) {
-  if (e.type === 'keypress') {
-    // Make sure enter is pressed
-    if (e.which == 13 || e.keyCode == 13) {
-      localStorage.setItem('focus', e.target.innerText);
-      focus.blur();
-    }
-  } else {
-    localStorage.setItem('focus', e.target.innerText);
-  }
+function updateNote() {
+  console.log('Note was updated')
+  timeOfImage.textContent = document.body.style.backgroundImage.match(/\w+/g)[3]
+  imageNumber.textContent = document.body.style.backgroundImage.match(/\d{1}/)
+}
+
+//get quote 
+async function getQuote() {  
+  // const url = `https://favqs.com/api/qotd`
+  const url = `https://cors-anywhere.herokuapp.com/https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en`
+  const res = await fetch(url)
+  const data = await res.json() 
+  blockquote.textContent = data.quoteText
 }
 
 
-name.addEventListener('keypress', setName);
-name.addEventListener('blur', setName);
-focus.addEventListener('keypress', setFocus);
-focus.addEventListener('blur', setFocus);
+name.addEventListener('focus', clearInput)
+name.addEventListener('keypress', setInputValue);
+name.addEventListener('blur', inputBlur);
+
+focus.addEventListener('focus', clearInput)
+focus.addEventListener('keypress', setInputValue);
+focus.addEventListener('blur', inputBlur);
+nextQuote.addEventListener('click', getQuote);
+
+// document.addEventListener('DOMContentLoaded', getQuote);
+
 
 // Run
+
 showTime();
-setBgGreet();
+setGreet();
+
 getName();
 getFocus();
 
+createImageQueue()
+setBackImg();
+
+getQuote();
+
 //next img
-const nextButton = document.querySelector('.next-image');
-nextButton.addEventListener('click', changetImage);
+
+nextButton.addEventListener('click', nextImage);

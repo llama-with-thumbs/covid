@@ -8,14 +8,32 @@
   <title>momentum</title>
 </head>
 <body class="body">
-    <button class="next-image" title="next image"></button>
-  <time class="time" id="time"></time>
-  <h1>
-    <span class="greeting"></span>
-    <span class="name" contenteditable="true"></span>
-  </h1>
-  <h2>What Is Your Focus For Today?</h2>
-  <h2 class="focus" contenteditable="true"></h2>
+  <div class="wrapper">
+    <time class="time" id="time"></time>
+    <div class="greeting-wrapper">
+      <div class="greeting"></div>
+      <input type="text" title="Your name" class="name" placeholder="[Type in your name]">
+    </div>
+  
+    <div class="focus-wrapper">
+      <div class="greeting">What Is Your Focus For Today?</div>
+      <input type="text" class="focus" title="Your focus" placeholder="[Type in your focus]">
+    </div>
+
+    <div class="quote-wrapper">
+      <div class="quote">
+        <blockquote class="blockquote">quote</blockquote>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-wrapper">
+    <div>This is image # <span class="image-number"></span></div>
+    <div>it is associated with <span class="time-of-image"></span></div>
+  </div>
+  
+  <button class="next-quote" title="next quote"></button>
+  <button class="next-image" title="next image"></button>
 
   <script src="script.js"></script>
 </body>
