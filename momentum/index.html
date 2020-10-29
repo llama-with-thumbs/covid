@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="owfont-regular.css">
+  <link rel="stylesheet" href="style.css"/>
+
   <link rel="icon" href="assets/favicon/favicon-16x16.png" type="image/gif" sizes="16x16">
-  <title>momentum</title>
+  <title>Momentum</title>
 </head>
 <body class="body">
   <div class="wrapper">
@@ -22,18 +25,30 @@
 
     <div class="quote-wrapper">
       <div class="quote">
-        <blockquote class="blockquote">quote</blockquote>
+        <blockquote class="blockquote">Quote</blockquote>
       </div>
     </div>
+
+    <div class="weather-wrapper">
+      <input type="text" class="city" title="Your city" placeholder="[Your city]">
+      <i class="weather-icon owf"></i>
+      <span class="temperature">temp</span>
+      <span class="weather">weather</span>
+    </div>
+
   </div>
+
 
   <div class="note-wrapper">
     <div>This is image # <span class="image-number"></span></div>
     <div>it is associated with <span class="time-of-image"></span></div>
   </div>
   
-  <button class="next-quote" title="next quote"></button>
-  <button class="next-image" title="next image"></button>
+  <div class="button-wrapper">
+    <button class="next-quote" title="next quote"></button>
+    <button class="next-image" title="next image"></button>
+  </div>
+  
 
   <script src="script.js"></script>
 </body>

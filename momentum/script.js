@@ -13,10 +13,14 @@ const nextButton = document.querySelector('.next-image')
 const nextQuote = document.querySelector('.next-quote')
 const blockquote = document.querySelector('.blockquote')
 
-
 let imageQueue = []
 let imageDir = './assets/images/'
 let allDayNames = ['night', 'morning', 'day', 'evening' ]
+
+const city = document.querySelector('.city')
+const weather = document.querySelector('.weather')
+const temperature = document.querySelector('.temperature')
+const weatherIcon = document.querySelector('.weather-icon')
 
 function createImageQueue() {
   for (let i = 0; i < 4; i++) {
@@ -96,6 +100,7 @@ function inputBlur(e) {
   } else {
     localStorage.setItem(targetClass, e.target.value)
   }
+  if (e.target.classList[0] === 'city') setWeather()
 }
 
 function clearInput(e) {
@@ -114,8 +119,8 @@ function setInputValue(e) {
   const targetClass = e.target.classList[0]
   if (e.type === 'keypress' && (e.which == 13 || e.keyCode == 13)) {
     if (e.target.value === '') e.target.value = localStorage.getItem(targetClass)
-
     localStorage.setItem(targetClass, e.target.value)
+    if (e.target.classList[0] === 'city') setWeather()
     e.target.blur()
   } else {
     localStorage.getItem(targetClass)
@@ -128,6 +133,11 @@ function getFocus() {
     focus.value = localStorage.getItem('focus');
   }
 }
+function getCity() {
+  if (localStorage.getItem('city') !== null && localStorage.getItem('city') !== '') {
+    city.value = localStorage.getItem('city');
+  }
+}
 
 function updateNote() {
   console.log('Note was updated')
@@ -137,13 +147,26 @@ function updateNote() {
 
 //get quote 
 async function getQuote() {  
-  // const url = `https://favqs.com/api/qotd`
   const url = `https://cors-anywhere.herokuapp.com/https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en`
   const res = await fetch(url)
   const data = await res.json() 
   blockquote.textContent = data.quoteText
 }
 
+//get Weather
+
+async function setWeather() {
+  let location = city.value
+  console.log(location)
+  const key = 'd4994bba990bd9ca7e94b53e2cfcaf1d'
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=` + location + `&lang=en&appid=` + key + `&units=metric`
+  const res = await fetch(url)
+  const data = await res.json()
+
+  temperature.textContent = `${data.main.temp}°C`
+  weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+  weather.textContent = data.weather[0].description;
+}
 
 name.addEventListener('focus', clearInput)
 name.addEventListener('keypress', setInputValue);
@@ -154,7 +177,15 @@ focus.addEventListener('keypress', setInputValue);
 focus.addEventListener('blur', inputBlur);
 nextQuote.addEventListener('click', getQuote);
 
-// document.addEventListener('DOMContentLoaded', getQuote);
+
+city.addEventListener('focus', clearInput)
+city.addEventListener('keypress', setInputValue);
+city.addEventListener('blur', inputBlur);
+
+document.addEventListener('DOMContentLoaded', getQuote);
+document.addEventListener('DOMContentLoaded', setWeather);
+
+nextButton.addEventListener('click', nextImage);
 
 
 // Run
@@ -164,12 +195,13 @@ setGreet();
 
 getName();
 getFocus();
+getCity();
 
 createImageQueue()
 setBackImg();
 
-getQuote();
+// getQuote();
+// setWeather();
 
 //next img
 
-nextButton.addEventListener('click', nextImage);
