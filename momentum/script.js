@@ -1,5 +1,6 @@
 // DOM Elements
 const time = document.querySelector('.time')
+const timeInfo = document.querySelector('.time-info')
 const greeting = document.querySelector('.greeting')
 const name = document.querySelector('.name')
 const focus = document.querySelector('.focus');
@@ -16,6 +17,7 @@ const blockquote = document.querySelector('.blockquote')
 let imageQueue = []
 let imageDir = './assets/images/'
 let allDayNames = ['night', 'morning', 'day', 'evening' ]
+let prevLocation = ''
 
 const city = document.querySelector('.city')
 const weather = document.querySelector('.weather')
@@ -44,8 +46,8 @@ function showTime() {
     setBackImg()
     nextImage()
   }
-  time.innerHTML = `${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(sec)} ${dateAndMonth}`;
-
+  time.innerHTML = `${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(sec)}`;
+  timeInfo.textContent = dateAndMonth;
   setTimeout(showTime, 1000);
 }
 
@@ -119,10 +121,13 @@ function setInputValue(e) {
   const targetClass = e.target.classList[0]
   if (e.type === 'keypress' && (e.which == 13 || e.keyCode == 13)) {
     if (e.target.value === '') e.target.value = localStorage.getItem(targetClass)
+
+    if (e.target.classList[0] === 'city') prevLocation = localStorage.getItem(targetClass)
     localStorage.setItem(targetClass, e.target.value)
-    if (e.target.classList[0] === 'city') setWeather()
     e.target.blur()
+    
   } else {
+    if (e.target.classList[0] === 'city') prevLocation = localStorage.getItem(targetClass)
     localStorage.getItem(targetClass)
   }
 }
@@ -156,16 +161,31 @@ async function getQuote() {
 //get Weather
 
 async function setWeather() {
+  console.log('prev', prevLocation)
+
   let location = city.value
-  console.log(location)
+  // console.log(location)
   const key = 'd4994bba990bd9ca7e94b53e2cfcaf1d'
   const url = `https://api.openweathermap.org/data/2.5/weather?q=` + location + `&lang=en&appid=` + key + `&units=metric`
+  
   const res = await fetch(url)
   const data = await res.json()
 
-  temperature.textContent = `${data.main.temp}°C`
-  weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-  weather.textContent = data.weather[0].description;
+  if (res.ok) {
+    temperature.textContent = `${data.main.temp}°C`
+    weatherIcon.className = 'weather-icon owf'
+    weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+    weather.textContent = data.weather[0].description;
+  } else {
+    alert('Invalid location')
+
+    city.value = prevLocation
+    localStorage.setItem('city', prevLocation)
+    prevLocation = ''
+
+    
+  } 
+
 }
 
 name.addEventListener('focus', clearInput)
@@ -182,8 +202,8 @@ city.addEventListener('focus', clearInput)
 city.addEventListener('keypress', setInputValue);
 city.addEventListener('blur', inputBlur);
 
-document.addEventListener('DOMContentLoaded', getQuote);
-document.addEventListener('DOMContentLoaded', setWeather);
+// document.addEventListener('DOMContentLoaded', getQuote);
+// document.addEventListener('DOMContentLoaded', setWeather);
 
 nextButton.addEventListener('click', nextImage);
 
@@ -200,8 +220,8 @@ getCity();
 createImageQueue()
 setBackImg();
 
-// getQuote();
-// setWeather();
+getQuote();
+setWeather();
 
 //next img
 

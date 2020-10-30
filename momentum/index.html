@@ -11,43 +11,55 @@
   <title>Momentum</title>
 </head>
 <body class="body">
+
   <div class="wrapper">
-    <time class="time" id="time"></time>
+
+    
+    <div class="time-wrapper">
+      <div class="time">
+        <time class="time" id="time"></time>
+        <span class="time-info"></span>
+      </div>
+      <div class="time-info"></div>
+    </div>
+    
     <div class="greeting-wrapper">
       <div class="greeting"></div>
-      <input type="text" title="Your name" class="name" placeholder="[Type in your name]">
+      <input type="text" title="Your name" class="name" placeholder="name">
     </div>
   
     <div class="focus-wrapper">
       <div class="greeting">What Is Your Focus For Today?</div>
-      <input type="text" class="focus" title="Your focus" placeholder="[Type in your focus]">
+      <input type="text" class="focus" title="Your focus" placeholder="focus">
     </div>
 
     <div class="quote-wrapper">
       <div class="quote">
         <blockquote class="blockquote">Quote</blockquote>
       </div>
+      <button class="next-quote" title="next quote"></button>
     </div>
 
     <div class="weather-wrapper">
-      <input type="text" class="city" title="Your city" placeholder="[Your city]">
-      <i class="weather-icon owf"></i>
-      <span class="temperature">temp</span>
-      <span class="weather">weather</span>
+      <div class="city-wrapper">
+        <input type="text" class="city" title="Your city" placeholder="location">
+      </div>
+      <div class="weather-desc">
+        <i class="weather-icon owf"></i>
+        <span class="temperature">temp</span>
+        <span class="weather">weather</span>
+      </div> 
     </div>
-
   </div>
 
 
   <div class="note-wrapper">
+    <button class="next-image" title="next image"></button>
     <div>This is image # <span class="image-number"></span></div>
     <div>it is associated with <span class="time-of-image"></span></div>
   </div>
   
-  <div class="button-wrapper">
-    <button class="next-quote" title="next quote"></button>
-    <button class="next-image" title="next image"></button>
-  </div>
+  
   
 
   <script src="script.js"></script>
