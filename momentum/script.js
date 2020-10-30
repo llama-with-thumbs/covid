@@ -1,6 +1,6 @@
 // DOM Elements
 const time = document.querySelector('.time')
-const timeInfo = document.querySelector('.time-info')
+const timeInfo = document.querySelector('.time-info-data')
 const greeting = document.querySelector('.greeting')
 const name = document.querySelector('.name')
 const focus = document.querySelector('.focus');
@@ -21,6 +21,7 @@ let prevLocation = ''
 
 const city = document.querySelector('.city')
 const weather = document.querySelector('.weather')
+const weatherAdd = document.querySelector('.weather-add')
 const temperature = document.querySelector('.temperature')
 const weatherIcon = document.querySelector('.weather-icon')
 
@@ -145,7 +146,6 @@ function getCity() {
 }
 
 function updateNote() {
-  console.log('Note was updated')
   timeOfImage.textContent = document.body.style.backgroundImage.match(/\w+/g)[3]
   imageNumber.textContent = document.body.style.backgroundImage.match(/\d{1}/)
 }
@@ -161,7 +161,7 @@ async function getQuote() {
 //get Weather
 
 async function setWeather() {
-  console.log('prev', prevLocation)
+  // console.log('prev', prevLocation)
 
   let location = city.value
   // console.log(location)
@@ -175,7 +175,8 @@ async function setWeather() {
     temperature.textContent = `${data.main.temp}°C`
     weatherIcon.className = 'weather-icon owf'
     weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-    weather.textContent = data.weather[0].description;
+    weather.textContent = data.weather[0].description + ', wind speed: ' + data.wind.speed + 'm/s';
+    weatherAdd.textContent = 'humidity: ' + data.main.humidity
   } else {
     alert('Invalid location')
 
