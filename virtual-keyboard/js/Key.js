@@ -5,7 +5,7 @@ export default class Key {
         this.small = small
         this.shift = shift
         this.code = code
-        this.isFunKey = (Boolean(small.match(/Ctrl|arr|Alt|Shift|Tab|Back|Del|Enter|Caps/)))
+        this.isFnKey = (Boolean(small.match(/Ctrl|arr|Alt|Shift|Tab|Back|Del|Enter|Caps|🕪/)))
 
         if (shift && shift.match(/[^a-zA-Zа-яА-ЯЁё0-9]/)) {
             this.sub = create('div', 'sub', this.shift)
@@ -14,7 +14,7 @@ export default class Key {
         }
         this.letter = create('div', 'letter', small)
         this.div = create('div', 'keyboard__key', [this.sub, this.letter], null, ['code', this.code], 
-            this.isFunKey ? ['fn', 'true'] : ['fn', 'false'])
+            this.isFnKey ? ['fn', 'true'] : ['fn', 'false'])
 
     }
 }

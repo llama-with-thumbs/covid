@@ -385,9 +385,9 @@ export default [
       keycode: '39',
     },
     {
-      small: '⊞',
+      small: '🕪',
       shift: null,
-      code: 'Win',
+      code: 'Sound',
       keycode: '1000',
     },
   ];
