@@ -7,7 +7,7 @@
 
   html {
     height: 100vh;
-    font-size: calc(16px + .3vw);
+    font-size: calc(14px + .3vw);
     font-family: 'Roboto', sans-serif;
     transition: all .2s;
   }
@@ -26,7 +26,8 @@
     align-items: flex-end;
     align-content: flex-start;
     max-width: 1020px;
-
+    height: 100vh;
+    overflow: hidden;
     /* width: 1020px; */
     
   }
@@ -46,6 +47,7 @@
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
     border: .2rem solid #222;
+    transition: all 1s ease;
   }
   
   .keyboard__row {
@@ -102,11 +104,13 @@
   }
   
   [data-code="ShiftLeft"] {
-    width: 100px;
+    /* width: 100px; */
+    width: 4em;
   }
   
   [data-code="ShiftRight"] {
     width: 120px;
+    width: 7.1em;
   }
   
   [data-code="Enter"] {
@@ -130,7 +134,8 @@
   }
   
   [data-code="Space"] {
-    width: 420px;
+    /* width: 420px; */
+    width: 16em; /*mayby*/
   }
   
   [data-code="AltLeft"],
@@ -219,6 +224,31 @@
     -moz-transform: translateX(20px);
     -ms-transform: translateX(20px);
     -o-transform: translateX(20px);
+  }
+
+  .hidden {
+    /* animation: fadeInOut 5s; */
+    animation: hide 1s;
+    animation-fill-mode: forwards;
+    /* transform: translateY(60vh); */
+  }
+  @keyframes hide {
+    100% {
+      transform: translateY(60vh);
+    }
+  }
+
+  .retrived {
+    animation: retrive 1s;
+    animation-fill-mode: forwards;
+  }
+  @keyframes retrive {
+    0% {
+      transform: translateY(60vh);
+    }
+    100% {
+      transform: translateY(0);
+    }
   }
   
   @keyframes fadeInOut {

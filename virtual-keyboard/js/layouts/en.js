@@ -389,5 +389,23 @@ export default [
       code: 'Sound',
       keycode: '1000',
     },
+    {
+      small: '⭳',
+      shift: null,
+      code: 'UpDown',
+      keycode: '1001',
+    },
+    {
+      small: '🗣',
+      shift: null,
+      code: 'Speak',
+      keycode: '1002',
+    },
+    {
+      small: '𝛂 en',
+      shift: null,
+      code: 'Language',
+      keycode: '1003',
+    },
   ];
   

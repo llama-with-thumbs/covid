@@ -3,11 +3,14 @@ import create from './utils/create.js'
 import language from './layouts/index.js'
 import Key from './Key.js'
 import * as soundLib from './sounds.js'
+import * as speechRecognition from './speechRecognition.js'
 
 const main = create('main', '',
   [create('h1', 'title', 'Virtual Keyboard'),
     // create('h3', 'subtitle', 'RS-School 2020q3'),
-    create('p', 'hint', 'Use <kbd>Alt</kbd> + <kbd>Ctrl</kbd> to switch language.')]);
+    create('p', 'hint', 'Use <kbd>Alt</kbd> + <kbd>Ctrl</kbd> or button 𝛂 to switch the language. ru is default.'),
+    create('p', 'hint', 'To hide the keyboard press ⭳. To return the keyboard start typing.')]);
+    
 
 export default class Keyboard {
     constructor (rowOrder) {
@@ -15,6 +18,8 @@ export default class Keyboard {
         this.keyPressed = {}
         this.isCaps = false
         this.isSound = false
+        this.isUpDown = false
+        this.isSpeak = false
     }
     init(langCode) {
         this.keyBase = language[langCode]
@@ -56,10 +61,6 @@ export default class Keyboard {
             if (lang === 'ru') {
                 soundLib.soundRu.currentTime = 0
                 soundLib.soundRu.play()
-    // export const soundShift = document.getElementById('sound_shift')
-    // export const soundCaps = document.getElementById('sound_caps')
-    // export const soundBack = document.getElementById('sound_back')
-    // export const soundEnter
             } else {
                 soundLib.soundEn.currentTime = 0
                 soundLib.soundEn.play()
@@ -90,8 +91,6 @@ export default class Keyboard {
                 default:
                     break;
             }
-            // soundLib.elementId.currentTime = 0
-            // soundLib.elementId.play()
         }
     }
 
@@ -107,11 +106,22 @@ export default class Keyboard {
     }
     resetButton = ({target: {dataset: {code}}}) => {
         const keyObj = this.keyButtons.find(key => key.code === code)
-        if (code.match(/Caps/)) return // prevent from unpresing when mouse cursor left
-        if (code.match(/Sound/)) return // prevent from unpresing when mouse cursor left
-        // console.log('resetButton, code: ', code)
+        if (code.match(/Caps|Sound|Speak/)) return // prevent from unpresing when mouse cursor left
         keyObj.div.classList.remove('active')
         keyObj.div.removeEventListener('mouseleave', this.resetButton)
+    }
+    hideKeybord = () => {
+
+        if (this.container.classList.contains('retrived')) {
+            this.container.classList.remove('retrived')
+        }
+        this.container.classList.add('hidden')
+    }
+    revealKeybord = () => {
+        if (this.container.classList.contains('hidden')) {
+            this.container.classList.remove('hidden')
+            this.container.classList.add('retrived')
+        }
     }
 
     hanleEvent = (event) => {
@@ -119,20 +129,27 @@ export default class Keyboard {
         const {code, type} = event
         const keyObj = this.keyButtons.find(key => key.code === code)
         if (!keyObj) return
-
+        //sound typing effects 
         if (this.isSound) {
             if (type.match(/keydown|mousedown/)) {
                 if (code.match(/Shift|Caps|Back|Enter/)) {
-                    // console.log(type, keyObj, storage.get('kbLang')||'ru')
+                    // console.log(type, keyObj, storage.get('wkLang')||'ru')
                     this.playButton(code, null)
                 }
                 else {
-                    this.playButton(null, storage.get('kbLang')||'ru')
-                }
-                
+                    this.playButton(null, storage.get('wkLang')||'ru')
+                }         
             }
-            // this.playButton()
         }
+
+        //speech recognition
+        if (this.isSpeak) {
+            // console.log('speak')
+            const obj = {code : 'speak', isFnKey : true}
+            this.printOutput(obj, 'long text')
+
+        }
+        
         this.output.focus()
         if (type.match(/keydown|mousedown/)) {
             if (type.match(/key/)) event.preventDefault()
@@ -153,13 +170,21 @@ export default class Keyboard {
             } else if (code.match(/Sound/) && this.isSound) {
                 this.isSound = false
                 keyObj.div.classList.remove('active')
+            }  else if (code.match(/Speak/) && !this.isSpeak) {
+                this.isSpeak = true
+            } else if (code.match(/Speak/) && this.isSpeak) {
+                this.isSpeak = false
+                keyObj.div.classList.remove('active')
+            } else if (code.match(/UpDown/)) {
+                // console.log('hide')
+                this.hideKeybord()
             }
-
             //lang
             if (code.match(/Control/)) this.ctrlKey = true
             if (code.match(/Alt/)) this.altKey = true
             if (code.match(/Control/) && this.altKey) this.changeLang()
             if (code.match(/Alt/) && this.ctrlKey) this.changeLang()
+            if (code.match(/Language/)) this.changeLang()
 
             if ( !this.isCaps) {
                 this.printOutput(keyObj, this.shiftKey ? keyObj.shift : keyObj.small)
@@ -180,7 +205,8 @@ export default class Keyboard {
                 this.shiftKey = false
                 this.switchCaseUp(false)
             }
-            if (!code.match(/Caps/) && !code.match(/Sound/)) keyObj.div.classList.remove('active')
+            // console.log(code)
+            if (!code.match(/Caps/) && !code.match(/Sound/) && !code.match(/Speak/)) keyObj.div.classList.remove('active')
         }
     }
     changeLang = () => {
@@ -188,7 +214,7 @@ export default class Keyboard {
         let langIndx = langAbbr.indexOf(this.container.dataset.language)
         this.keyBase = langIndx + 1 < langAbbr.length ? language[langAbbr[langIndx += 1]] : language[langAbbr[langIndx -= langIndx]]
         this.container.dataset.language = langAbbr[langIndx]
-        storage.set('kbLang', langAbbr[langIndx])
+        storage.set('wkLang', langAbbr[langIndx])
 
         this.keyButtons.forEach( button => {
             const keyObj = this.keyBase.find( key => key.code === button.code)
@@ -247,6 +273,8 @@ export default class Keyboard {
     printOutput(keyObj, simb) {
         // console.log(simb)
         // return
+        // this.revealKeybord() // return keybord on screen
+
         let curPos = this.output.selectionStart
 
         const left = this.output.value.slice(0, curPos)
@@ -290,10 +318,15 @@ export default class Keyboard {
             fnButtonHandler[keyObj.code]()
             // console.log('fun key: ', keyObj.code)
         } else if (!keyObj.isFnKey) {
-            // console.log('simb: ', simb)  
+            // console.log('simb: ', simb) 
+            this.revealKeybord() // return keybord on screen 
             curPos += 1;
             this.output.value = `${left}${simb || ''}${right}`
-        } 
+        } else if (keyObj.code === 'speak') {
+            // console.log('here', keyObj, simb)
+            // curPos += simb.length;
+            // this.output.value = `${left}${simb || ''}${right}`
+        }
         this.output.setSelectionRange(curPos, curPos);
     }
 }
