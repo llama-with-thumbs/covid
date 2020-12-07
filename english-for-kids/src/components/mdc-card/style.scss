@@ -1,0 +1,7 @@
+@use "@material/card";
+
+@include card.core-styles;
+
+.my-card__media {
+    background-image: url("../../assets/images/img/angry.jpg");
+}

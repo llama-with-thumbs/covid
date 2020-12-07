@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'Anon';
+    src: url('./assets/fonts/anon-webfont.woff2') format('woff2'),
+      url('./assets/fonts/anon-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  overflow: auto;
+  height: 100%;
+}
+
+.app-bar {
+  position: absolute;
+}
+
+.mdc-top-app-bar {
+  z-index: 7;
+}
+  
+.my-card__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+.my-card {
+  width: 140px;
+  margin: 15px;
+  height: 200px;
+  background-color: gray;
+}
