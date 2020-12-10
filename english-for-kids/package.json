@@ -27,6 +27,7 @@
     "@material/layout-grid": "^8.0.0",
     "@material/switch": "^8.0.0",
     "@material/top-app-bar": "^8.0.0",
+    "lodash": "^4.17.20",
     "material-components-web": "^8.0.0"
   }
 }

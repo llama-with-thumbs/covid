@@ -1,0 +1,63 @@
+
+.wordCard {
+    width: 250px;
+    height: 200px;
+
+    overflow: hidden;
+
+    position: relative; /* For positioning the pseudo-element */
+    box-shadow: 0 0 10px 0 gray;
+    transition: all 500ms;
+
+    margin: 18px;
+
+    border-radius: 3px;
+    border: 3px solid gray;
+    cursor: pointer;
+
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    transition: all 500ms;
+}
+
+.wordCard:hover .enWord {
+    top: 168px;
+}
+
+.enWord {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center; 
+    height: 32px;
+    line-height: 32px;
+    background-color: white;
+
+    position: absolute;
+    top: 200px;
+
+    transition: all 200ms;
+}
+
+.wordCard:hover .ruWord {
+    top: 0px;
+}
+
+.ruWord {
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center; 
+    height: 32px;
+    line-height: 32px;
+    background-color: white;
+
+    position: absolute;
+    top: -32px;
+
+    transition: all 200ms;
+}
+
+

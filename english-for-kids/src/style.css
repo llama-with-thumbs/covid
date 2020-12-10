@@ -13,11 +13,15 @@
 body {
   display: flex;
   height: 100vh;
+  background-color: #f5f5f6;
 }
 
 .main-content {
+  font-family: 'Anon';
   overflow: auto;
-  height: 100%;
+  height: 100vh;
+  width: 100vw; 
+  transition: all 0.3s;
 }
 
 .app-bar {
@@ -27,16 +31,23 @@ body {
 .mdc-top-app-bar {
   z-index: 7;
 }
+
+
+/*main */
+.game-bord__wrapper {
+  display: flex;
+  width: 100%;
+  height: 80vh;
+  justify-content: center;
+  align-items: center;
   
-.my-card__wrapper {
+}
+.game-bord {
+  max-width: 1200px;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  margin: auto;
+}
 
-}
-.my-card {
-  width: 140px;
-  margin: 15px;
-  height: 200px;
-  background-color: gray;
-}
