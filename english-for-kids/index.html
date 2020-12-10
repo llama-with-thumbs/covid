@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <title>English for kids</title>
+</head>
+<body>
+
+    <header class="mdc-top-app-bar app-bar" id="app-bar">
+        <div class="mdc-top-app-bar__row">
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Open navigation menu">menu</button>
+            <span class="mdc-top-app-bar__title">English for kids</span>
+          </section>
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+           <!-- <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Options">more_vert</button> -->
+          </section>
+        </div>
+    </header>
+
+    <aside class="mdc-drawer mdc-drawer--modal">
+        <div class="mdc-drawer__header">
+            <h3 class="mdc-drawer__title">Contents</h3>
+            <button class="mdc-button mdc-button--round" id="close-drawer">
+                <!-- <div class="mdc-button__ripple"></div> -->
+                <!-- <span class="mdc-button__label">close</span> -->
+                <i class="material-icons mdc-button__icon" aria-hidden="true">close</i>
+            </button>
+        </div>
+        <hr class="mdc-list-divider">
+        <div class="mdc-drawer__content">
+          <nav class="mdc-list">
+            <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page" tabindex="0">
+              <span class="mdc-list-item__ripple"></span>
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">sports</i>
+              <span class="mdc-list-item__text">Action (set A)</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+              <span class="mdc-list-item__ripple"></span>
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">sports_football</i>
+              <span class="mdc-list-item__text">Action (set B)</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+              <span class="mdc-list-item__ripple"></span>
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">sports_tennis</i>
+              <span class="mdc-list-item__text">Action (set C)</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+                <span class="mdc-list-item__ripple"></span>
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">party_mode</i>
+                <span class="mdc-list-item__text">Adjective</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+                <span class="mdc-list-item__ripple"></span>
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">emoji_nature</i>
+                <span class="mdc-list-item__text">Animal (set A)</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+                <span class="mdc-list-item__ripple"></span>
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">spa</i>
+                <span class="mdc-list-item__text">Animal (set B)</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+                <span class="mdc-list-item__ripple"></span>
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">emoji_people</i>
+                <span class="mdc-list-item__text">Clothes</span>
+            </a>
+            <a class="mdc-list-item" href="#">
+                <span class="mdc-list-item__ripple"></span>
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">emoji_emotions</i>
+                <span class="mdc-list-item__text">Emotion</span>
+            </a>
+          </nav>
+        </div>
+    </aside>
+    <div class="mdc-drawer-scrim"></div>
+    
+    
+    <div class="main-content" id="main-content">
+        <div class="mdc-top-app-bar--fixed-adjust"></div>   
+        <div class="game-bord__wrapper">
+          <main class="game-bord" id="game-bord">
+            <!-- here main content goes -->
+          </main>
+        </div>     
+    </div>
+
+    <script src="./dist/bundle.js"></script>
+</body>
+</html>
