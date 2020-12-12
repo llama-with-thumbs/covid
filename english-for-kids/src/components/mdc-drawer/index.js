@@ -11,7 +11,7 @@ export default function addDrawer() {
 
 
     setTimeout(function() {
-        console.log('addDrawer');
+        // console.log('addDrawer');
         const list = MDCList.attachTo(document.querySelector('.mdc-list'));
         list.wrapFocus = true;
 
