@@ -15,45 +15,74 @@ export default function start() {
     const gameBord = {};
     gameBord.categories = [];
     gameBord.categoriesImages = {};
+    gameBord.allSounds = getSound();
     const main = document.getElementById('game-bord');
 
-    setTimeout(function(){ getSound().play(); }, 1000);
-
     main.innerHTML = '';
+    gameBord.pronounce = function(word){
+        if (gameBord.hasOwnProperty(word)) {
+            gameBord.allSounds[word].play();
+        } else {
+            gameBord.allSounds.error.play();
+        }
+        
+    }
     gameBord.openCategory = function(categoryName) {    
         main.innerHTML = '';
+        const currWordCards = [];
         for (let i = 0; i < 8; i++) {
             const img = gameBord.categoriesImages[categoryName][i];
             const ru = allWords().ru[categoryName][i];
             const en = allWords().en[categoryName][i];
-            console.log('category name: ', categoryName, ru, en);
-            main.appendChild(newWordCard(img, en, ru, en).domElement);
+            // console.log('category name: ', categoryName, ru, en);
+            currWordCards.push(newWordCard(img, en, ru, en));
         }
+        //flip the word card
+        _.shuffle(currWordCards).forEach( card => {
+            main.appendChild(card.domElement);
+            card.domElement.addEventListener('click', e => {
+                e.target.classList.add('flipped');
+                // console.log(e.target.dataset.english);
+                gameBord.pronounce(e.target.dataset.english);
+            });
+            card.domElement.addEventListener('mouseleave', e => {
+                e.target.classList.toggle('flipped', false);
+            })
+        
+        });
+
     }
 
     for (let i = 0; i < categoriesNamesList.length; i++) {
         gameBord.categoriesImages[categoriesNamesList[i]] = categoriesImg.innerImg[categoriesNamesList[i]];
     }
 
-    // addSwitch();
-    // addButton();
-    // addDrawer();
+    addSwitch();
+    addButton();
+    addDrawer();
     addTopAppBar();
     
     //create main page
     for (let i = 0; i < categoriesImg.catName.length; i++){
         gameBord.categories.push(newCategory(categoriesImg.catName[i], categoriesImg.catImg[i], categoriesNamesList[i]));
     }
-    _.shuffle(gameBord.categories).forEach( cat => {main.appendChild(cat.domElement);});
 
-    //open category
+
+    _.shuffle(gameBord.categories).forEach( card => {
+        main.appendChild(card.domElement);
+    });
+
+    //Event listener for opening a category
     main.addEventListener('click', e => { 
+        //open category
         if(e.target.classList.contains('category')) {
             gameBord.openCategory(e.target.dataset.name);
-            // 
         };
-    }
-);
+
+    });
+
+
+
 
 }
 
