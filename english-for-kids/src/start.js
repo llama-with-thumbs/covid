@@ -16,11 +16,23 @@ export default function start() {
     gameBord.categories = [];
     gameBord.categoriesImages = {};
     gameBord.allSounds = getSound();
+    gameBord.gameOn = false;
+    gameBord.openHomePage = function() {
+        //open home page
+        main.innerHTML = '';
+        gameBord.categories = [];
+        for (let i = 0; i < categoriesImg.catName.length; i++){
+            gameBord.categories.push(newCategory(categoriesImg.catName[i], categoriesImg.catImg[i], categoriesNamesList[i]));
+        }
+        _.shuffle(gameBord.categories).forEach( card => {
+            main.appendChild(card.domElement);
+        });
+    }
     const main = document.getElementById('game-bord');
 
     main.innerHTML = '';
     gameBord.pronounce = function(word){
-        if (gameBord.hasOwnProperty(word)) {
+        if (gameBord.allSounds.hasOwnProperty(word)) {
             gameBord.allSounds[word].play();
         } else {
             gameBord.allSounds.error.play();
@@ -61,16 +73,8 @@ export default function start() {
     addButton();
     addDrawer();
     addTopAppBar();
+    gameBord.openHomePage();
     
-    //create main page
-    for (let i = 0; i < categoriesImg.catName.length; i++){
-        gameBord.categories.push(newCategory(categoriesImg.catName[i], categoriesImg.catImg[i], categoriesNamesList[i]));
-    }
-
-
-    _.shuffle(gameBord.categories).forEach( card => {
-        main.appendChild(card.domElement);
-    });
 
     //Event listener for opening a category
     main.addEventListener('click', e => { 
@@ -81,9 +85,30 @@ export default function start() {
 
     });
 
+    //Event listener for switcher 
+    setTimeout(function() {
+        const switchElement = document.body.querySelector('.mdc-switch');
+        switchElement.addEventListener('change', function(){
+            const categories = document.querySelectorAll(".category");
+            categories.forEach( category => {
+                category.classList.toggle('game-active');
+            });
+            // console.log(gameBord.gameOn);
+        });
+    }, 0);
 
+    //side menu links
+    document.body.querySelector('.mdc-list').addEventListener('click', e => {
+        if(e.target.classList.contains('mdc-list-item')) {
+            if (e.target.dataset.category === 'categories') {
+                gameBord.openHomePage();
+                return;
+            }
+            gameBord.openCategory(e.target.dataset.category);
+        }
 
-
+    })
+    
 }
 
 
