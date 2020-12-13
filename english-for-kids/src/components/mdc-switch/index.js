@@ -12,11 +12,6 @@ export default function addSwitch() {
 
     setTimeout(function() {
         const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
-        const switchElement = document.body.querySelector('.mdc-switch');
-        switchElement.addEventListener('change', function(){
-            const categories = document.querySelectorAll(".category");
-            categories.forEach( category => {category.classList.toggle('game-active')});
-        });
     }, 0);
     
 }
