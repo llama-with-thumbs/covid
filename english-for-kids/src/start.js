@@ -53,12 +53,15 @@ export default function start() {
         _.shuffle(currWordCards).forEach( card => {
             main.appendChild(card.domElement);
             card.domElement.addEventListener('click', e => {
-                e.target.classList.add('flipped');
-                // console.log(e.target.dataset.english);
-                gameBord.pronounce(e.target.dataset.english);
+                if(e.target.classList.contains('card-flip')) {
+                    card.domElement.classList.add('flipped');
+                }
+                if(e.target.classList.contains('wordCard') && !e.target.classList.contains('flipped')) {
+                    gameBord.pronounce(e.target.dataset.english);
+                }
             });
             card.domElement.addEventListener('mouseleave', e => {
-                e.target.classList.toggle('flipped', false);
+                card.domElement.classList.toggle('flipped', false);
             })
         
         });
@@ -89,11 +92,8 @@ export default function start() {
     setTimeout(function() {
         const switchElement = document.body.querySelector('.mdc-switch');
         switchElement.addEventListener('change', function(){
-            const categories = document.querySelectorAll(".category");
-            categories.forEach( category => {
-                category.classList.toggle('game-active');
-            });
-            // console.log(gameBord.gameOn);
+            document.getElementById('game-bord').classList.toggle('game-active');
+            // console.log(document.getElementById('game-bord'));
         });
     }, 0);
 
