@@ -1,0 +1,33 @@
+{
+  "name": "english-for-kids",
+  "version": "1.0.0",
+  "description": "",
+  "private": "true",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^5.0.1",
+    "file-loader": "^6.2.0",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.9.0",
+    "webpack-cli": "^4.2.0"
+  },
+  "dependencies": {
+    "@material/button": "^8.0.0",
+    "@material/card": "^8.0.0",
+    "@material/drawer": "^8.0.0",
+    "@material/fab": "^8.0.0",
+    "@material/layout-grid": "^8.0.0",
+    "@material/switch": "^8.0.0",
+    "@material/top-app-bar": "^8.0.0",
+    "lodash": "^4.17.20",
+    "material-components-web": "^8.0.0"
+  }
+}

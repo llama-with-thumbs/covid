@@ -1,0 +1,7 @@
+@use "@material/button";
+
+@include button.core-styles;
+
+.mdc-button.mdc-button--round {
+    @include button.shape-radius(50%);
+}

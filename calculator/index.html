@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Calculator</title>
+  <link href="styles.css" rel="stylesheet">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="calculator-grid">
+    <div class="output">
+      <div class="previous-operand">
+        <div data-prefix-operand class="prefix-operation"></div>
+        <div data-previous-operand></div>
+        <div data-operation class="operation"></div>
+      </div>
+      <div data-current-operand class="current-operand"></div>
+    </div>
+    
+    <button data-all-clear title="Clear the screen">AC</button>
+    <button data-delete title="Delete last character">DEL</button>
+    <button data-sign title="Plus–minus">±</button>
+    <button data-operation title="Division">÷</button>
+
+    <button data-number>1</button>
+    <button data-number>2</button>
+    <button data-number>3</button>
+    <button data-operation title="Multiplication">*</button>
+
+    <button data-number>4</button>
+    <button data-number>5</button>
+    <button data-number>6</button>
+    <button data-operation title="Summation">+</button>
+
+    <button data-number>7</button>
+    <button data-number>8</button>
+    <button data-number>9</button>
+    <button data-operation title="Subtraction / Negative">-</button>
+
+    <div class="dual">
+      <button data-operation title="Square root">√</button>
+      <button data-operation title="Exponentiation">xⁿ</button>
+    </div>
+    <button data-number>0</button>
+    <button data-number title="Decimal mark">.</button>
+    <button data-equals title="Equals">=</button>
+    
+
+    
+  </div>
+</body>
+</html>

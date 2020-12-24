@@ -1,0 +1,186 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+  padding: 0;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+html {
+  font-size: 14px;
+  letter-spacing: .05em;
+}
+
+.body {
+	font-family: 'Quicksand', sans-serif;
+  display: flex;
+  
+	flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+
+	text-align: center;
+	height: 100vh;
+  background-size: cover;
+  
+  background-color: transparent;
+	transition: background-image 1s ease-in-out;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: cover;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  
+  background-color: rgba( 0, 0, 0, .4);
+  width: 60%;
+}
+
+.note-wrapper {
+  align-items: flex-start;
+  /* text-align: left; */
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 10%;
+  font-size: calc(10px + .3vw);
+	position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+	right: 5%;
+	padding: 10px;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.note-wrapper > * {
+  margin: .5vw;
+  white-space: nowrap;
+}
+
+.next-image {
+	cursor: pointer;
+	width: 60px;
+	height: 60px;
+	border: 0;
+	background-image: url("https://www.pngarts.com/files/3/Next-Button-Download-Transparent-PNG-Image.png");
+	background-size: contain;
+	border-radius: 50%;
+	background-repeat: no-repeat;
+	margin: 5px;
+	filter: grayscale(1);
+}
+
+.next-quote {
+  flex-shrink: 0;
+  cursor: pointer;
+  width: 3vw;
+  height: 3vw;
+
+  min-width: calc(10px + .9vw);
+  min-height: calc(10px + .9vw);
+  
+  background-size: contain;
+	border-radius: 50%;
+  background-repeat: no-repeat;
+  margin: 5px;
+  filter: grayscale(1);
+  opacity: .6;
+	border: .15vw solid rgba( 255, 255, 255, .3);
+	background-image: url("https://www.pngarts.com/files/7/Update-Button-PNG-Image.png");
+}
+
+.next-image:hover,
+.next-quote:hover {
+	opacity: 0.8;
+}
+
+.next-image:active,
+.next-image:focus {
+	outline: 0;
+}
+
+.next-image:active,
+.next-quote:active {
+	transform: scale(1.09)
+}
+
+.time-wrapper,
+.greeting-wrapper,
+.focus-wrapper,
+.quote-wrapper,
+.weather-wrapper {
+  opacity: 1;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 5px;
+	cursor: context-menu;
+  font-size: calc(10px + .9vw);
+  
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	overflow: visible;
+}
+
+
+
+.time {
+  font-size: calc(10px + 4vw);
+  letter-spacing: calc(5px + 1vw);
+	cursor: context-menu;
+}
+
+.name,
+.focus,
+.city {
+	border: none;
+	box-shadow: none;
+	background-color: transparent;
+	min-width: 30px;
+	max-width: 400px;
+	font-size: inherit;
+	margin-left: 10px;
+  cursor: auto;
+  text-align: center;
+}
+
+.city {
+	max-width: 250px;
+}
+
+.weather-wrapper>* {
+	margin: 5px;
+}
+
+.name:focus,
+.focus:focus,
+.next-quote:focus,
+.city:focus {
+	outline: none;
+}
+
+.name:focus {
+	border-color: transparent;
+	border: none;
+}
+
+.quote-wrapper {
+  flex-direction: row;
+	justify-content: center;
+	width: 90%;
+	align-items: center;
+}
+
+@media(max-width: 900px) {
+
+}

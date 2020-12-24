@@ -1,0 +1,6 @@
+export const soundRu = document.getElementById('sound_ru')
+export const soundEn = document.getElementById('sound_en')
+export const soundShift = document.getElementById('sound_shift')
+export const soundCaps = document.getElementById('sound_caps')
+export const soundBack = document.getElementById('sound_back')
+export const soundEnter = document.getElementById('sound_enter')
