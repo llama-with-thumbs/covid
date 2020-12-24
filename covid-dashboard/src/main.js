@@ -117,3 +117,10 @@ const loadData = () => {
 drawMap();
 
 loadData();
+
+// setTimeout(function(){ 
+//   const eConteiner = document.querySelector('.grid-container');
+//   console.log(document.getElementById('text'));
+
+
+// }, 100);

@@ -68969,6 +68969,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// import mymap from "../controllers/map";
 
 
 
@@ -68983,7 +68984,9 @@ const getCountryName = (data, filter) => {
 };
 
 function drawChart(country) {
-  
+  // const mymap = L.map('map').setView([0, 0], 2);
+  // console.log(mymap);
+
   //clean section charts
   const charts = document.querySelector('.charts');
   charts.innerHTML = '';
@@ -68991,10 +68994,12 @@ function drawChart(country) {
   chartWrapper.classList.add('csv__wrapper');
   charts.appendChild(chartWrapper);
 
+  //size of .charts 
+
   const svg = Object(d3__WEBPACK_IMPORTED_MODULE_3__["select"])('.csv__wrapper')
   .append('svg')
-  .attr('width', 480)
-  .attr('height', 300);
+  .attr('width', charts.offsetWidth - 50) 
+  .attr('height', charts.offsetHeight - 50);
 
   const width = +svg.attr('width')
   const height = +svg.attr('height');
@@ -69074,7 +69079,15 @@ function drawChart(country) {
     render(newData);
   });
   }
-  
+
+  window.addEventListener('resize', () => { 
+    const charts = document.querySelector('.charts');
+  //   attr('width', charts.offsetWidth - 50) 
+  // .attr('height', charts.offsetHeight - 50);
+    document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
+    document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50)
+  });
+
   return undefined;
 };
 
@@ -69116,7 +69129,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-component.js */ "./src/components/abstract-component.js");
 
 
+
 const makeCountryRow = (countryData, filter) => {
+  // console.log('countryData: ',countryData, 'filter: ', filter);
   const name = countryData.country;
   const totalCases = countryData.totalConfirmed;
   const todayCases = countryData.newConfirmed;
@@ -69552,15 +69567,19 @@ class CountriesController {
 /*!********************************!*\
   !*** ./src/controllers/map.js ***!
   \********************************/
-/*! exports provided: default */
+/*! exports provided: mymap, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mymap", function() { return mymap; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return drawMap; });
-function drawMap() {
-  const mymap = L.map('map').setView([0, 0], 2);
+let mymap = L.map('map');
 
+function drawMap(filter) {
+
+  mymap.setView([0, 0], 3);
+  
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmFkaW5la2hpcyIsImEiOiJja2loZGticTMwNzJxMnltbGRsdzRqZmw0In0.E8fOw826aYb03PGElEtyYQ', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -69829,6 +69848,13 @@ const loadData = () => {
 Object(_controllers_map__WEBPACK_IMPORTED_MODULE_4__["default"])();
 
 loadData();
+
+// setTimeout(function(){ 
+//   const eConteiner = document.querySelector('.grid-container');
+//   console.log(document.getElementById('text'));
+
+
+// }, 100);
 
 
 /***/ }),

@@ -1,6 +1,7 @@
 import AbstractComponent from './abstract-component.js';
 import Chart from "chart.js";
 import {filterById} from '../utils.js';
+// import mymap from "../controllers/map";
 
 import {
   select,
@@ -27,7 +28,9 @@ export const getCountryName = (data, filter) => {
 };
 
 export function drawChart(country) {
-  
+  // const mymap = L.map('map').setView([0, 0], 2);
+  // console.log(mymap);
+
   //clean section charts
   const charts = document.querySelector('.charts');
   charts.innerHTML = '';
@@ -35,10 +38,12 @@ export function drawChart(country) {
   chartWrapper.classList.add('csv__wrapper');
   charts.appendChild(chartWrapper);
 
+  //size of .charts 
+
   const svg = select('.csv__wrapper')
   .append('svg')
-  .attr('width', 480)
-  .attr('height', 300);
+  .attr('width', charts.offsetWidth - 50) 
+  .attr('height', charts.offsetHeight - 50);
 
   const width = +svg.attr('width')
   const height = +svg.attr('height');
@@ -118,7 +123,15 @@ export function drawChart(country) {
     render(newData);
   });
   }
-  
+
+  window.addEventListener('resize', () => { 
+    const charts = document.querySelector('.charts');
+  //   attr('width', charts.offsetWidth - 50) 
+  // .attr('height', charts.offsetHeight - 50);
+    document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
+    document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
+  });
+
   return undefined;
 };
 

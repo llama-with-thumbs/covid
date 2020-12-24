@@ -17,10 +17,31 @@
 {
   outline: none;
 }
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #4c4c4c;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 
 html {
+  height: 100vh;
+  width: 100vw;
   margin: 0;
   padding: 0;
+
 }
 
 body {
@@ -32,18 +53,17 @@ body {
 
   height: 100vh;
   padding: 0;
-  ;
 }
 
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 3fr repeat(2, 1fr);
   grid-template-rows: 0.3fr 0.5fr 2fr 1fr 0.3fr;
-  gap: 5px 5px;
+  gap: 5px;
   /* width: 90%;
   max-width: 1240px; */
   width: 100vw;
-  min-width: 500px;
+  /* min-width: 500px; */
   margin: 0px auto 0px auto;
   height: 100vh;
   transition: .5s;
@@ -370,5 +390,73 @@ shape-rendering: crispEdges;
   background-color: #292929;
   transform: rotate(45deg);
   margin-left: -.7em;
+}
+.deaths__table, .recov__table{  
+  text-align: center;
+}
+.deaths, .recoveries {
+  padding: 10px;
+}
+
+@media screen and (max-width: 500px) {
+  html {
+    height: auto;
+  }
+  body {
+    height: auto;
+  }
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    overflow: hidden;
+  }
+  .header {
+    text-align: center;
+    order: 1;
+  }
+  .map {
+    order: 3;
+    overflow: visible;
+    height: 400px;
+  }
+  #map {
+    height: 500px;
+  }
+  .updated {
+    text-align: center;
+    order: 2;
+  }
+  .countries {
+    display: flex;
+    height: 400px;
+    order: 2;
+    
+  }
+  .csv__wrapper {
+    height: 400px;
+  }
+  .charts {
+    align-content: center;
+    align-items: flex-end;
+    justify-content: center;
+    display: flex;
+    order: 4;
+    height: 400px;
+  }
+  .global_cases {
+    text-align: center;
+    order: 5;
+  }
+  .recoveries {
+    order: 6;
+  }
+  .deaths {
+    order: 7;
+  }
+  .footer {
+    order: 8;
+  }
+
 }
 

@@ -1,6 +1,8 @@
 import AbstractComponent from './abstract-component.js';
 
+
 export const makeCountryRow = (countryData, filter) => {
+  // console.log('countryData: ',countryData, 'filter: ', filter);
   const name = countryData.country;
   const totalCases = countryData.totalConfirmed;
   const todayCases = countryData.newConfirmed;
