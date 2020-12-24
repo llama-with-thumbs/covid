@@ -56,7 +56,10 @@ export default class CountriesController {
   onFilterChange(evt) {
     evt.preventDefault();
     const parent = evt.target.parentElement;
-    if (parent.classList.contains('deaths') || parent.classList.contains('recoveries')) {
+    if (parent.classList.contains('deaths') || parent.classList.contains('recoveries') || parent.classList.contains('countries')) {
+      return;
+    }
+    if (evt.target.classList.contains('deaths') || evt.target.classList.contains('recoveries') || evt.target.classList.contains('countries')) {
       return;
     } else {
       const chosenCountry = parent.classList[0].slice(2);
