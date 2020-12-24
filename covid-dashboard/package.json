@@ -1,0 +1,28 @@
+{
+  "name": "covid-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "build": "webpack",
+    "eslint": "eslint src/**/*.js",
+    "start": "webpack-dev-server --open",
+    "test": "npm run eslint"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "6.1.0",
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "engines": {
+    "node": "10"
+  },
+  "dependencies": {
+    "chart.js": "^2.9.4",
+    "d3": "^6.3.1",
+    "leaflet": "^1.7.1"
+  }
+}
