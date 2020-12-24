@@ -69056,7 +69056,7 @@ function drawChart(country) {
   };
 
   if(country === undefined) {
-    Object(d3__WEBPACK_IMPORTED_MODULE_3__["csv"])('./assets/covid-data.csv').then((data) => {
+    Object(d3__WEBPACK_IMPORTED_MODULE_3__["csv"])('./public/assets/covid-data.csv').then((data) => {
       data.forEach( d => {
           d.cases = +d.cases;
           d.date = new Date(d.date);

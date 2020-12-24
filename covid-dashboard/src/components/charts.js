@@ -100,7 +100,7 @@ export function drawChart(country) {
   };
 
   if(country === undefined) {
-    csv('./assets/covid-data.csv').then((data) => {
+    csv('./public/assets/covid-data.csv').then((data) => {
       data.forEach( d => {
           d.cases = +d.cases;
           d.date = new Date(d.date);
