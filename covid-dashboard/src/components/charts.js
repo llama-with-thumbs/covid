@@ -18,12 +18,9 @@ import {
 } from 'd3';
 
 export const getCountryName = (data, filter) => {
-  if (filter === null) return;
   const dataFiltered = filterById(data, filter);
-  // console.log(dataFiltered);
   const countryData = dataFiltered.countries[0];
   const name = countryData.country;
-  // console.log(name);
   return name;
 };
 
@@ -122,6 +119,7 @@ export function drawChart(country) {
       });
     render(newData);
   });
+  return ' '
   }
 
   window.addEventListener('resize', () => { 
@@ -131,8 +129,6 @@ export function drawChart(country) {
     document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
     document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
   });
-
-  return undefined;
 };
 
 export const makeChartsMarkup = (data, filter) => {

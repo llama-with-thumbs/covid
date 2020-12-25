@@ -68974,12 +68974,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const getCountryName = (data, filter) => {
-  if (filter === null) return;
   const dataFiltered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_2__["filterById"])(data, filter);
-  // console.log(dataFiltered);
   const countryData = dataFiltered.countries[0];
   const name = countryData.country;
-  // console.log(name);
   return name;
 };
 
@@ -69078,6 +69075,7 @@ function drawChart(country) {
       });
     render(newData);
   });
+  return ' '
   }
 
   window.addEventListener('resize', () => { 
@@ -69087,8 +69085,6 @@ function drawChart(country) {
     document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
     document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
   });
-
-  return undefined;
 };
 
 const makeChartsMarkup = (data, filter) => {
