@@ -13,7 +13,9 @@ export default function drawMap(filter) {
     accessToken: 'your.mapbox.access.token'
   }).addTo(mymap);
 
-  let data = null;
+  let dateUpdate = '';
+  let data = null;  
+  let counter = 0;
 
   async function getData() {
     const url = `https://corona.lmao.ninja/v2/countries`;
@@ -67,6 +69,10 @@ export default function drawMap(filter) {
           updatedFormatted = new Date(updated).toLocaleString();
         }
 
+        counter += 1;
+
+        
+
         const html = `
           <span class="icon-marker">
             <span class="icon-marker-tooltip">
@@ -90,11 +96,17 @@ export default function drawMap(filter) {
           riseOnHover: true,
 
         });
-
       }
     });
+
+    
+    const legend = document.querySelector('.legend');
+    legend.innerHTML = `<span>Displayed for cases larger than: 1'000</span>
+    <hr><span>Number of displayed locations:<br>
+    ${counter}</span>`;
+
+
     geoJsonLayers.addTo(mymap);
   }
-
   getData();
 }

@@ -37,7 +37,7 @@
 }
 
 html {
-  font-size: 14px;
+  font-size: 16px;
   height: 100vh;
   width: 100vw;
   margin: 0;
@@ -64,7 +64,7 @@ body {
   /* width: 90%;
   max-width: 1240px; */
   width: 100vw;
-  /* min-width: 500px; */
+  /* min-width: 1000px; */
   margin: 0px auto 0px auto;
   height: 100vh;
   transition: .5s;
@@ -80,13 +80,9 @@ body {
 }
 
 .header {
-display: grid;
-grid-template-columns: 0.8fr 1.2fr;
-grid-template-rows: 1fr;
-gap: 0px 0px;
-grid-template-areas:
-  "header__logo header__title"
-  "header__logo header__title";
+display: flex;
+align-items: center;
+justify-content: center;
 grid-area: header;
 
 }
@@ -152,12 +148,20 @@ overflow: hidden;
 /*.map__left { grid-area: map__left; }*/
 /*.map__right { grid-area: map__right; }*/
 .global_cases {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-around;
   padding: 10px;
+  font-size: 1.4rem;
   grid-area: global_cases;
   background-color: rgb(64, 64, 64);
 }
 .updated {
-  padding-left: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   grid-area: updated;
   background-color: rgb(64, 64, 64);
   }
@@ -171,6 +175,7 @@ overflow: hidden;
 .charts {
   /* overflow-x: scroll;
   overflow-y: scroll; */
+  overflow: hidden;
   display: grid;
   grid-area: charts;
 }
@@ -208,7 +213,42 @@ fill: none;
 stroke: #000;
 shape-rendering: crispEdges;
 }
+#map {
+  z-index: 1;
+}
+.legend {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+  position: absolute;
+  top: 72%;
+  left: 20%;
+  line-height: 18px;
+  color: wheat;
+  border-radius: 10px;
+  background: rgb(84, 84, 84);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  padding:10px;
+  height: 200px;
+  width:100px;
+  line-height: 18px;
+}
 
+h1 {
+  font-size: 1.8rem;
+  padding: 0 10px;
+}
+
+.red__text {
+  font-weight: bold;
+  color: red;
+}
+.dark-red__text {
+  font-weight: bold;
+  color: darkred;
+}
 
 .charts__diagram { grid-area: charts__diagram; }
 .charts__left { grid-area: charts__left; }
@@ -217,20 +257,22 @@ shape-rendering: crispEdges;
 .countries {
   /* overflow-x: scroll; */
   padding-left: 8px;
+  padding-right: 4px;
   overflow-y: scroll;
-  display: grid;
-  grid-template-columns: 0.2fr 1fr 0.2fr;
-  grid-template-rows: 1.8fr 0.2fr;
-  gap: 0px 0px;
-  grid-template-areas:
-        "countries__table countries__table countries__table"
-        "countries__left countries__input countries__right";
+  display: flex;
+  flex-direction: column;
   grid-area: countries;
 }
+.countries .quantity {
+  font-size: .9rem;
+  font-weight: bold;
+  color: darkred;
+}
 
-hr { 
+hr, hr.line { 
   display: block;
   margin-bottom: 0.5em;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   border-style: inset;
@@ -256,7 +298,13 @@ hr {
  
   grid-area: recoveries;
 }
-.death__header, .recovered__header {
+.smaller {
+  font-size: .7em;
+}
+.country-name {
+  text-align: right;
+}
+.death__header, .recovered__header, .countries__header {
   text-align: center;
   font-size: 1.5rem;
 }
@@ -334,11 +382,6 @@ hr {
 }
 
 /*все для карты*/
-.map {
-  /*display: table;*/
-  /*height: 600px;*/
-  /*width: 600px;*/
-}
 #map {
   height: 100%;
   width: 100%;
@@ -392,7 +435,7 @@ hr {
   margin-left: -.7em;
 }
 .deaths__table, .recov__table{  
-  text-align: center;
+  text-align: left;
 }
 .deaths, .recoveries {
   padding: 10px;
@@ -405,7 +448,12 @@ hr {
   color: red;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 850px) {
+  .legend {
+    left: 5%;
+    top: 45%;
+  }
+
   html {
     height: auto;
   }
@@ -423,12 +471,16 @@ hr {
     order: 1;
   }
   .map {
+    padding-left: 5px;
+    padding-right: 5px;
     order: 3;
-    overflow: visible;
+    position: relative;
+    /* overflow: visible; */
     height: 400px;
   }
   #map {
-    height: 500px;
+    width: 100%;
+    height: 400px;
   }
   .updated {
     text-align: center;
@@ -441,11 +493,14 @@ hr {
     
   }
   .csv__wrapper {
-    height: 400px;
+    height: 300px;
+    min-width: 400px;
+    /* overflow: scroll; */
   }
   .charts {
+    /* overflow: scroll; */
     align-content: center;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     display: flex;
     order: 4;

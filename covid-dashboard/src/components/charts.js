@@ -113,25 +113,27 @@ export function drawChart(country) {
     const currDate = new Date();
     let newCountry = country.toLowerCase();
     json(`https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`).then((data) => {
-    const newData = data.map( d => {
-      return { cases : +d.Cases,
-              date : new Date(d.Date)}
+      const newData = data.map( d => {
+        return { cases : +d.Cases,
+                date : new Date(d.Date)}
+        });
+      render(newData);
       });
-    render(newData);
-  });
-  return ' '
   }
 
-  window.addEventListener('resize', () => { 
-    setTimeout( () => {
-        const charts = document.querySelector('.charts');
-    //   attr('width', charts.offsetWidth - 50) 
-    // .attr('height', charts.offsetHeight - 50);
-      document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
-      document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
-    }, 100)
-    
-  });
+  // window.addEventListener('resize', () => { 
+  //   console.log('resize');
+    // setTimeout( function(){
+    //     const charts = document.querySelector('.charts');
+    //   //   attr('width', charts.offsetWidth - 50) 
+    //   // .attr('height', charts.offsetHeight - 50);
+    //     document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
+    //     document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
+    //     console.log('resize');
+    // }, 100)
+  // });
+
+  return ' ';
 };
 
 export const makeChartsMarkup = (data, filter) => {

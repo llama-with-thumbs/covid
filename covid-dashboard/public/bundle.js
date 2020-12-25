@@ -69069,22 +69069,27 @@ function drawChart(country) {
     const currDate = new Date();
     let newCountry = country.toLowerCase();
     Object(d3__WEBPACK_IMPORTED_MODULE_3__["json"])(`https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`).then((data) => {
-    const newData = data.map( d => {
-      return { cases : +d.Cases,
-              date : new Date(d.Date)}
+      const newData = data.map( d => {
+        return { cases : +d.Cases,
+                date : new Date(d.Date)}
+        });
+      render(newData);
       });
-    render(newData);
-  });
-  return ' '
   }
 
-  window.addEventListener('resize', () => { 
-    const charts = document.querySelector('.charts');
-  //   attr('width', charts.offsetWidth - 50) 
-  // .attr('height', charts.offsetHeight - 50);
-    document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
-    document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
-  });
+  // window.addEventListener('resize', () => { 
+  //   console.log('resize');
+    // setTimeout( function(){
+    //     const charts = document.querySelector('.charts');
+    //   //   attr('width', charts.offsetWidth - 50) 
+    //   // .attr('height', charts.offsetHeight - 50);
+    //     document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
+    //     document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
+    //     console.log('resize');
+    // }, 100)
+  // });
+
+  return ' ';
 };
 
 const makeChartsMarkup = (data, filter) => {
@@ -69135,7 +69140,7 @@ const makeCountryRow = (countryData, filter) => {
   const isActive = countryData.countryCode === filter ? `active` : ``;
   return (
     `<tr class="${trName} ${isActive}">
-      <td class="quantity">${totalCases} (${todayCases} today)</td>
+      <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
       <td class="country-name">${name}</td>
     </tr>`
   );
@@ -69147,8 +69152,8 @@ const makeWorldRow = (data, filter) => {
   const isActive = filter === null ? `active` : ``;
   return (
     `<tr class="c-world ${isActive}">
-      <td class="quantity">${totalCases} (${todayCases} today)</td>
-      <td class="country-name">WHOLE WORLD</td>
+    <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
+    <td class="country-name">WHOLE WORLD</td>
     </tr>`
   );
 };
@@ -69159,7 +69164,8 @@ const makeCountriesTableMarkup = (data, filter) => {
   const world = makeWorldRow(data, filter);
   return (
     `<div class="countries">
-      <h4>Cases by Country / Region / Sovereignty</h4>
+      <h4 class="countries__header">Cases by Country</h4>
+      <hr class="line">
       <table class="countries__table">
         ${world}
         ${rows}
@@ -69586,7 +69592,9 @@ function drawMap(filter) {
     accessToken: 'your.mapbox.access.token'
   }).addTo(mymap);
 
-  let data = null;
+  let dateUpdate = '';
+  let data = null;  
+  let counter = 0;
 
   async function getData() {
     const url = `https://corona.lmao.ninja/v2/countries`;
@@ -69640,6 +69648,10 @@ function drawMap(filter) {
           updatedFormatted = new Date(updated).toLocaleString();
         }
 
+        counter += 1;
+
+        
+
         const html = `
           <span class="icon-marker">
             <span class="icon-marker-tooltip">
@@ -69663,12 +69675,18 @@ function drawMap(filter) {
           riseOnHover: true,
 
         });
-
       }
     });
+
+    
+    const legend = document.querySelector('.legend');
+    legend.innerHTML = `<span>Displayed for cases larger than: 1'000</span>
+    <hr><span>Number of displayed locations:<br>
+    ${counter}</span>`;
+
+
     geoJsonLayers.addTo(mymap);
   }
-
   getData();
 }
 
