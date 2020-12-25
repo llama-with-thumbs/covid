@@ -9,9 +9,11 @@ export const makeRecRow = (countryData) => {
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td>${totalRec} recovered<br>
+      <td>
+      <span class="country__name">${name}</span>
+      ${totalRec} recovered<br>
       (${todayRec} today)<br>
-      ${name}</td>
+      </td>
     </tr>`
   );
 };
@@ -24,8 +26,8 @@ export const makeRecoveriesTableMarkup = (data, filter) => {
   
   return (
     `<div class="recoveries">
-      <p>Global recoveries</p>
-      <h3>${sum}</h3>
+      <h3 class="recovered__header">Recoveries</h3>
+      <hr>
       <table class="recov__table">
         ${rows}
       </table>

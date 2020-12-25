@@ -9,9 +9,10 @@ export const makeDeathRow = (countryData) => {
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td>${totalDeaths} died<br>
-      (${todayDeaths} today)<br>
-      ${name}</td>
+      <td class="country__name">${name}<br>
+      ${totalDeaths} died<br>
+      (${todayDeaths} today)
+      </td>
     </tr>`
   );
 };
@@ -24,8 +25,8 @@ export const makeDeathsTableMarkup = (data, filter) => {
   
   return (
     `<div class="deaths">
-      <p>Global deaths</p>
-      <h3>${sum}</h3>
+    <h3 class="death__header">Deaths</h3>
+    <hr>
       <table class="deaths__table">
         ${rows}
       </table>

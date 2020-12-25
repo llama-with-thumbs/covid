@@ -17,10 +17,9 @@ export const makeGlobalMarkup = (data, filter) => {
   return (
     `<div class="global_cases">
       <h2>${region}</h2>
-      <h4>Global Cases</h4>
-      <h2>${sum}</h2>
-      <h4>New cases for today</h4>
-      <h2>${todaySum}</h2>
+      <h4>Total Cases</h4>
+      <h2 class="global_cases__number">${sum}</h2>
+      <h2 class="global_cases__number>${todaySum.toLocaleString()}</h2>
     </div>`
   );
 };

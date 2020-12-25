@@ -37,6 +37,7 @@
 }
 
 html {
+  font-size: 14px;
   height: 100vh;
   width: 100vw;
   margin: 0;
@@ -109,13 +110,10 @@ font-size: 130%;
 }
 
 .footer {
-display: grid;
-grid-template-columns: 1.4fr 0.6fr 1fr;
-grid-template-rows: 1fr;
-gap: 0px 0px;
-grid-template-areas:
-"footer__git footer__year footer__rss"
-"footer__git footer__year footer__rss";
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+align-items: center;
 grid-area: footer;
 }
 .footer__git {
@@ -129,14 +127,13 @@ padding-left: 5px;
 margin-top: 5px;
 }
 .footer__year {
-grid-area: footer__year;
-margin: 15px auto;
-padding: 0px 5px;
+  display: flex;
+  justify-content: center;
 }
 .footer__rss {
 grid-area: footer__rss;
 display: flex;
-justify-content: flex-end;
+justify-content: center;
 align-items: center;
 }
 .map {
@@ -160,11 +157,13 @@ overflow: hidden;
   background-color: rgb(64, 64, 64);
 }
 .updated {
+  padding-left: 8px;
   grid-area: updated;
   background-color: rgb(64, 64, 64);
   }
 
 .csv__wrapper {
+  font-size: .6rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -217,6 +216,7 @@ shape-rendering: crispEdges;
 .charts__input { grid-area: charts__input; }
 .countries {
   /* overflow-x: scroll; */
+  padding-left: 8px;
   overflow-y: scroll;
   display: grid;
   grid-template-columns: 0.2fr 1fr 0.2fr;
@@ -228,21 +228,23 @@ shape-rendering: crispEdges;
   grid-area: countries;
 }
 
+hr { 
+  display: block;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-color: #292929;
+  border-width: 1px;
+} 
+
 .countries__table { grid-area: countries__table; }
 .countries__input { grid-area: countries__input; }
 .countries__left { grid-area: countries__left; }
 .countries__right { grid-area: countries__right; }
 .deaths {
-  overflow-x: hidden;
   overflow-y: scroll;
-  display: grid;
-    grid-template-columns: 0.2fr 1fr 0.2fr;
-    grid-template-rows: 1.8fr 0.2fr;
-    gap: 0px 0px;
-    grid-template-areas:
-        "deaths__table deaths__table deaths__table"
-        "deaths__left deaths__input deaths__right";
-    grid-area: deaths;
+  grid-area: deaths;
 }
 .deaths__table { grid-area: deaths__table; }
 .deaths__left { grid-area: deaths__left; }
@@ -251,14 +253,12 @@ shape-rendering: crispEdges;
 .recoveries {
   overflow-x: hidden;
   overflow-y: scroll;
-  display: grid;
-    grid-template-columns: 0.2fr 1fr 0.2fr;
-    grid-template-rows: 1.8fr 0.2fr;
-    gap: 0px 0px;
-    grid-template-areas:
-        "recov__table recov__table recov__table"
-        "recov__left recov__input recov__right";
-    grid-area: recoveries;
+ 
+  grid-area: recoveries;
+}
+.death__header, .recovered__header {
+  text-align: center;
+  font-size: 1.5rem;
 }
 .recov__table { grid-area: recov__table; }
 .recov__input { grid-area: recov__input; }
@@ -396,6 +396,13 @@ shape-rendering: crispEdges;
 }
 .deaths, .recoveries {
   padding: 10px;
+}
+.quantity__cases, .global_cases__number{
+  font-weight: bold;
+  color: darkred;
+}
+.global_cases__number{
+  color: red;
 }
 
 @media screen and (max-width: 500px) {

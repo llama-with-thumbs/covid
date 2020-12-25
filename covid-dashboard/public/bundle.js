@@ -69085,7 +69085,7 @@ function drawChart(country) {
   //   attr('width', charts.offsetWidth - 50) 
   // .attr('height', charts.offsetHeight - 50);
     document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
-    document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50)
+    document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
   });
 
   return undefined;
@@ -69129,9 +69129,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-component.js */ "./src/components/abstract-component.js");
 
 
-
 const makeCountryRow = (countryData, filter) => {
-  // console.log('countryData: ',countryData, 'filter: ', filter);
+  
   const name = countryData.country;
   const totalCases = countryData.totalConfirmed;
   const todayCases = countryData.newConfirmed;
@@ -69222,9 +69221,10 @@ const makeDeathRow = (countryData) => {
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td>${totalDeaths} died<br>
-      (${todayDeaths} today)<br>
-      ${name}</td>
+      <td class="country__name">${name}<br>
+      ${totalDeaths} died<br>
+      (${todayDeaths} today)
+      </td>
     </tr>`
   );
 };
@@ -69237,8 +69237,8 @@ const makeDeathsTableMarkup = (data, filter) => {
   
   return (
     `<div class="deaths">
-      <p>Global deaths</p>
-      <h3>${sum}</h3>
+    <h3 class="death__header">Deaths</h3>
+    <hr>
       <table class="deaths__table">
         ${rows}
       </table>
@@ -69302,10 +69302,9 @@ const makeGlobalMarkup = (data, filter) => {
   return (
     `<div class="global_cases">
       <h2>${region}</h2>
-      <h4>Global Cases</h4>
-      <h2>${sum}</h2>
-      <h4>New cases for today</h4>
-      <h2>${todaySum}</h2>
+      <h4>Total Cases</h4>
+      <h2 class="global_cases__number">${sum}</h2>
+      <h2 class="global_cases__number>${todaySum.toLocaleString()}</h2>
     </div>`
   );
 };
@@ -69351,9 +69350,11 @@ const makeRecRow = (countryData) => {
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td>${totalRec} recovered<br>
+      <td>
+      <span class="country__name">${name}</span>
+      ${totalRec} recovered<br>
       (${todayRec} today)<br>
-      ${name}</td>
+      </td>
     </tr>`
   );
 };
@@ -69366,8 +69367,8 @@ const makeRecoveriesTableMarkup = (data, filter) => {
   
   return (
     `<div class="recoveries">
-      <p>Global recoveries</p>
-      <h3>${sum}</h3>
+      <h3 class="recovered__header">Recoveries</h3>
+      <hr>
       <table class="recov__table">
         ${rows}
       </table>
@@ -69578,7 +69579,7 @@ let mymap = L.map('map');
 
 function drawMap(filter) {
 
-  mymap.setView([0, 0], 3);
+  mymap.setView([50, 10], 5);
   
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmFkaW5la2hpcyIsImEiOiJja2loZGticTMwNzJxMnltbGRsdzRqZmw0In0.E8fOw826aYb03PGElEtyYQ', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -69738,88 +69739,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const END_POINT = `https://api.covid19api.com`;
 const main = document.querySelector('#main');
-
-/*
-
-const mockRaw =
-{
-  "Global": {
-    "NewConfirmed": 100282,
-    "TotalConfirmed": 1162857,
-    "NewDeaths": 5658,
-    "TotalDeaths": 63263,
-    "NewRecovered": 15405,
-    "TotalRecovered": 230845
-  },
-  "Countries": [
-    {
-      "Country": "ALA Aland Islands",
-      "CountryCode": "AX",
-      "Slug": "ala-aland-islands",
-      "NewConfirmed": 0,
-      "TotalConfirmed": 0,
-      "NewDeaths": 0,
-      "TotalDeaths": 0,
-      "NewRecovered": 0,
-      "TotalRecovered": 0,
-      "Date": "2020-04-05T06:37:00Z"
-    },
-    {
-      "Country": "Zimbabwe",
-      "CountryCode": "ZW",
-      "Slug": "zimbabwe",
-      "NewConfirmed": 0,
-      "TotalConfirmed": 9,
-      "NewDeaths": 0,
-      "TotalDeaths": 1,
-      "NewRecovered": 0,
-      "TotalRecovered": 0,
-      "Date": "2020-04-05T06:37:00Z"
-    }
-  ],
-"Date": "2020-04-05T06:37:00Z"
-};
-
-const mock =
-{
-  global: {
-    newConfirmed: 100282,
-    totalConfirmed: 1162857,
-    newDeaths: 5658,
-    totalDeaths: 63263,
-    newRecovered: 15405,
-    totalRecovered: 230845
-  },
-  countries: [
-    {
-      country: 'ALA Aland Islands',
-      countryCode: 'AX',
-      slug: 'ala-aland-islands',
-      newConfirmed: 12,
-      totalConfirmed: 4254,
-      newDeaths: 54,
-      totalDeaths: 58,
-      newRecovered: 32,
-      totalRecovered: 454,
-      date: '2020-04-05T06:37:00Z'
-    },
-    {
-      country: 'Zimbabwe',
-      countryCode: 'ZW',
-      slug: 'zimbabwe',
-      newConfirmed: 65,
-      totalConfirmed: 99,
-      newDeaths: 2,
-      totalDeaths: 32,
-      newRecovered: 2,
-      totalRecovered: 16,
-      date: '2020-04-05T06:37:00Z'
-    }
-  ],
-date: '2020-04-05T06:37:00Z'
-};
-
-*/
 
 const covidModel = new _models_covid_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
