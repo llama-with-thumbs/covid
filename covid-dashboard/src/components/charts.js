@@ -123,11 +123,14 @@ export function drawChart(country) {
   }
 
   window.addEventListener('resize', () => { 
-    const charts = document.querySelector('.charts');
-  //   attr('width', charts.offsetWidth - 50) 
-  // .attr('height', charts.offsetHeight - 50);
-    document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
-    document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
+    setTimeout( () => {
+        const charts = document.querySelector('.charts');
+    //   attr('width', charts.offsetWidth - 50) 
+    // .attr('height', charts.offsetHeight - 50);
+      document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
+      document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
+    }, 100)
+    
   });
 };
 
