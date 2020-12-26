@@ -2,6 +2,7 @@ import AbstractComponent from './abstract-component.js';
 import {filterById} from '../utils.js';
 
 export const makeGlobalMarkup = (data, filter) => { 
+  
   let sum = 0;
   let todaySum = 0;
   let region = 'WHOLE WORLD';

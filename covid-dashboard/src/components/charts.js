@@ -93,11 +93,18 @@ export function drawChart(country) {
           event.stopPropagation();
       });
       rect.on('mouseover', function() {
+
+        const chartNote = document.createElement('div');
+        chartNote.classList.add('chart__note');
+        chartNote.innerHTML = this.firstChild.innerHTML;
+        document.querySelector('.charts').appendChild(chartNote);
+
           select(this).style('fill', '#676767');
           
       });
       rect.on('mouseleave', function() {
           select(this).style('fill', 'steelblue');
+          document.querySelector('.chart__note').remove();
       });
   };
 
@@ -120,18 +127,6 @@ export function drawChart(country) {
       render(newData);
       });
   }
-
-  // window.addEventListener('resize', () => { 
-  //   console.log('resize');
-    // setTimeout( function(){
-    //     const charts = document.querySelector('.charts');
-    //   //   attr('width', charts.offsetWidth - 50) 
-    //   // .attr('height', charts.offsetHeight - 50);
-    //     document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
-    //     document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
-    //     console.log('resize');
-    // }, 100)
-  // });
 
   return ' ';
 };

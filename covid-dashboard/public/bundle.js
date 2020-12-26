@@ -69049,11 +69049,18 @@ function drawChart(country) {
           event.stopPropagation();
       });
       rect.on('mouseover', function() {
+
+        const chartNote = document.createElement('div');
+        chartNote.classList.add('chart__note');
+        chartNote.innerHTML = this.firstChild.innerHTML;
+        document.querySelector('.charts').appendChild(chartNote);
+
           Object(d3__WEBPACK_IMPORTED_MODULE_3__["select"])(this).style('fill', '#676767');
           
       });
       rect.on('mouseleave', function() {
           Object(d3__WEBPACK_IMPORTED_MODULE_3__["select"])(this).style('fill', 'steelblue');
+          document.querySelector('.chart__note').remove();
       });
   };
 
@@ -69076,18 +69083,6 @@ function drawChart(country) {
       render(newData);
       });
   }
-
-  // window.addEventListener('resize', () => { 
-  //   console.log('resize');
-    // setTimeout( function(){
-    //     const charts = document.querySelector('.charts');
-    //   //   attr('width', charts.offsetWidth - 50) 
-    //   // .attr('height', charts.offsetHeight - 50);
-    //     document.querySelector('svg').setAttribute('width', charts.offsetWidth - 50);
-    //     document.querySelector('svg').setAttribute('height', charts.offsetHeight - 50);
-    //     console.log('resize');
-    // }, 100)
-  // });
 
   return ' ';
 };
@@ -69132,7 +69127,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const makeCountryRow = (countryData, filter) => {
   
-  const name = countryData.country;
+    const name = countryData.country;
   const totalCases = countryData.totalConfirmed;
   const todayCases = countryData.newConfirmed;
   const id = countryData.countryCode.toLowerCase();
@@ -69141,7 +69136,8 @@ const makeCountryRow = (countryData, filter) => {
   return (
     `<tr class="${trName} ${isActive}">
       <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
-      <td class="country-name">${name}</td>
+      <td class="country-name">${name}
+      <img class="county-flag" src="https://www.countryflags.io/${countryData.countryCode}/flat/24.png" height="20" width="20" alt="flag"></td>
     </tr>`
   );
 };
@@ -69289,6 +69285,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const makeGlobalMarkup = (data, filter) => { 
+  
   let sum = 0;
   let todaySum = 0;
   let region = 'WHOLE WORLD';
@@ -69525,6 +69522,9 @@ class CountriesController {
     }
     if (evt.target.classList.contains('deaths') || evt.target.classList.contains('recoveries') || evt.target.classList.contains('countries')) {
       return;
+    }
+    if (evt.target.classList.contains('county-flag') || evt.target.nodeName === 'TR'){
+      return;
     } else {
       const chosenCountry = parent.classList[0].slice(2);
       const newFilter = chosenCountry === 'world' ? null : chosenCountry.toUpperCase();
@@ -69678,9 +69678,8 @@ function drawMap(filter) {
       }
     });
 
-    
     const legend = document.querySelector('.legend');
-    legend.innerHTML = `<span>Displayed for cases larger than: 1'000</span>
+    legend.innerHTML = `<span>Displayed for cases larger than:<br> 1'000</span>
     <hr><span>Number of displayed locations:<br>
     ${counter}</span>`;
 

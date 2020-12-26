@@ -172,12 +172,22 @@ overflow: hidden;
   justify-content: center;
   align-items: center;
 }
+.chart__note {
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  font-weight: bold;
+  padding: 4px 8px;
+  background-color: wheat;
+  color: #292929;
+  margin: 15%;
+  position: absolute;
+}
 .charts {
   /* overflow-x: scroll;
   overflow-y: scroll; */
   overflow: hidden;
   display: grid;
   grid-area: charts;
+  position: relative;
 }
 tr {
   cursor: pointer;
@@ -268,7 +278,11 @@ h1 {
   font-weight: bold;
   color: darkred;
 }
-
+.county-flag-cell {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
 hr, hr.line { 
   display: block;
   margin-bottom: 0.5em;
@@ -279,6 +293,12 @@ hr, hr.line {
   border-color: #292929;
   border-width: 1px;
 } 
+hr.light__line {
+  border-color: #444444;
+  margin: 0;
+  text-align: right;
+  width: 100%;
+}
 
 .countries__table { grid-area: countries__table; }
 .countries__input { grid-area: countries__input; }
@@ -301,8 +321,19 @@ hr, hr.line {
 .smaller {
   font-size: .7em;
 }
+.countries__table tr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .country-name {
-  text-align: right;
+  display: flex;
+  justify-self: flex-end;
+  justify-content: flex-end;
+  align-items: center;
+}
+.county-flag {
+  margin-left: 5px;
 }
 .death__header, .recovered__header, .countries__header {
   text-align: center;

@@ -99,9 +99,8 @@ export default function drawMap(filter) {
       }
     });
 
-    
     const legend = document.querySelector('.legend');
-    legend.innerHTML = `<span>Displayed for cases larger than: 1'000</span>
+    legend.innerHTML = `<span>Displayed for cases larger than:<br> 1'000</span>
     <hr><span>Number of displayed locations:<br>
     ${counter}</span>`;
 

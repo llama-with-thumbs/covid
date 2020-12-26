@@ -2,7 +2,7 @@ import AbstractComponent from './abstract-component.js';
 
 export const makeCountryRow = (countryData, filter) => {
   
-  const name = countryData.country;
+    const name = countryData.country;
   const totalCases = countryData.totalConfirmed;
   const todayCases = countryData.newConfirmed;
   const id = countryData.countryCode.toLowerCase();
@@ -11,7 +11,8 @@ export const makeCountryRow = (countryData, filter) => {
   return (
     `<tr class="${trName} ${isActive}">
       <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
-      <td class="country-name">${name}</td>
+      <td class="country-name">${name}
+      <img class="county-flag" src="https://www.countryflags.io/${countryData.countryCode}/flat/24.png" height="20" width="20" alt="flag"></td>
     </tr>`
   );
 };

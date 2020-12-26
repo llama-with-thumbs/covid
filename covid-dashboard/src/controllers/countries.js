@@ -61,6 +61,9 @@ export default class CountriesController {
     }
     if (evt.target.classList.contains('deaths') || evt.target.classList.contains('recoveries') || evt.target.classList.contains('countries')) {
       return;
+    }
+    if (evt.target.classList.contains('county-flag') || evt.target.nodeName === 'TR'){
+      return;
     } else {
       const chosenCountry = parent.classList[0].slice(2);
       const newFilter = chosenCountry === 'world' ? null : chosenCountry.toUpperCase();
