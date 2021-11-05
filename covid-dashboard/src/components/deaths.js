@@ -3,8 +3,8 @@ import {filterById} from '../utils.js';
 
 export const makeDeathRow = (countryData) => {
   const name = countryData.country;
-  const todayDeaths = countryData.newDeaths;
-  const totalDeaths = countryData.totalDeaths;
+  const todayDeaths = countryData.newDeaths.toLocaleString();
+  const totalDeaths = countryData.totalDeaths.toLocaleString();
   const id = countryData.countryCode;
   const trName = `c-${id}`;
   return (

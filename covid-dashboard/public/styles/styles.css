@@ -10,7 +10,7 @@
 	margin: 0;
   box-sizing: border-box;
 
-  color: wheat;
+  color: rgb(216, 216, 216);
 }
 
 *:focus
@@ -73,7 +73,7 @@ body {
   grid-template-areas:
     "header header header header"
     "global_cases map deaths recoveries"
-    "countries map deaths recoveries"
+    "countries map charts charts"
     "countries map charts charts"
     "updated footer charts charts";
 
@@ -182,13 +182,24 @@ overflow: hidden;
   position: absolute;
 }
 .charts {
-  /* overflow-x: scroll;
-  overflow-y: scroll; */
-  overflow: hidden;
-  display: grid;
+  font-size: 10px;
   grid-area: charts;
-  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
+.sum-chart, .daily-chart{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  width: 100%;
+  min-height: 250px;
+}
+
 tr {
   cursor: pointer;
 }
@@ -257,7 +268,7 @@ h1 {
 }
 .dark-red__text {
   font-weight: bold;
-  color: darkred;
+  color: red;
 }
 
 .charts__diagram { grid-area: charts__diagram; }
@@ -275,8 +286,8 @@ h1 {
 }
 .countries .quantity {
   font-size: .9rem;
-  font-weight: bold;
-  color: darkred;
+  font-weight: normal;
+  color: red;
 }
 .county-flag-cell {
   display: flex;

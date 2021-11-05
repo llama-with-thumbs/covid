@@ -1,21 +1,23 @@
-export let mymap = L.map('map');
+export let mymap = L.map("map");
 
 export default function drawMap(filter) {
-
   mymap.setView([50, 10], 5);
-  
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmFkaW5la2hpcyIsImEiOiJja2loZGticTMwNzJxMnltbGRsdzRqZmw0In0.E8fOw826aYb03PGElEtyYQ', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'your.mapbox.access.token'
-  }).addTo(mymap);
 
-  let dateUpdate = '';
-  let data = null;  
-  let counter = 0;
+  L.tileLayer(
+    "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmFkaW5la2hpcyIsImEiOiJja2loZGticTMwNzJxMnltbGRsdzRqZmw0In0.E8fOw826aYb03PGElEtyYQ",
+    {
+      attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: "mapbox/streets-v11",
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: "your.mapbox.access.token",
+    }
+  ).addTo(mymap);
+
+  let dateUpdate = "";
+  let data = null;
 
   async function getData() {
     const url = `https://corona.lmao.ninja/v2/countries`;
@@ -27,83 +29,44 @@ export default function drawMap(filter) {
     if (!hasData) return;
 
     const geoJson = {
-
-      type: 'FeatureCollection',
+      type: "FeatureCollection",
       features: data.map((country = {}) => {
-        const {countryInfo = {}} = country;
-        const {lat, long: lng} = countryInfo;
+        const { countryInfo = {} } = country;
+        const { lat, long: lng } = countryInfo;
+
+        var km = Math.log2(country.cases) * 2 + country.cases / 30000;
+        var points = 64;
+        var coords = {
+          latitude: lat,
+          longitude: lng,
+        };
+        var ret = [];
+        var distanceX =
+          km / (111.32 * Math.cos((coords.latitude * Math.PI) / 180));
+        var distanceY = km / 110.574;
+        var theta, x, y;
+        for (var i = 0; i < points; i++) {
+          theta = (i / points) * (2 * Math.PI);
+          x = distanceX * Math.cos(theta);
+          y = distanceY * Math.sin(theta);
+          ret.push([coords.longitude + x, coords.latitude + y]);
+        }
+        ret.push(ret[0]);
+
         return {
-          type: 'Feature',
+          type: "Feature",
           properties: {
             ...country,
           },
           geometry: {
-            type: 'Point',
-            coordinates: [lng, lat]
-          }
-        }
-      })
-    }
+            type: "Polygon",
+            coordinates: [ret],
+          },
+        };
+      }),
+    };
 
-    const geoJsonLayers = new L.GeoJSON(geoJson, {
-      pointToLayer: (feature = {}, latlng) => {
-        const {properties = {}} = feature;
-        let updatedFormatted;
-        let casesString;
-
-        const {
-          country,
-          updated,
-          cases,
-          deaths,
-          recovered
-        } = properties
-
-        casesString = `${cases}`;
-
-        if (cases > 1000) {
-          casesString = `${casesString.slice(0, -3)}k+`
-        }
-
-        if (updated) {
-          updatedFormatted = new Date(updated).toLocaleString();
-        }
-
-        counter += 1;
-
-        
-
-        const html = `
-          <span class="icon-marker">
-            <span class="icon-marker-tooltip">
-              <h2>${country}</h2>
-              <ul>
-                <li><strong>Confirmed:</strong> ${cases}</li>
-                <li><strong>Deaths:</strong> ${deaths}</li>
-                <li><strong>Recovered:</strong> ${recovered}</li>
-                <li><strong>Last Update:</strong> ${updatedFormatted}</li>
-              </ul>
-            </span>
-            ${casesString}
-          </span>
-        `;
-
-        return new L.marker(latlng, {
-          icon: L.divIcon({
-            className: 'icon',
-            html
-          }),
-          riseOnHover: true,
-
-        });
-      }
-    });
-
-    const legend = document.querySelector('.legend');
-    legend.innerHTML = `<span>Displayed for cases larger than:<br> 1'000</span>
-    <hr><span>Number of displayed locations:<br>
-    ${counter}</span>`;
-
+    const geoJsonLayers = new L.GeoJSON(geoJson);
 
     geoJsonLayers.addTo(mymap);
   }

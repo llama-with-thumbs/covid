@@ -3,8 +3,8 @@ import AbstractComponent from './abstract-component.js';
 export const makeCountryRow = (countryData, filter) => {
   
     const name = countryData.country;
-  const totalCases = countryData.totalConfirmed;
-  const todayCases = countryData.newConfirmed;
+  const totalCases = countryData.totalConfirmed.toLocaleString();
+  const todayCases = countryData.newConfirmed.toLocaleString();
   const id = countryData.countryCode.toLowerCase();
   const trName = `c-${id}`;
   const isActive = countryData.countryCode === filter ? `active` : ``;
@@ -12,14 +12,14 @@ export const makeCountryRow = (countryData, filter) => {
     `<tr class="${trName} ${isActive}">
       <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
       <td class="country-name">${name}
-      <img class="county-flag" src="https://www.countryflags.io/${countryData.countryCode}/flat/24.png" height="20" width="20" alt="flag"></td>
+      <img src="https://www.countryflagicons.com/FLAT/24/${countryData.countryCode}.png" height="20" width="20" alt="flag">
     </tr>`
   );
 };
 
 export const makeWorldRow = (data, filter) => {
-  const totalCases = data.global.totalConfirmed;
-  const todayCases = data.global.newConfirmed;
+  const totalCases = data.global.totalConfirmed.toLocaleString();
+  const todayCases = data.global.newConfirmed.toLocaleString();
   const isActive = filter === null ? `active` : ``;
   return (
     `<tr class="c-world ${isActive}">

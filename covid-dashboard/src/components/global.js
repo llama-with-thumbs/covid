@@ -3,24 +3,25 @@ import {filterById} from '../utils.js';
 
 export const makeGlobalMarkup = (data, filter) => { 
   
+  console.log(data);
   let sum = 0;
   let todaySum = 0;
   let region = 'WHOLE WORLD';
   if (filter === null) {
     sum = data.global.totalConfirmed;
-    todaySum = data.global.newConfirmed;
+    todaySum = data.global.newConfirmed.toLocaleString();
   } else {
     const countryData = filterById(data, filter);
     sum = countryData.countries[0].totalConfirmed;
-    todaySum = countryData.countries[0].newConfirmed;
+    todaySum = countryData.countries[0].newConfirmed.toLocaleString();
     region = countryData.countries[0].country;
   }
   return (
     `<div class="global_cases">
       <h2>${region}</h2>
       <h4>Total Cases</h4>
-      <h2 class="global_cases__number">${sum}</h2>
-      <h2 class="global_cases__number>${todaySum.toLocaleString()}</h2>
+      <h2 class="global_cases__number">${sum.toLocaleString()}</h2>
+      <h2 class="global_cases__number>${todaySum}</h2>
     </div>`
   );
 };

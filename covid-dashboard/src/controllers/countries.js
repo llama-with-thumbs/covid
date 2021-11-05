@@ -3,8 +3,8 @@ import CountriesComponent from '../components/countries.js';
 import DeathsComponent from '../components/deaths.js';
 import RecoveriesComponent from '../components/recoveries.js';
 import GlobalComponent from '../components/global.js';
-import drawChart from '../components/charts.js';
-import ChartsComponent from '../components/charts.js';
+import ChartComponent from '../components/chart/chart-component.js';
+
 export default class CountriesController {
 
   constructor(container, model, filter = null) {
@@ -15,9 +15,8 @@ export default class CountriesController {
     this._deaths = null;
     this._recoveries = null;
     this._global = null;
-    this._charts = null;
+    this._chart = null;
   }
-
   render() {
     const data = this._model.getData();
 
@@ -25,7 +24,7 @@ export default class CountriesController {
     this._countries = new CountriesComponent(data, this._filter);
     this._deaths = new DeathsComponent(data, this._filter);
     this._recoveries = new RecoveriesComponent(data, this._filter);
-    this._charts = new ChartsComponent(data, this._filter);
+    this._chart = new ChartComponent(data, this._filter);
 
     this._countries.setClickHandler((evt) => {
       this.countriesClickHandler(evt, data);
@@ -76,12 +75,12 @@ export default class CountriesController {
     const newDeaths = new DeathsComponent(data, this._filter);
     const newRecoveries = new RecoveriesComponent(data, this._filter);
     const newGlobal = new GlobalComponent(data, this._filter);
-    const newCharts = new ChartsComponent(data, this._filter);
+    const chart = new ChartComponent(data, this._filter);
     this._countries = newCountries;
     this._deaths = newDeaths;
     this._recoveries = newRecoveries;
     this._global = newGlobal;
-    this._charts = newCharts;
+    this._chart = chart;
   }
 
   removeLists() {
@@ -89,7 +88,7 @@ export default class CountriesController {
     remove(this._deaths);
     remove(this._recoveries);
     remove(this._global);
-    remove(this._charts);
+    remove(this._chart);
   }
 
   renderLists() {
@@ -97,7 +96,7 @@ export default class CountriesController {
     render(this._container, this._deaths, RenderPosition.BEFOREEND);
     render(this._container, this._recoveries, RenderPosition.BEFOREEND);
     render(this._container, this._global, RenderPosition.BEFOREEND);
-    render(this._container, this._charts, RenderPosition.BEFOREEND);
+    render(this._container, this._chart, RenderPosition.BEFOREEND);
   }
 
 }
