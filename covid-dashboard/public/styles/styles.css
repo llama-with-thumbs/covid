@@ -459,13 +459,18 @@ hr.light__line {
   justify-content: center;
   align-items: center;
   color: white;
-  width: 3.6em;
-  height: 3.6em;
+  width: 4em;
+  height: 4em;
   font-size: .7em;
   font-weight: bold;
-  background-color: darkred;
+  background-color: steelblue;
   border-radius: 100%;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, .9);
+  /* box-shadow: 0 2px 5px rgba(255, 255, 255, .9); */
+}
+.leaflet-interactive {
+  stroke-opacity: 0;
+  fill: red;
+  fill-opacity: 0.3;
 }
 
 .icon-marker:hover .icon-marker-tooltip {

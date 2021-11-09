@@ -33,6 +33,25 @@ export default function drawMap(filter) {
         const { countryInfo = {} } = country;
         const { lat, long: lng } = countryInfo;
 
+        return {
+          type: "Feature",
+          properties: {
+            ...country,
+          },
+          geometry: {
+            type: "Point",
+            coordinates: [lng, lat],
+          },
+        };
+      }),
+    };
+
+    const geoJsonSecondLayer = {
+      type: "FeatureCollection",
+      features: data.map((country = {}) => {
+        const { countryInfo = {} } = country;
+        const { lat, long: lng } = countryInfo;
+
         var km = Math.log2(country.cases) * 2 + country.cases / 30000;
         var points = 64;
         var coords = {
@@ -60,14 +79,57 @@ export default function drawMap(filter) {
           geometry: {
             type: "Polygon",
             coordinates: [ret],
+            stroke: "red"
           },
+          
         };
       }),
     };
 
-    const geoJsonLayers = new L.GeoJSON(geoJson);
+    const geoJsonLayerOne = new L.GeoJSON(geoJson, {
+      pointToLayer: (feature = {}, latlng) => {
+        const { properties = {} } = feature;
+        let updatedFormatted;
+        let casesString;
 
-    geoJsonLayers.addTo(mymap);
+        const { country, updated, cases, deaths, recovered } = properties;
+
+        casesString = `${cases}`;
+
+        if (cases > 1000) {
+          casesString = `${casesString.slice(0, -3)}k+`;
+        }
+
+        if (updated) {
+          updatedFormatted = new Date(updated).toLocaleString();
+        }
+
+        const html = `
+          <span class="icon-marker">
+            <span class="icon-marker-tooltip">
+              <h2>${country}</h2>
+              <ul>
+                <li><strong>Confirmed cases:</strong> ${cases.toLocaleString()}</li>
+                <li><strong>Deaths:</strong> ${deaths.toLocaleString()}</li>
+              </ul>
+            </span>
+            ${casesString}
+          </span>
+        `;
+        return new L.marker(latlng, {
+          icon: L.divIcon({
+            className: "icon",
+            html,
+          }),
+          riseOnHover: true,
+        });
+      },
+    });
+
+    const geoJsonLayerTwo = new L.GeoJSON(geoJsonSecondLayer);
+
+    geoJsonLayerTwo.addTo(mymap);
+    geoJsonLayerOne.addTo(mymap);
   }
   getData();
 }
