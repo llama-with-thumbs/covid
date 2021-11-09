@@ -31166,13 +31166,12 @@ class AbstractComponent {
 /*!*************************************************!*\
   !*** ./src/components/chart/chart-component.js ***!
   \*************************************************/
-/*! exports provided: getCountryName, drawChart, makeChartsMarkup, default */
+/*! exports provided: getCountryName, makeChartsMarkup, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCountryName", function() { return getCountryName; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "drawChart", function() { return drawChart; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makeChartsMarkup", function() { return makeChartsMarkup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Charts; });
 /* harmony import */ var _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../abstract-component.js */ "./src/components/abstract-component.js");
@@ -31185,10 +31184,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Chart = (countyName) => {
+  
   Object(_daily_chart_daily_chart_js__WEBPACK_IMPORTED_MODULE_2__["default"])(countyName);
   Object(_sum_chart_sum_chart_js__WEBPACK_IMPORTED_MODULE_3__["default"])(countyName);
   return " ";
 };
+
+
 
 const getCountryName = (data, filter) => {
   const dataFiltered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["filterById"])(data, filter);
@@ -31196,123 +31198,6 @@ const getCountryName = (data, filter) => {
   const name = countryData.country;
   return name;
 };
-
-function drawChart(country) {
-  // const mymap = L.map('map').setView([0, 0], 2);
-  // console.log(mymap);
-
-  //clean section charts
-  const charts = document.querySelector(".chart");
-  charts.innerHTML = "";
-  const chartWrapper = document.createElement("div");
-  chartWrapper.classList.add("csv__wrapper");
-  charts.appendChild(chartWrapper);
-
-  //size of .charts
-
-  const svg = select(".csv__wrapper")
-    .append("svg")
-    .attr("width", charts.offsetWidth - 50)
-    .attr("height", charts.offsetHeight - 50);
-
-  const width = +svg.attr("width");
-  const height = +svg.attr("height");
-
-  const render = (data) => {
-    const xValue = (d) => d.date;
-    const yValue = (d) => d.cases;
-    const margin = { top: 20, right: 20, bottom: 20, left: 40 };
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
-
-    const g = svg
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const yScale = scaleLinear()
-      .domain([0, max(data, yValue)])
-      .range([innerHeight, 0]);
-
-    const yAxisTickFormat = (d) => format(".2s")(d);
-
-    const xScale = scaleBand()
-      .domain(data.map(xValue))
-      .range([0, innerWidth])
-      .padding(0.1);
-
-    const xAxis = axisBottom(xScale)
-      .tickSize(-innerHeight)
-      .tickFormat(timeFormat("%b"))
-      .tickValues(xScale.domain().filter((d, i) => !(i % 50)));
-
-    const yAxis = axisLeft(yScale)
-      .tickFormat(yAxisTickFormat)
-      .tickSize(-innerWidth);
-
-    g.append("g").attr("class", "y axis").call(yAxis);
-    g.append("g")
-      .attr("class", "x axis")
-      .call(xAxis)
-      .attr("transform", `translate(0,${innerHeight})`);
-
-    const rect = g
-      .append("g")
-      .selectAll("rect")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("x", (d) => xScale(xValue(d)))
-      .attr("height", (d) => innerHeight - yScale(yValue(d)))
-      .attr("width", xScale.bandwidth())
-      .attr("y", (d) => yScale(yValue(d)));
-
-    rect
-      .append("svg:title")
-      .text(
-        (d) =>
-          `${d.date.toLocaleDateString("en-US")} : ${format(".3s")(d.cases)}`
-      );
-
-    rect.on("click", function () {
-      event.stopPropagation();
-    });
-    rect.on("mouseover", function () {
-      const chartNote = document.createElement("div");
-      chartNote.classList.add("chart__note");
-      chartNote.innerHTML = this.firstChild.innerHTML;
-      document.querySelector(".cumulative-chart").appendChild(chartNote);
-
-      select(this).style("fill", "#676767");
-    });
-    rect.on("mouseleave", function () {
-      select(this).style("fill", "steelblue");
-      document.querySelector(".chart__note").remove();
-    });
-  };
-
-  if (country === undefined) {
-    csv("./public/assets/covid-data.csv").then((data) => {
-      data.forEach((d) => {
-        d.cases = +d.cases;
-        d.date = new Date(d.date);
-      });
-      render(data);
-    });
-  } else {
-    const currDate = new Date();
-    let newCountry = country.toLowerCase();
-    json(
-      `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
-    ).then((data) => {
-      const newData = data.map((d) => {
-        return { cases: +d.Cases, date: new Date(d.Date) };
-      });
-      render(newData);
-    });
-  }
-
-  return " ";
-}
 
 const makeChartsMarkup = (data, filter) => {
   const name = getCountryName(data, filter);
@@ -31355,6 +31240,12 @@ function dailyChart(country) {
   //clean section charts
   const charts = document.querySelector(".daily-chart");
   charts.innerHTML = "";
+  if (document.querySelectorAll("daily-chart-title").length === 0) {
+    const dailyChartTitle = document.createElement("div");
+    dailyChartTitle.classList.add("daily-chart-title");
+    dailyChartTitle.innerHTML = "Daily count of cases";
+    charts.appendChild(dailyChartTitle);
+  }
   const chartWrapper = document.createElement("div");
   chartWrapper.classList.add("daily-chart-csv__wrapper");
   charts.appendChild(chartWrapper);
@@ -31363,7 +31254,7 @@ function dailyChart(country) {
 
   const svg = Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(".daily-chart-csv__wrapper")
     .append("svg")
-    .attr("width", charts.offsetWidth - 50)
+    .attr("width", charts.offsetWidth)
     .attr("height", charts.offsetHeight - 50);
 
   const width = +svg.attr("width");
@@ -31372,7 +31263,7 @@ function dailyChart(country) {
   const render = (data) => {
     const xValue = (d) => d.date;
     const yValue = (d) => d.cases;
-    const margin = { top: 20, right: 20, bottom: 20, left: 40 };
+    const margin = { top: 20, right: 0, bottom: 20, left: 30 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -31486,12 +31377,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function sumChart(country) {
-  // const mymap = L.map('map').setView([0, 0], 2);
-  // console.log(mymap);
+
+  // const chartsComponent = document.querySelector(".charts");
+  // if (document.querySelectorAll("charts-title").length === 0) {
+  //   const chartTitle = document.createElement("div");
+  //   chartTitle.classList.add("charts-title");
+  //   chartTitle.innerHTML = `Country: ${country}`;
+  //   chartsComponent.appendChild(chartTitle);
+  // } else {
+  //   chartsComponent.removeChild(document.querySelector(".charts-title"));
+  //   chartTitle.innerHTML = `Country: ${country}`;
+  // }
 
   //clean section charts
   const charts = document.querySelector(".sum-chart");
   charts.innerHTML = "";
+  if (document.querySelectorAll("sum-chart-title").length === 0) {
+    const sumChartTitle = document.createElement("div");
+    sumChartTitle.classList.add("sum-chart-title");
+    sumChartTitle.innerHTML = "Cumulative sum of cases";
+    charts.appendChild(sumChartTitle);
+  }
   const chartWrapper = document.createElement("div");
   chartWrapper.classList.add("sum-chart-csv__wrapper");
   charts.appendChild(chartWrapper);
@@ -31500,7 +31406,7 @@ function sumChart(country) {
 
   const svg = Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(".sum-chart-csv__wrapper")
     .append("svg")
-    .attr("width", charts.offsetWidth - 50)
+    .attr("width", charts.offsetWidth)
     .attr("height", charts.offsetHeight - 50);
 
   const width = +svg.attr("width");
@@ -31509,7 +31415,7 @@ function sumChart(country) {
   const render = (data) => {
     const xValue = (d) => d.date;
     const yValue = (d) => d.cases;
-    const margin = { top: 20, right: 20, bottom: 20, left: 40 };
+    const margin = { top: 20, right: 0, bottom: 20, left: 30 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -31631,9 +31537,9 @@ const makeCountryRow = (countryData, filter) => {
   const isActive = countryData.countryCode === filter ? `active` : ``;
   return (
     `<tr class="${trName} ${isActive}">
-      <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
+      <td class="quantity">${totalCases}<br><span class="smaller red">(${todayCases} today)</span></td>
       <td class="country-name">${name}
-      <img src="https://www.countryflagicons.com/FLAT/24/${countryData.countryCode}.png" height="20" width="20" alt="flag">
+      <img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryData.countryCode}.png" height="20" width="20" alt="flag">
     </tr>`
   );
 };
@@ -31715,8 +31621,7 @@ const makeDeathRow = (countryData) => {
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td class="country__name">${name}<br>
-      ${totalDeaths} died<br>
+      <td class="country__name">${name}: ${totalDeaths} died<br>
       (${todayDeaths} today)
       </td>
     </tr>`
@@ -31919,7 +31824,7 @@ const makeUpdatedMarkup = (date) => {
   const formattedDate = `${month}/${day}/${year} ${hours}:${minutes}`;
   return (
     `<div class="updated">
-      <p>Last updated at</p>
+      <p>Last data release:</p>
       <h4>${formattedDate}</h4>
     </div>`
   );
@@ -32091,7 +31996,6 @@ function drawMap(filter) {
     }
   ).addTo(mymap);
 
-  let dateUpdate = "";
   let data = null;
 
   async function getData() {
