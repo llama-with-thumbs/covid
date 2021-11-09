@@ -32032,7 +32032,7 @@ function drawMap(filter) {
         const { countryInfo = {} } = country;
         const { lat, long: lng } = countryInfo;
 
-        var km = Math.log2(country.cases) * 2 + country.cases / 30000;
+        var km = Math.log2(country.cases) * 2 + country.cases / 20000;
         var points = 64;
         var coords = {
           latitude: lat,
@@ -32059,9 +32059,8 @@ function drawMap(filter) {
           geometry: {
             type: "Polygon",
             coordinates: [ret],
-            stroke: "red"
+            stroke: "red",
           },
-          
         };
       }),
     };
@@ -32072,7 +32071,10 @@ function drawMap(filter) {
         let updatedFormatted;
         let casesString;
 
+        
         const { country, updated, cases, deaths, recovered } = properties;
+        
+        const logCases = Math.log2(cases) * 2 + cases / 100000;
 
         casesString = `${cases}`;
 
@@ -32083,9 +32085,13 @@ function drawMap(filter) {
         if (updated) {
           updatedFormatted = new Date(updated).toLocaleString();
         }
+        
 
         const html = `
-          <span class="icon-marker">
+          <span class="icon-marker" style="
+          width: ${logCases}px;
+          height: ${logCases}px;
+          transform: translate(-50%, -50%);">
             <span class="icon-marker-tooltip">
               <h2>${country}</h2>
               <ul>
