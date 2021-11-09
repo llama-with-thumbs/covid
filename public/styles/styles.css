@@ -179,6 +179,8 @@ overflow: hidden;
   background-color: wheat;
   color: #292929;
   margin: 15%;
+  text-align: center;
+  width: 120px;
   position: absolute;
 }
 .charts {
@@ -487,7 +489,6 @@ hr.light__line {
   background-color: #292929;
   border-radius: .4em;
   margin-bottom: 1em;
-  box-shadow: 0 3px 5px rgba(255, 255, 255, .9);
 }
 
 .icon-marker-tooltip:before {
