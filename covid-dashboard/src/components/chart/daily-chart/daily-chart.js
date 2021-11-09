@@ -19,6 +19,12 @@ export default function dailyChart(country) {
   //clean section charts
   const charts = document.querySelector(".daily-chart");
   charts.innerHTML = "";
+  if (document.querySelectorAll("daily-chart-title").length === 0) {
+    const dailyChartTitle = document.createElement("div");
+    dailyChartTitle.classList.add("daily-chart-title");
+    dailyChartTitle.innerHTML = "Daily count of cases";
+    charts.appendChild(dailyChartTitle);
+  }
   const chartWrapper = document.createElement("div");
   chartWrapper.classList.add("daily-chart-csv__wrapper");
   charts.appendChild(chartWrapper);
@@ -27,7 +33,7 @@ export default function dailyChart(country) {
 
   const svg = select(".daily-chart-csv__wrapper")
     .append("svg")
-    .attr("width", charts.offsetWidth - 50)
+    .attr("width", charts.offsetWidth)
     .attr("height", charts.offsetHeight - 50);
 
   const width = +svg.attr("width");
@@ -36,7 +42,7 @@ export default function dailyChart(country) {
   const render = (data) => {
     const xValue = (d) => d.date;
     const yValue = (d) => d.cases;
-    const margin = { top: 20, right: 20, bottom: 20, left: 40 };
+    const margin = { top: 20, right: 0, bottom: 20, left: 30 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 

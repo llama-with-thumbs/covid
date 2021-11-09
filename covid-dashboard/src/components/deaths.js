@@ -9,8 +9,7 @@ export const makeDeathRow = (countryData) => {
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td class="country__name">${name}<br>
-      ${totalDeaths} died<br>
+      <td class="country__name">${name}: ${totalDeaths} died<br>
       (${todayDeaths} today)
       </td>
     </tr>`

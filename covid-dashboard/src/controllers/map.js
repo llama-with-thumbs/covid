@@ -16,7 +16,6 @@ export default function drawMap(filter) {
     }
   ).addTo(mymap);
 
-  let dateUpdate = "";
   let data = null;
 
   async function getData() {

@@ -10,9 +10,9 @@ export const makeCountryRow = (countryData, filter) => {
   const isActive = countryData.countryCode === filter ? `active` : ``;
   return (
     `<tr class="${trName} ${isActive}">
-      <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
+      <td class="quantity">${totalCases}<br><span class="smaller red">(${todayCases} today)</span></td>
       <td class="country-name">${name}
-      <img src="https://www.countryflagicons.com/FLAT/24/${countryData.countryCode}.png" height="20" width="20" alt="flag">
+      <img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryData.countryCode}.png" height="20" width="20" alt="flag">
     </tr>`
   );
 };
