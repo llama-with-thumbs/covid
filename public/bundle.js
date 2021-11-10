@@ -32084,9 +32084,8 @@ function drawMap(filter) {
         let updatedFormatted;
         let casesString;
 
-        
         const { country, updated, cases, deaths, recovered } = properties;
-        
+
         const logCases = Math.log2(cases) * 2 + cases / 100000;
 
         casesString = `${cases}`;
@@ -32098,13 +32097,14 @@ function drawMap(filter) {
         if (updated) {
           updatedFormatted = new Date(updated).toLocaleString();
         }
-        
 
         const html = `
           <span class="icon-marker" style="
           width: ${logCases}px;
           height: ${logCases}px;
-          transform: translate(-50%, -50%);">
+          transform: translate(-50%, -50%);
+          background: radial-gradient(rgba(255,0,0,1), rgba(255,0,0,0), rgba(255,0,0,0));
+          ">
             <span class="icon-marker-tooltip">
               <h2>${country}</h2>
               <ul>
