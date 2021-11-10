@@ -104,6 +104,13 @@ export default function dailyChart(country) {
       chartNote.innerHTML = this.firstChild.innerHTML;
       document.querySelector(".daily-chart").appendChild(chartNote);
 
+      let horizontal =
+        this.getBoundingClientRect().left -
+        chartNote.getBoundingClientRect().left;
+      let vertical = this.getBoundingClientRect().height;
+      chartNote.style.bottom = `${vertical}px`;
+      chartNote.style.left = `${horizontal}px`;
+
       select(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {

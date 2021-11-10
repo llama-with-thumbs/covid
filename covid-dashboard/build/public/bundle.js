@@ -31325,6 +31325,13 @@ function dailyChart(country) {
       chartNote.innerHTML = this.firstChild.innerHTML;
       document.querySelector(".daily-chart").appendChild(chartNote);
 
+      let horizontal =
+        this.getBoundingClientRect().left -
+        chartNote.getBoundingClientRect().left;
+      let vertical = this.getBoundingClientRect().height;
+      chartNote.style.bottom = `${vertical}px`;
+      chartNote.style.left = `${horizontal}px`;
+
       Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
@@ -31377,7 +31384,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function sumChart(country) {
-
   // const chartsComponent = document.querySelector(".charts");
   // if (document.querySelectorAll("charts-title").length === 0) {
   //   const chartTitle = document.createElement("div");
@@ -31470,12 +31476,19 @@ function sumChart(country) {
     rect.on("click", function () {
       event.stopPropagation();
     });
+
     rect.on("mouseover", function () {
+      
       const chartNote = document.createElement("div");
       chartNote.classList.add("chart__note");
       chartNote.innerHTML = this.firstChild.innerHTML;
       document.querySelector(".sum-chart").appendChild(chartNote);
-
+      
+      let horizontal = this.getBoundingClientRect().left - chartNote.getBoundingClientRect().left;
+      let vertical = this.getBoundingClientRect().height;
+      chartNote.style.bottom = `${vertical}px`;
+      chartNote.style.left = `${horizontal}px`;
+      
       Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
@@ -32071,9 +32084,8 @@ function drawMap(filter) {
         let updatedFormatted;
         let casesString;
 
-        
         const { country, updated, cases, deaths, recovered } = properties;
-        
+
         const logCases = Math.log2(cases) * 2 + cases / 100000;
 
         casesString = `${cases}`;
@@ -32085,13 +32097,14 @@ function drawMap(filter) {
         if (updated) {
           updatedFormatted = new Date(updated).toLocaleString();
         }
-        
 
         const html = `
           <span class="icon-marker" style="
           width: ${logCases}px;
           height: ${logCases}px;
-          transform: translate(-50%, -50%);">
+          transform: translate(-50%, -50%);
+          background: radial-gradient(rgb(70, 130, 180, 1),rgb(70, 130, 180,1), rgba(255,0,0,0), rgba(255,0,0,0));
+          ">
             <span class="icon-marker-tooltip">
               <h2>${country}</h2>
               <ul>

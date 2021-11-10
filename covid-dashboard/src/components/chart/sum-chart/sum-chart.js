@@ -13,7 +13,6 @@ import {
 } from "d3";
 
 export default function sumChart(country) {
-
   // const chartsComponent = document.querySelector(".charts");
   // if (document.querySelectorAll("charts-title").length === 0) {
   //   const chartTitle = document.createElement("div");
@@ -106,12 +105,19 @@ export default function sumChart(country) {
     rect.on("click", function () {
       event.stopPropagation();
     });
+
     rect.on("mouseover", function () {
+      
       const chartNote = document.createElement("div");
       chartNote.classList.add("chart__note");
       chartNote.innerHTML = this.firstChild.innerHTML;
       document.querySelector(".sum-chart").appendChild(chartNote);
-
+      
+      let horizontal = this.getBoundingClientRect().left - chartNote.getBoundingClientRect().left;
+      let vertical = this.getBoundingClientRect().height;
+      chartNote.style.bottom = `${vertical}px`;
+      chartNote.style.left = `${horizontal}px`;
+      
       select(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
