@@ -465,18 +465,19 @@ hr.light__line {
   height: 4em; */
   font-size: .7em;
   font-weight: bold;
-  background-color: steelblue;
-  opacity: .8;
+  /* opacity: .8; */
   border-radius: 100%;
 }
 .leaflet-interactive {
   stroke-opacity: 0;
-  fill: red;
+  fill: rgb(255, 0, 0);
+  
   fill-opacity: 0.3;
 }
 
 .icon-marker:hover .icon-marker-tooltip {
   display: block;
+  padding-left: 20px;
 }
 
 .icon-marker-tooltip {

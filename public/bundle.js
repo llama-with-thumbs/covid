@@ -32103,7 +32103,7 @@ function drawMap(filter) {
           width: ${logCases}px;
           height: ${logCases}px;
           transform: translate(-50%, -50%);
-          background: radial-gradient(rgba(255,0,0,1), rgba(255,0,0,0), rgba(255,0,0,0));
+          background: radial-gradient(rgb(70, 130, 180, 1),rgb(70, 130, 180,1), rgba(255,0,0,0), rgba(255,0,0,0));
           ">
             <span class="icon-marker-tooltip">
               <h2>${country}</h2>
