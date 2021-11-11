@@ -126,17 +126,18 @@ export default function sumChart(country) {
     });
   };
 
-  if (country === undefined) {
+  if (country === "total") {
     csv("./public/assets/covid-data.csv").then((data) => {
-      data.forEach((d) => {
-        d.cases = +d.cases;
-        d.date = new Date(d.date);
+      const formattedData = data.map((d) => {
+        const cases = +d.cum_cases;
+        const date = new Date(d.date);
+        return {cases, date} 
       });
-      render(data);
+      render(formattedData);
     });
   } else {
     const currDate = new Date();
-    let newCountry = country.toLowerCase();
+    const newCountry = country.toLowerCase(); 
     json(
       `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
     ).then((data) => {

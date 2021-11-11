@@ -3,16 +3,17 @@ import {filterById} from '../utils.js';
 
 export const makeRecRow = (countryData) => {
   const name = countryData.country;
-  const totalRec = countryData.totalRecovered;
-  const todayRec = countryData.newRecovered;
+  // console.log(countryData);
+  const totalCases = countryData.totalConfirmed;
+  const todayCases = countryData.newConfirmed;
   const id = countryData.countryCode;
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
       <td>
-      <span class="country__name">${name}</span>
-      ${totalRec} recovered<br>
-      (${todayRec} today)<br>
+      <span class="country__name">${name}</span><br>
+      Total number of cases:${totalCases}<br>
+      Number of cases today:${todayCases}<br>
       </td>
     </tr>`
   );
@@ -26,7 +27,7 @@ export const makeRecoveriesTableMarkup = (data, filter) => {
   
   return (
     `<div class="recoveries">
-      <h3 class="recovered__header">Recoveries</h3>
+      <h3 class="recovered__header">Cases</h3>
       <hr>
       <table class="recov__table">
         ${rows}
@@ -35,7 +36,7 @@ export const makeRecoveriesTableMarkup = (data, filter) => {
   );
 };
 
-export default class Recoveries extends AbstractComponent {
+export default class Cases extends AbstractComponent {
 
  constructor(data, filter) {
   super();
@@ -47,11 +48,11 @@ export default class Recoveries extends AbstractComponent {
     return makeRecoveriesTableMarkup(this._data, this._filter);
   }
 
-  setClickHandler(handler) {
-    this.getElement().addEventListener('click', handler);
-  }
+  // setClickHandler(handler) {
+  //   this.getElement().addEventListener('click', handler);
+  // }
 
-  recoveryListeners() {
-    this.setClickHandler();
-  }
+  // recoveryListeners() {
+  //   this.setClickHandler();
+  // }
 }

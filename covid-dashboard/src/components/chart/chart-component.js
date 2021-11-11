@@ -4,7 +4,7 @@ import dailyChart from "./daily-chart/daily-chart.js";
 import sumChart from "./sum-chart/sum-chart.js";
 
 const Chart = (countyName) => {
-  
+  // console.log(countyName);
   dailyChart(countyName);
   sumChart(countyName);
   return " ";
@@ -13,6 +13,7 @@ const Chart = (countyName) => {
 
 
 export const getCountryName = (data, filter) => {
+  if (!filter) return "total" 
   const dataFiltered = filterById(data, filter);
   const countryData = dataFiltered.countries[0];
   const name = countryData.country;
@@ -21,6 +22,8 @@ export const getCountryName = (data, filter) => {
 
 export const makeChartsMarkup = (data, filter) => {
   const name = getCountryName(data, filter);
+
+  // console.log(data, filter);
   const markup = Chart(name);
   return markup;
 };

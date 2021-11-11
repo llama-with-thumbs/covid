@@ -13,8 +13,6 @@ import {
 } from "d3";
 
 export default function dailyChart(country) {
-  // const mymap = L.map('map').setView([0, 0], 2);
-  // console.log(mymap);
 
   //clean section charts
   const charts = document.querySelector(".daily-chart");
@@ -118,14 +116,15 @@ export default function dailyChart(country) {
       document.querySelector(".chart__note").remove();
     });
   };
-
-  if (country === undefined) {
+  
+  if (country === "total") {
     csv("./public/assets/covid-data.csv").then((data) => {
-      data.forEach((d) => {
-        d.cases = +d.cases;
-        d.date = new Date(d.date);
+      const formattedData = data.map((d) => {
+        const cases = +d.new_cases;
+        const date = new Date(d.date);
+        return {cases, date} 
       });
-      render(data);
+      render(formattedData);
     });
   } else {
     const currDate = new Date();

@@ -3,7 +3,6 @@ import {filterById} from '../utils.js';
 
 export const makeGlobalMarkup = (data, filter) => { 
   
-  console.log(data);
   let sum = 0;
   let todaySum = 0;
   let region = 'WHOLE WORLD';

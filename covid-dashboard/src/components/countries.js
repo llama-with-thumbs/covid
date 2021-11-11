@@ -1,56 +1,50 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractComponent from "./abstract-component.js";
 
 export const makeCountryRow = (countryData, filter) => {
-  
-    const name = countryData.country;
+  const name = countryData.country;
   const totalCases = countryData.totalConfirmed.toLocaleString();
   const todayCases = countryData.newConfirmed.toLocaleString();
   const id = countryData.countryCode.toLowerCase();
   const trName = `c-${id}`;
   const isActive = countryData.countryCode === filter ? `active` : ``;
-  return (
-    `<tr class="${trName} ${isActive}">
-      <td class="quantity">${totalCases}<br><span class="smaller red">(${todayCases} today)</span></td>
-      <td class="country-name">${name}
-      <img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryData.countryCode}.png" height="20" width="20" alt="flag">
-    </tr>`
-  );
+  const countryCode = countryData.countryCode === "XK" ? "EU" : countryData.countryCode;
+  return `<tr class="${trName} ${isActive}" data-country-name="${name}">
+      <td class="quantity">${totalCases}</td>
+      <td class="country-name">
+        ${name}<img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryCode}.png" height="20" width="20" alt="flag">
+      </td>
+    </tr>`;
 };
 
 export const makeWorldRow = (data, filter) => {
   const totalCases = data.global.totalConfirmed.toLocaleString();
   const todayCases = data.global.newConfirmed.toLocaleString();
   const isActive = filter === null ? `active` : ``;
-  return (
-    `<tr class="c-world ${isActive}">
-    <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
-    <td class="country-name">WHOLE WORLD</td>
-    </tr>`
-  );
+  return `<tr class="c-world ${isActive}">
+    <td class="quantity">${totalCases}</td>
+    <td class="country-name">Worldwide <span class="county-flag">🌎</span></td>
+    </tr>`;
 };
 
 export const makeCountriesTableMarkup = (data, filter) => {
   const countries = data.countries;
-  const rows = countries.map((item) => makeCountryRow(item, filter)).join('');
+  const rows = countries.map((item) => makeCountryRow(item, filter)).join("");
   const world = makeWorldRow(data, filter);
-  return (
-    `<div class="countries">
+  return `<div class="countries">
       <h4 class="countries__header">Cases by Country</h4>
       <hr class="line">
       <table class="countries__table">
         ${world}
         ${rows}
       </table>
-    </div>`
-  );
+    </div>`;
 };
 
 export default class Countries extends AbstractComponent {
-
- constructor(data, filter) {
-  super();
-  this._data = data;
-  this._filter = filter;
+  constructor(data, filter) {
+    super();
+    this._data = data;
+    this._filter = filter;
   }
 
   getTemplate() {
@@ -62,7 +56,6 @@ export default class Countries extends AbstractComponent {
   }
 
   setClickHandler(handler) {
-    this.getElement().addEventListener('click', handler);
+    this.getElement().addEventListener("click", handler);
   }
-  
 }

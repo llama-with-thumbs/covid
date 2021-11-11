@@ -31162,6 +31162,81 @@ class AbstractComponent {
 
 /***/ }),
 
+/***/ "./src/components/cases.js":
+/*!*********************************!*\
+  !*** ./src/components/cases.js ***!
+  \*********************************/
+/*! exports provided: makeRecRow, makeRecoveriesTableMarkup, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makeRecRow", function() { return makeRecRow; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makeRecoveriesTableMarkup", function() { return makeRecoveriesTableMarkup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Cases; });
+/* harmony import */ var _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-component.js */ "./src/components/abstract-component.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils.js */ "./src/utils.js");
+
+
+
+const makeRecRow = (countryData) => {
+  const name = countryData.country;
+  // console.log(countryData);
+  const totalCases = countryData.totalConfirmed;
+  const todayCases = countryData.newConfirmed;
+  const id = countryData.countryCode;
+  const trName = `c-${id}`;
+  return (
+    `<tr class="${trName}">
+      <td>
+      <span class="country__name">${name}</span><br>
+      Total number of cases:${totalCases}<br>
+      Number of cases today:${todayCases}<br>
+      </td>
+    </tr>`
+  );
+};
+
+const makeRecoveriesTableMarkup = (data, filter) => {
+  const dataFiltered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["filterById"])(data, filter);
+  const sum = data.global.totalRecovered;
+  const countries = dataFiltered.countries;
+  const rows = countries.map((item) => makeRecRow(item, filter)).join('');
+  
+  return (
+    `<div class="recoveries">
+      <h3 class="recovered__header">Cases</h3>
+      <hr>
+      <table class="recov__table">
+        ${rows}
+      </table>
+    </div>`
+  );
+};
+
+class Cases extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+
+ constructor(data, filter) {
+  super();
+  this._data = data;
+  this._filter = filter;
+  }
+
+  getTemplate() {
+    return makeRecoveriesTableMarkup(this._data, this._filter);
+  }
+
+  // setClickHandler(handler) {
+  //   this.getElement().addEventListener('click', handler);
+  // }
+
+  // recoveryListeners() {
+  //   this.setClickHandler();
+  // }
+}
+
+/***/ }),
+
 /***/ "./src/components/chart/chart-component.js":
 /*!*************************************************!*\
   !*** ./src/components/chart/chart-component.js ***!
@@ -31184,7 +31259,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Chart = (countyName) => {
-  
+  // console.log(countyName);
   Object(_daily_chart_daily_chart_js__WEBPACK_IMPORTED_MODULE_2__["default"])(countyName);
   Object(_sum_chart_sum_chart_js__WEBPACK_IMPORTED_MODULE_3__["default"])(countyName);
   return " ";
@@ -31193,6 +31268,7 @@ const Chart = (countyName) => {
 
 
 const getCountryName = (data, filter) => {
+  if (!filter) return "total" 
   const dataFiltered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["filterById"])(data, filter);
   const countryData = dataFiltered.countries[0];
   const name = countryData.country;
@@ -31201,6 +31277,8 @@ const getCountryName = (data, filter) => {
 
 const makeChartsMarkup = (data, filter) => {
   const name = getCountryName(data, filter);
+
+  // console.log(data, filter);
   const markup = Chart(name);
   return markup;
 };
@@ -31234,8 +31312,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function dailyChart(country) {
-  // const mymap = L.map('map').setView([0, 0], 2);
-  // console.log(mymap);
 
   //clean section charts
   const charts = document.querySelector(".daily-chart");
@@ -31339,14 +31415,15 @@ function dailyChart(country) {
       document.querySelector(".chart__note").remove();
     });
   };
-
-  if (country === undefined) {
+  
+  if (country === "total") {
     Object(d3__WEBPACK_IMPORTED_MODULE_0__["csv"])("./public/assets/covid-data.csv").then((data) => {
-      data.forEach((d) => {
-        d.cases = +d.cases;
-        d.date = new Date(d.date);
+      const formattedData = data.map((d) => {
+        const cases = +d.new_cases;
+        const date = new Date(d.date);
+        return {cases, date} 
       });
-      render(data);
+      render(formattedData);
     });
   } else {
     const currDate = new Date();
@@ -31497,17 +31574,18 @@ function sumChart(country) {
     });
   };
 
-  if (country === undefined) {
+  if (country === "total") {
     Object(d3__WEBPACK_IMPORTED_MODULE_0__["csv"])("./public/assets/covid-data.csv").then((data) => {
-      data.forEach((d) => {
-        d.cases = +d.cases;
-        d.date = new Date(d.date);
+      const formattedData = data.map((d) => {
+        const cases = +d.cum_cases;
+        const date = new Date(d.date);
+        return {cases, date} 
       });
-      render(data);
+      render(formattedData);
     });
   } else {
     const currDate = new Date();
-    let newCountry = country.toLowerCase();
+    const newCountry = country.toLowerCase(); 
     Object(d3__WEBPACK_IMPORTED_MODULE_0__["json"])(
       `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
     ).then((data) => {
@@ -31541,56 +31619,50 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const makeCountryRow = (countryData, filter) => {
-  
-    const name = countryData.country;
+  const name = countryData.country;
   const totalCases = countryData.totalConfirmed.toLocaleString();
   const todayCases = countryData.newConfirmed.toLocaleString();
   const id = countryData.countryCode.toLowerCase();
   const trName = `c-${id}`;
   const isActive = countryData.countryCode === filter ? `active` : ``;
-  return (
-    `<tr class="${trName} ${isActive}">
-      <td class="quantity">${totalCases}<br><span class="smaller red">(${todayCases} today)</span></td>
-      <td class="country-name">${name}
-      <img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryData.countryCode}.png" height="20" width="20" alt="flag">
-    </tr>`
-  );
+  const countryCode = countryData.countryCode === "XK" ? "EU" : countryData.countryCode;
+  return `<tr class="${trName} ${isActive}" data-country-name="${name}">
+      <td class="quantity">${totalCases}</td>
+      <td class="country-name">
+        ${name}<img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryCode}.png" height="20" width="20" alt="flag">
+      </td>
+    </tr>`;
 };
 
 const makeWorldRow = (data, filter) => {
   const totalCases = data.global.totalConfirmed.toLocaleString();
   const todayCases = data.global.newConfirmed.toLocaleString();
   const isActive = filter === null ? `active` : ``;
-  return (
-    `<tr class="c-world ${isActive}">
-    <td class="quantity">${totalCases}<br>(${todayCases} today)</td>
-    <td class="country-name">WHOLE WORLD</td>
-    </tr>`
-  );
+  return `<tr class="c-world ${isActive}">
+    <td class="quantity">${totalCases}</td>
+    <td class="country-name">Worldwide <span class="county-flag">🌎</span></td>
+    </tr>`;
 };
 
 const makeCountriesTableMarkup = (data, filter) => {
   const countries = data.countries;
-  const rows = countries.map((item) => makeCountryRow(item, filter)).join('');
+  const rows = countries.map((item) => makeCountryRow(item, filter)).join("");
   const world = makeWorldRow(data, filter);
-  return (
-    `<div class="countries">
+  return `<div class="countries">
       <h4 class="countries__header">Cases by Country</h4>
       <hr class="line">
       <table class="countries__table">
         ${world}
         ${rows}
       </table>
-    </div>`
-  );
+    </div>`;
 };
 
 class Countries extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-
- constructor(data, filter) {
-  super();
-  this._data = data;
-  this._filter = filter;
+  constructor(data, filter) {
+    super();
+    this._data = data;
+    this._filter = filter;
   }
 
   getTemplate() {
@@ -31602,10 +31674,10 @@ class Countries extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["def
   }
 
   setClickHandler(handler) {
-    this.getElement().addEventListener('click', handler);
+    this.getElement().addEventListener("click", handler);
   }
-  
 }
+
 
 /***/ }),
 
@@ -31700,7 +31772,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const makeGlobalMarkup = (data, filter) => { 
   
-  console.log(data);
   let sum = 0;
   let todaySum = 0;
   let region = 'WHOLE WORLD';
@@ -31735,80 +31806,6 @@ class Global extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["defaul
     return makeGlobalMarkup(this._data, this._filter);
   }
 
-}
-
-/***/ }),
-
-/***/ "./src/components/recoveries.js":
-/*!**************************************!*\
-  !*** ./src/components/recoveries.js ***!
-  \**************************************/
-/*! exports provided: makeRecRow, makeRecoveriesTableMarkup, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makeRecRow", function() { return makeRecRow; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makeRecoveriesTableMarkup", function() { return makeRecoveriesTableMarkup; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Recoveries; });
-/* harmony import */ var _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-component.js */ "./src/components/abstract-component.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils.js */ "./src/utils.js");
-
-
-
-const makeRecRow = (countryData) => {
-  const name = countryData.country;
-  const totalRec = countryData.totalRecovered;
-  const todayRec = countryData.newRecovered;
-  const id = countryData.countryCode;
-  const trName = `c-${id}`;
-  return (
-    `<tr class="${trName}">
-      <td>
-      <span class="country__name">${name}</span>
-      ${totalRec} recovered<br>
-      (${todayRec} today)<br>
-      </td>
-    </tr>`
-  );
-};
-
-const makeRecoveriesTableMarkup = (data, filter) => {
-  const dataFiltered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["filterById"])(data, filter);
-  const sum = data.global.totalRecovered;
-  const countries = dataFiltered.countries;
-  const rows = countries.map((item) => makeRecRow(item, filter)).join('');
-  
-  return (
-    `<div class="recoveries">
-      <h3 class="recovered__header">Recoveries</h3>
-      <hr>
-      <table class="recov__table">
-        ${rows}
-      </table>
-    </div>`
-  );
-};
-
-class Recoveries extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-
- constructor(data, filter) {
-  super();
-  this._data = data;
-  this._filter = filter;
-  }
-
-  getTemplate() {
-    return makeRecoveriesTableMarkup(this._data, this._filter);
-  }
-
-  setClickHandler(handler) {
-    this.getElement().addEventListener('click', handler);
-  }
-
-  recoveryListeners() {
-    this.setClickHandler();
-  }
 }
 
 /***/ }),
@@ -31871,7 +31868,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./src/utils.js");
 /* harmony import */ var _components_countries_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/countries.js */ "./src/components/countries.js");
 /* harmony import */ var _components_deaths_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/deaths.js */ "./src/components/deaths.js");
-/* harmony import */ var _components_recoveries_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/recoveries.js */ "./src/components/recoveries.js");
+/* harmony import */ var _components_cases_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/cases.js */ "./src/components/cases.js");
 /* harmony import */ var _components_global_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/global.js */ "./src/components/global.js");
 /* harmony import */ var _components_chart_chart_component_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/chart/chart-component.js */ "./src/components/chart/chart-component.js");
 
@@ -31882,14 +31879,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class CountriesController {
-
   constructor(container, model, filter = null) {
     this._container = container;
     this._model = model;
     this._filter = filter;
     this._countries = null;
     this._deaths = null;
-    this._recoveries = null;
+    this._cases = null;
     this._global = null;
     this._chart = null;
   }
@@ -31899,62 +31895,79 @@ class CountriesController {
     this._global = new _components_global_js__WEBPACK_IMPORTED_MODULE_4__["default"](data, this._filter);
     this._countries = new _components_countries_js__WEBPACK_IMPORTED_MODULE_1__["default"](data, this._filter);
     this._deaths = new _components_deaths_js__WEBPACK_IMPORTED_MODULE_2__["default"](data, this._filter);
-    this._recoveries = new _components_recoveries_js__WEBPACK_IMPORTED_MODULE_3__["default"](data, this._filter);
+    this._cases = new _components_cases_js__WEBPACK_IMPORTED_MODULE_3__["default"](data, this._filter);
     this._chart = new _components_chart_chart_component_js__WEBPACK_IMPORTED_MODULE_5__["default"](data, this._filter);
 
     this._countries.setClickHandler((evt) => {
       this.countriesClickHandler(evt, data);
     });
 
-    this._deaths.setClickHandler((evt) => {
-      this.countriesClickHandler(evt, data);
-    });
+    // this._deaths.setClickHandler((evt) => {
+    //   this.countriesClickHandler(evt, data);
+    // });
 
-    this._recoveries.setClickHandler((evt) => {
-      this.countriesClickHandler(evt, data);
-    });
+    // this._cases.setClickHandler((evt) => {
+    //   this.countriesClickHandler(evt, data);
+    // });
 
     this.renderLists();
   }
 
   countriesClickHandler(evt, data) {
-    this.onFilterChange(evt);
-    this.countriesRerender(evt, data);
+    this.onFilterChange(evt, data);
+    
   }
 
-  countriesRerender(evt, data) {
+  countriesRerender(data) {
     this.removeLists();
     this.reCreateLists(data);
     this.render();
   }
 
-  onFilterChange(evt) {
+  onFilterChange(evt, data) {
     evt.preventDefault();
+    console.log(evt.target.getAttribute("data-country-name"));
+    console.log(data);
     const parent = evt.target.parentElement;
-    if (parent.classList.contains('deaths') || parent.classList.contains('recoveries') || parent.classList.contains('countries')) {
+    if (
+      parent.classList.contains("deaths") ||
+      parent.classList.contains("recoveries") ||
+      parent.classList.contains("countries")
+    ) {
       return;
     }
-    if (evt.target.classList.contains('deaths') || evt.target.classList.contains('recoveries') || evt.target.classList.contains('countries')) {
+    if (
+      evt.target.classList.contains("deaths") ||
+      evt.target.classList.contains("recoveries") ||
+      evt.target.classList.contains("countries")
+    ) {
       return;
     }
-    if (evt.target.classList.contains('county-flag') || evt.target.nodeName === 'TR'){
+    if (
+      evt.target.classList.contains("county-flag") ||
+      evt.target.nodeName === "TR"
+    ) {
       return;
     } else {
       const chosenCountry = parent.classList[0].slice(2);
-      const newFilter = chosenCountry === 'world' ? null : chosenCountry.toUpperCase();
-      this._filter = newFilter;
+      const newFilter =
+        chosenCountry === "world" ? null : chosenCountry.toUpperCase();
+        if (this.filter !== newFilter){
+          this._filter = newFilter;
+          this.countriesRerender(data);
+        }
     }
   }
 
   reCreateLists(data) {
     const newCountries = new _components_countries_js__WEBPACK_IMPORTED_MODULE_1__["default"](data, this._filter);
     const newDeaths = new _components_deaths_js__WEBPACK_IMPORTED_MODULE_2__["default"](data, this._filter);
-    const newRecoveries = new _components_recoveries_js__WEBPACK_IMPORTED_MODULE_3__["default"](data, this._filter);
+    const newCases = new _components_cases_js__WEBPACK_IMPORTED_MODULE_3__["default"](data, this._filter);
     const newGlobal = new _components_global_js__WEBPACK_IMPORTED_MODULE_4__["default"](data, this._filter);
     const chart = new _components_chart_chart_component_js__WEBPACK_IMPORTED_MODULE_5__["default"](data, this._filter);
     this._countries = newCountries;
     this._deaths = newDeaths;
-    this._recoveries = newRecoveries;
+    this._cases = newCases;
     this._global = newGlobal;
     this._chart = chart;
   }
@@ -31962,7 +31975,7 @@ class CountriesController {
   removeLists() {
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._countries);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._deaths);
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._recoveries);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._cases);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._global);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._chart);
   }
@@ -31970,11 +31983,10 @@ class CountriesController {
   renderLists() {
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._countries, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._deaths, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._recoveries, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._cases, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._global, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._chart, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
   }
-
 }
 
 
