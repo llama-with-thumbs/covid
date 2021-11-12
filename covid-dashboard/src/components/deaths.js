@@ -3,25 +3,36 @@ import {filterById} from '../utils.js';
 
 export const makeDeathRow = (countryData) => {
   const name = countryData.country;
-  const todayDeaths = countryData.newDeaths.toLocaleString();
+  const newDeaths = countryData.newDeaths.toLocaleString();
   const totalDeaths = countryData.totalDeaths.toLocaleString();
   const id = countryData.countryCode;
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td class="country__name">${name}: ${totalDeaths} died<br>
-      (${todayDeaths} today)
+    <td class="country__name">Total: <span class="black">${totalDeaths.toLocaleString()}</span><br>
+    Today: <span class="black">${newDeaths.toLocaleString()}</span>
+    </td>
       </td>
     </tr>`
   );
 };
 
+
 export const makeDeathsTableMarkup = (data, filter) => {
-  const dataFiltered = filterById(data, filter);
-  const sum = data.global.totalDeaths;
-  const countries = dataFiltered.countries;
-  const rows = countries.map((item) => makeDeathRow(item)).join('');
-  
+  let rows;
+  if (filter) {
+    const dataFiltered = filterById(data, filter);
+    const countries = dataFiltered.countries;
+    rows = countries.map((item) => makeDeathRow(item)).join('');
+  } else {
+    const totalDeaths = data.global.totalDeaths;
+    const newDeaths = data.global.newDeaths;
+    rows =  `<tr>
+    <td class="country__name">Total: <span class="black">${totalDeaths.toLocaleString()}</span><br>
+    Today: <span class="black">${newDeaths.toLocaleString()}</span>
+    </td>
+  </tr>`
+  }
   return (
     `<div class="deaths">
     <h3 class="death__header">Deaths</h3>

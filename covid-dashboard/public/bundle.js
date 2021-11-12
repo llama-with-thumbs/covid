@@ -31188,21 +31188,28 @@ const makeRecRow = (countryData) => {
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td>
-      <span class="country__name">${name}</span><br>
-      Total number of cases:${totalCases}<br>
-      Number of cases today:${todayCases}<br>
+      <td class="country__name">Total: <span class="red">${totalCases.toLocaleString()}</span><br>
+      Today: <span class="red">${todayCases.toLocaleString()}</span>
       </td>
     </tr>`
   );
 };
 
 const makeRecoveriesTableMarkup = (data, filter) => {
+  let rows;
+  if (filter) {
   const dataFiltered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["filterById"])(data, filter);
-  const sum = data.global.totalRecovered;
   const countries = dataFiltered.countries;
-  const rows = countries.map((item) => makeRecRow(item, filter)).join('');
-  
+  rows = countries.map((item) => makeRecRow(item, filter)).join('');
+  } else {
+    const totalConfirmed = data.global.totalConfirmed;
+    const newConfirmed = data.global.newConfirmed;
+    rows =  `<tr>
+    <td class="country__name">Total: <span class="red">${totalConfirmed.toLocaleString()}</span><br>
+    Today: <span class="red">${newConfirmed.toLocaleString()}</span>
+    </td>
+  </tr>`
+  }
   return (
     `<div class="recoveries">
       <h3 class="recovered__header">Cases</h3>
@@ -31626,7 +31633,7 @@ const makeCountryRow = (countryData, filter) => {
   const trName = `c-${id}`;
   const isActive = countryData.countryCode === filter ? `active` : ``;
   const countryCode = countryData.countryCode === "XK" ? "EU" : countryData.countryCode;
-  return `<tr class="${trName} ${isActive}" data-country-name="${name}">
+  return `<tr class="${trName} ${isActive}" data-region-code="${countryCode}">
       <td class="quantity">${totalCases}</td>
       <td class="country-name">
         ${name}<img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryCode}.png" height="20" width="20" alt="flag">
@@ -31638,7 +31645,7 @@ const makeWorldRow = (data, filter) => {
   const totalCases = data.global.totalConfirmed.toLocaleString();
   const todayCases = data.global.newConfirmed.toLocaleString();
   const isActive = filter === null ? `active` : ``;
-  return `<tr class="c-world ${isActive}">
+  return `<tr class="c-world" ${isActive} data-region-code="world">
     <td class="quantity">${totalCases}</td>
     <td class="country-name">Worldwide <span class="county-flag">🌎</span></td>
     </tr>`;
@@ -31674,7 +31681,7 @@ class Countries extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["def
   }
 
   setClickHandler(handler) {
-    this.getElement().addEventListener("click", handler);
+    this.getElement().querySelector(".countries__table").addEventListener("click", handler);
   }
 }
 
@@ -31700,25 +31707,36 @@ __webpack_require__.r(__webpack_exports__);
 
 const makeDeathRow = (countryData) => {
   const name = countryData.country;
-  const todayDeaths = countryData.newDeaths.toLocaleString();
+  const newDeaths = countryData.newDeaths.toLocaleString();
   const totalDeaths = countryData.totalDeaths.toLocaleString();
   const id = countryData.countryCode;
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td class="country__name">${name}: ${totalDeaths} died<br>
-      (${todayDeaths} today)
+    <td class="country__name">Total: <span class="black">${totalDeaths.toLocaleString()}</span><br>
+    Today: <span class="black">${newDeaths.toLocaleString()}</span>
+    </td>
       </td>
     </tr>`
   );
 };
 
+
 const makeDeathsTableMarkup = (data, filter) => {
-  const dataFiltered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["filterById"])(data, filter);
-  const sum = data.global.totalDeaths;
-  const countries = dataFiltered.countries;
-  const rows = countries.map((item) => makeDeathRow(item)).join('');
-  
+  let rows;
+  if (filter) {
+    const dataFiltered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_1__["filterById"])(data, filter);
+    const countries = dataFiltered.countries;
+    rows = countries.map((item) => makeDeathRow(item)).join('');
+  } else {
+    const totalDeaths = data.global.totalDeaths;
+    const newDeaths = data.global.newDeaths;
+    rows =  `<tr>
+    <td class="country__name">Total: <span class="black">${totalDeaths.toLocaleString()}</span><br>
+    Today: <span class="black">${newDeaths.toLocaleString()}</span>
+    </td>
+  </tr>`
+  }
   return (
     `<div class="deaths">
     <h3 class="death__header">Deaths</h3>
@@ -31774,7 +31792,7 @@ const makeGlobalMarkup = (data, filter) => {
   
   let sum = 0;
   let todaySum = 0;
-  let region = 'WHOLE WORLD';
+  let region = 'Worldwide';
   if (filter === null) {
     sum = data.global.totalConfirmed;
     todaySum = data.global.newConfirmed.toLocaleString();
@@ -31871,6 +31889,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_cases_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/cases.js */ "./src/components/cases.js");
 /* harmony import */ var _components_global_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/global.js */ "./src/components/global.js");
 /* harmony import */ var _components_chart_chart_component_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/chart/chart-component.js */ "./src/components/chart/chart-component.js");
+/* harmony import */ var _map_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./map.js */ "./src/controllers/map.js");
+
 
 
 
@@ -31887,15 +31907,17 @@ class CountriesController {
     this._deaths = null;
     this._cases = null;
     this._global = null;
+
     this._chart = null;
   }
   render() {
-    const data = this._model.getData();
+    const data = this._model.getData();    
 
     this._global = new _components_global_js__WEBPACK_IMPORTED_MODULE_4__["default"](data, this._filter);
     this._countries = new _components_countries_js__WEBPACK_IMPORTED_MODULE_1__["default"](data, this._filter);
     this._deaths = new _components_deaths_js__WEBPACK_IMPORTED_MODULE_2__["default"](data, this._filter);
     this._cases = new _components_cases_js__WEBPACK_IMPORTED_MODULE_3__["default"](data, this._filter);
+    // console.log("here");
     this._chart = new _components_chart_chart_component_js__WEBPACK_IMPORTED_MODULE_5__["default"](data, this._filter);
 
     this._countries.setClickHandler((evt) => {
@@ -31915,7 +31937,6 @@ class CountriesController {
 
   countriesClickHandler(evt, data) {
     this.onFilterChange(evt, data);
-    
   }
 
   countriesRerender(data) {
@@ -31924,38 +31945,26 @@ class CountriesController {
     this.render();
   }
 
-  onFilterChange(evt, data) {
-    evt.preventDefault();
-    console.log(evt.target.getAttribute("data-country-name"));
-    console.log(data);
-    const parent = evt.target.parentElement;
-    if (
-      parent.classList.contains("deaths") ||
-      parent.classList.contains("recoveries") ||
-      parent.classList.contains("countries")
-    ) {
-      return;
-    }
-    if (
-      evt.target.classList.contains("deaths") ||
-      evt.target.classList.contains("recoveries") ||
-      evt.target.classList.contains("countries")
-    ) {
-      return;
-    }
-    if (
-      evt.target.classList.contains("county-flag") ||
-      evt.target.nodeName === "TR"
-    ) {
-      return;
+  getParent(element) {
+    return element.parentElement;
+  }
+  getCountryCode(element, getParent) {
+    if (element.getAttribute("data-region-code")) {
+      return element.getAttribute("data-region-code");
     } else {
-      const chosenCountry = parent.classList[0].slice(2);
-      const newFilter =
-        chosenCountry === "world" ? null : chosenCountry.toUpperCase();
-        if (this.filter !== newFilter){
-          this._filter = newFilter;
-          this.countriesRerender(data);
-        }
+      return this.getCountryCode(this.getParent(element));
+    }
+  }
+
+  onFilterChange(evt, data) {    
+    evt.preventDefault();
+    const countryCode = this.getCountryCode(evt.target);
+    const newFilter = countryCode === "world" ? null : countryCode;
+    if (this.filter !== newFilter) {
+      this._filter = newFilter;
+
+      this.countriesRerender(data);
+      Object(_map_js__WEBPACK_IMPORTED_MODULE_6__["changeCoordinates"])(data, this._filter);
     }
   }
 
@@ -31969,6 +31978,7 @@ class CountriesController {
     this._deaths = newDeaths;
     this._cases = newCases;
     this._global = newGlobal;
+
     this._chart = chart;
   }
 
@@ -31996,17 +32006,31 @@ class CountriesController {
 /*!********************************!*\
   !*** ./src/controllers/map.js ***!
   \********************************/
-/*! exports provided: mymap, default */
+/*! exports provided: mymap, changeCoordinates, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mymap", function() { return mymap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeCoordinates", function() { return changeCoordinates; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return drawMap; });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./src/utils.js");
+
+
 let mymap = L.map("map");
 
+const changeCoordinates = (data, filter) => {
+  // console.log(filterById(data, filter));
+  const filtered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["filterById"])(data, filter);
+  if (filtered.countries.length > 1) {
+    mymap.setView([50, 10], 5);
+  } else {
+    mymap.setView([50, 10], 4);
+  }
+}
+
 function drawMap(filter) {
-  mymap.setView([50, 10], 5);
+  // mymap.setView([50, 10], 5);
 
   L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmFkaW5la2hpcyIsImEiOiJja2loZGticTMwNzJxMnltbGRsdzRqZmw0In0.E8fOw826aYb03PGElEtyYQ",
@@ -32027,6 +32051,7 @@ function drawMap(filter) {
     const url = `https://corona.lmao.ninja/v2/countries`;
     const res = await fetch(url);
     data = await res.json();
+    // console.log(data);
 
     const hasData = Array.isArray(data) && data.length > 0;
 
@@ -32143,6 +32168,7 @@ function drawMap(filter) {
     geoJsonLayerOne.addTo(mymap);
   }
   getData();
+  mymap.setView([50, 10], 5);
 }
 
 
@@ -32226,6 +32252,7 @@ const loadData = () => {
       const countries = new _controllers_countries_js__WEBPACK_IMPORTED_MODULE_2__["default"](main, covidModel);
       updated.render();
       countries.render();
+      // console.log(api);
     });
  };
 

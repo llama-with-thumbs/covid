@@ -5,7 +5,7 @@ export const makeGlobalMarkup = (data, filter) => {
   
   let sum = 0;
   let todaySum = 0;
-  let region = 'WHOLE WORLD';
+  let region = 'Worldwide';
   if (filter === null) {
     sum = data.global.totalConfirmed;
     todaySum = data.global.newConfirmed.toLocaleString();

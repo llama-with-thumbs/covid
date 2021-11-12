@@ -10,21 +10,28 @@ export const makeRecRow = (countryData) => {
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td>
-      <span class="country__name">${name}</span><br>
-      Total number of cases:${totalCases}<br>
-      Number of cases today:${todayCases}<br>
+      <td class="country__name">Total: <span class="red">${totalCases.toLocaleString()}</span><br>
+      Today: <span class="red">${todayCases.toLocaleString()}</span>
       </td>
     </tr>`
   );
 };
 
 export const makeRecoveriesTableMarkup = (data, filter) => {
+  let rows;
+  if (filter) {
   const dataFiltered = filterById(data, filter);
-  const sum = data.global.totalRecovered;
   const countries = dataFiltered.countries;
-  const rows = countries.map((item) => makeRecRow(item, filter)).join('');
-  
+  rows = countries.map((item) => makeRecRow(item, filter)).join('');
+  } else {
+    const totalConfirmed = data.global.totalConfirmed;
+    const newConfirmed = data.global.newConfirmed;
+    rows =  `<tr>
+    <td class="country__name">Total: <span class="red">${totalConfirmed.toLocaleString()}</span><br>
+    Today: <span class="red">${newConfirmed.toLocaleString()}</span>
+    </td>
+  </tr>`
+  }
   return (
     `<div class="recoveries">
       <h3 class="recovered__header">Cases</h3>

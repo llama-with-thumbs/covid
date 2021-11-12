@@ -25,6 +25,7 @@ const loadData = () => {
       const countries = new CountriesController(main, covidModel);
       updated.render();
       countries.render();
+      // console.log(api);
     });
  };
 

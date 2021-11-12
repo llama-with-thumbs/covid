@@ -1,7 +1,19 @@
+import {filterById} from '../utils.js';
+
 export let mymap = L.map("map");
 
+export const changeCoordinates = (data, filter) => {
+  // console.log(filterById(data, filter));
+  const filtered = filterById(data, filter);
+  if (filtered.countries.length > 1) {
+    mymap.setView([50, 10], 5);
+  } else {
+    mymap.setView([50, 10], 4);
+  }
+}
+
 export default function drawMap(filter) {
-  mymap.setView([50, 10], 5);
+  // mymap.setView([50, 10], 5);
 
   L.tileLayer(
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibmFkaW5la2hpcyIsImEiOiJja2loZGticTMwNzJxMnltbGRsdzRqZmw0In0.E8fOw826aYb03PGElEtyYQ",
@@ -22,6 +34,7 @@ export default function drawMap(filter) {
     const url = `https://corona.lmao.ninja/v2/countries`;
     const res = await fetch(url);
     data = await res.json();
+    // console.log(data);
 
     const hasData = Array.isArray(data) && data.length > 0;
 
@@ -138,4 +151,5 @@ export default function drawMap(filter) {
     geoJsonLayerOne.addTo(mymap);
   }
   getData();
+  mymap.setView([50, 10], 5);
 }

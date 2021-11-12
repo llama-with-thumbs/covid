@@ -8,7 +8,7 @@ export const makeCountryRow = (countryData, filter) => {
   const trName = `c-${id}`;
   const isActive = countryData.countryCode === filter ? `active` : ``;
   const countryCode = countryData.countryCode === "XK" ? "EU" : countryData.countryCode;
-  return `<tr class="${trName} ${isActive}" data-country-name="${name}">
+  return `<tr class="${trName} ${isActive}" data-region-code="${countryCode}">
       <td class="quantity">${totalCases}</td>
       <td class="country-name">
         ${name}<img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryCode}.png" height="20" width="20" alt="flag">
@@ -20,7 +20,7 @@ export const makeWorldRow = (data, filter) => {
   const totalCases = data.global.totalConfirmed.toLocaleString();
   const todayCases = data.global.newConfirmed.toLocaleString();
   const isActive = filter === null ? `active` : ``;
-  return `<tr class="c-world ${isActive}">
+  return `<tr class="c-world" ${isActive} data-region-code="world">
     <td class="quantity">${totalCases}</td>
     <td class="country-name">Worldwide <span class="county-flag">🌎</span></td>
     </tr>`;
@@ -56,6 +56,6 @@ export default class Countries extends AbstractComponent {
   }
 
   setClickHandler(handler) {
-    this.getElement().addEventListener("click", handler);
+    this.getElement().querySelector(".countries__table").addEventListener("click", handler);
   }
 }

@@ -59,7 +59,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: 1.1fr 3fr repeat(2, .95fr);
-  grid-template-rows: 0.3fr 0.7fr 2fr 1fr 0.3fr 0.3fr;
+  grid-template-rows: 0.3fr 0.9fr 0.3fr 2fr 1fr 0.3fr 0.3fr;
   gap: 5px;
   width: 100vw;
   margin: 0px auto 0px auto;
@@ -70,6 +70,7 @@ body {
   grid-template-areas:
     "header header header header"
     "global_cases map recoveries deaths"
+    "global_cases map charts charts"
     "countries map charts charts"
     "countries map charts charts"
     "updated map charts charts"
@@ -361,6 +362,10 @@ hr.light__line {
 }
 .red{
   color: red;
+}
+.black{
+  color: black;
+  font-weight: bold;
 }
 .countries__table tr {
   display: flex;

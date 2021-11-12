@@ -4,6 +4,7 @@ import DeathsComponent from "../components/deaths.js";
 import CasesComponent from "../components/cases.js";
 import GlobalComponent from "../components/global.js";
 import ChartComponent from "../components/chart/chart-component.js";
+import {changeCoordinates} from "./map.js";
 
 export default class CountriesController {
   constructor(container, model, filter = null) {
@@ -14,15 +15,17 @@ export default class CountriesController {
     this._deaths = null;
     this._cases = null;
     this._global = null;
+
     this._chart = null;
   }
   render() {
-    const data = this._model.getData();
+    const data = this._model.getData();    
 
     this._global = new GlobalComponent(data, this._filter);
     this._countries = new CountriesComponent(data, this._filter);
     this._deaths = new DeathsComponent(data, this._filter);
     this._cases = new CasesComponent(data, this._filter);
+    // console.log("here");
     this._chart = new ChartComponent(data, this._filter);
 
     this._countries.setClickHandler((evt) => {
@@ -42,7 +45,6 @@ export default class CountriesController {
 
   countriesClickHandler(evt, data) {
     this.onFilterChange(evt, data);
-    
   }
 
   countriesRerender(data) {
@@ -51,38 +53,26 @@ export default class CountriesController {
     this.render();
   }
 
-  onFilterChange(evt, data) {
-    evt.preventDefault();
-    console.log(evt.target.getAttribute("data-country-name"));
-    console.log(data);
-    const parent = evt.target.parentElement;
-    if (
-      parent.classList.contains("deaths") ||
-      parent.classList.contains("recoveries") ||
-      parent.classList.contains("countries")
-    ) {
-      return;
-    }
-    if (
-      evt.target.classList.contains("deaths") ||
-      evt.target.classList.contains("recoveries") ||
-      evt.target.classList.contains("countries")
-    ) {
-      return;
-    }
-    if (
-      evt.target.classList.contains("county-flag") ||
-      evt.target.nodeName === "TR"
-    ) {
-      return;
+  getParent(element) {
+    return element.parentElement;
+  }
+  getCountryCode(element, getParent) {
+    if (element.getAttribute("data-region-code")) {
+      return element.getAttribute("data-region-code");
     } else {
-      const chosenCountry = parent.classList[0].slice(2);
-      const newFilter =
-        chosenCountry === "world" ? null : chosenCountry.toUpperCase();
-        if (this.filter !== newFilter){
-          this._filter = newFilter;
-          this.countriesRerender(data);
-        }
+      return this.getCountryCode(this.getParent(element));
+    }
+  }
+
+  onFilterChange(evt, data) {    
+    evt.preventDefault();
+    const countryCode = this.getCountryCode(evt.target);
+    const newFilter = countryCode === "world" ? null : countryCode;
+    if (this.filter !== newFilter) {
+      this._filter = newFilter;
+
+      this.countriesRerender(data);
+      changeCoordinates(data, this._filter);
     }
   }
 
@@ -96,6 +86,7 @@ export default class CountriesController {
     this._deaths = newDeaths;
     this._cases = newCases;
     this._global = newGlobal;
+
     this._chart = chart;
   }
 
