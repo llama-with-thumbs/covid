@@ -31576,7 +31576,7 @@ function sumChart(country) {
       Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
-      Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "steelblue");
+      Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "#55acee");
       document.querySelector(".chart__note").remove();
     });
   };
@@ -31852,7 +31852,7 @@ const makeUpdatedMarkup = (date) => {
   const formattedDate = `${month}/${day}/${year} ${hours}:${minutes}`;
   return (
     `<div class="updated">
-      <p>Last data release:</p>
+      <p>Last updated at</p>
       <h4>${formattedDate}</h4>
     </div>`
   );
@@ -31960,11 +31960,11 @@ class CountriesController {
     evt.preventDefault();
     const countryCode = this.getCountryCode(evt.target);
     const newFilter = countryCode === "world" ? null : countryCode;
+    
     if (this.filter !== newFilter) {
       this._filter = newFilter;
-
       this.countriesRerender(data);
-      Object(_map_js__WEBPACK_IMPORTED_MODULE_6__["changeCoordinates"])(data, this._filter);
+      Object(_map_js__WEBPACK_IMPORTED_MODULE_6__["changeCoordinates"])(this._filter);
     }
   }
 
@@ -32006,12 +32006,13 @@ class CountriesController {
 /*!********************************!*\
   !*** ./src/controllers/map.js ***!
   \********************************/
-/*! exports provided: mymap, changeCoordinates, default */
+/*! exports provided: mymap, coordinates, changeCoordinates, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mymap", function() { return mymap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coordinates", function() { return coordinates; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeCoordinates", function() { return changeCoordinates; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return drawMap; });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./src/utils.js");
@@ -32019,15 +32020,30 @@ __webpack_require__.r(__webpack_exports__);
 
 let mymap = L.map("map");
 
-const changeCoordinates = (data, filter) => {
-  // console.log(filterById(data, filter));
-  const filtered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["filterById"])(data, filter);
-  if (filtered.countries.length > 1) {
-    mymap.setView([50, 10], 5);
+const coordinatesMap = {};
+
+const coordinates = (data) => {
+  data.forEach((country) => {
+    coordinatesMap[country.countryInfo.iso2] = [
+      country.countryInfo.lat,
+      country.countryInfo.long,
+    ];
+  });
+  // console.log(coordinatesMap);
+};
+const changeCoordinates = (filter) => {
+  // console.log(filter);
+  if (filter) {
+    mymap.setView(coordinatesMap[filter], 5);
   } else {
-    mymap.setView([50, 10], 4);
+    mymap.setView([50, 10], 5);
   }
-}
+  // const filtered = filterById(data, filter);
+  // if (filtered.countries.length > 1) {
+  // } else {
+  //   mymap.setView([50, 10], 4);
+  // }
+};
 
 function drawMap(filter) {
   // mymap.setView([50, 10], 5);
@@ -32051,12 +32067,11 @@ function drawMap(filter) {
     const url = `https://corona.lmao.ninja/v2/countries`;
     const res = await fetch(url);
     data = await res.json();
-    // console.log(data);
+
+    coordinates(data);
 
     const hasData = Array.isArray(data) && data.length > 0;
-
     if (!hasData) return;
-
     const geoJson = {
       type: "FeatureCollection",
       features: data.map((country = {}) => {

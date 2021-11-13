@@ -121,7 +121,7 @@ export default function sumChart(country) {
       select(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
-      select(this).style("fill", "steelblue");
+      select(this).style("fill", "#55acee");
       document.querySelector(".chart__note").remove();
     });
   };

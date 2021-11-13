@@ -68,11 +68,11 @@ export default class CountriesController {
     evt.preventDefault();
     const countryCode = this.getCountryCode(evt.target);
     const newFilter = countryCode === "world" ? null : countryCode;
+    
     if (this.filter !== newFilter) {
       this._filter = newFilter;
-
       this.countriesRerender(data);
-      changeCoordinates(data, this._filter);
+      changeCoordinates(this._filter);
     }
   }
 
