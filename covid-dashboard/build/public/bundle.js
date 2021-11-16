@@ -31841,25 +31841,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Updated; });
 /* harmony import */ var _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-component.js */ "./src/components/abstract-component.js");
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const makeUpdatedMarkup = (date) => {
-  // console.log(date, typeof date);
-  const month = +date.getMonth() + 1;
-  const year = date.getFullYear();
+  const month = monthNames[+date.getMonth()];
+
+  let h = date.getHours();
+  h = h < 10 ? "0" + h : h;
+
+  let m = date.getMinutes();
+  m = m < 10 ? "0" + m : m;
+
   const day = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const formattedDate = `${month}/${day}/${year} ${hours}:${minutes}`;
-  return (
-    `<div class="updated">
-      <p>Last data release:</p>
-      <h4>${formattedDate}</h4>
-    </div>`
-  );
+
+  return `<div class="updated">
+      <p>Data as of ${month} ${day} at ${h}:${m}</p>
+    </div>`;
 };
 
 class Updated extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-
   constructor(data) {
     super();
     this._data = data;
@@ -31868,8 +31881,8 @@ class Updated extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["defau
   getTemplate() {
     return makeUpdatedMarkup(this._data);
   }
-
 }
+
 
 /***/ }),
 
@@ -32252,7 +32265,7 @@ const loadData = () => {
       const countries = new _controllers_countries_js__WEBPACK_IMPORTED_MODULE_2__["default"](main, covidModel);
       updated.render();
       countries.render();
-      console.log(api);
+      // console.log(api);
     });
  };
 
