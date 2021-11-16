@@ -24,10 +24,22 @@ export const makeUpdatedMarkup = (date) => {
   m = m < 10 ? "0" + m : m;
 
   const day = date.getDate();
+<<<<<<< HEAD
 
   return `<div class="updated">
       <p>Data as of ${month} ${day} at ${h}:${m}</p>
     </div>`;
+=======
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const formattedDate = `${month}/${day}/${year} ${hours}:${minutes}`;
+  return (
+    `<div class="updated">
+      <p>Last updated at</p>
+      <h4>${formattedDate}</h4>
+    </div>`
+  );
+>>>>>>> stash@{1}
 };
 
 export default class Updated extends AbstractComponent {

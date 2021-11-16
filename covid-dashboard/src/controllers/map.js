@@ -1,16 +1,31 @@
-import {filterById} from '../utils.js';
+import { filterById } from "../utils.js";
 
 export let mymap = L.map("map");
 
-export const changeCoordinates = (data, filter) => {
-  // console.log(filterById(data, filter));
-  const filtered = filterById(data, filter);
-  if (filtered.countries.length > 1) {
-    mymap.setView([50, 10], 5);
+const coordinatesMap = {};
+
+export const coordinates = (data) => {
+  data.forEach((country) => {
+    coordinatesMap[country.countryInfo.iso2] = [
+      country.countryInfo.lat,
+      country.countryInfo.long,
+    ];
+  });
+  // console.log(coordinatesMap);
+};
+export const changeCoordinates = (filter) => {
+  // console.log(filter);
+  if (filter) {
+    mymap.setView(coordinatesMap[filter], 5);
   } else {
-    mymap.setView([50, 10], 4);
+    mymap.setView([50, 10], 5);
   }
-}
+  // const filtered = filterById(data, filter);
+  // if (filtered.countries.length > 1) {
+  // } else {
+  //   mymap.setView([50, 10], 4);
+  // }
+};
 
 export default function drawMap(filter) {
   // mymap.setView([50, 10], 5);
@@ -34,12 +49,11 @@ export default function drawMap(filter) {
     const url = `https://corona.lmao.ninja/v2/countries`;
     const res = await fetch(url);
     data = await res.json();
-    // console.log(data);
+
+    coordinates(data);
 
     const hasData = Array.isArray(data) && data.length > 0;
-
     if (!hasData) return;
-
     const geoJson = {
       type: "FeatureCollection",
       features: data.map((country = {}) => {
