@@ -154,7 +154,6 @@ overflow: hidden;
   padding: 10px;
   font-size: 1.4rem;
   grid-area: global_cases;
-  background-color: rgb(64, 64, 64);
 }
 .updated {
   display: flex;
@@ -191,6 +190,7 @@ overflow: hidden;
   padding: 25px;
     
   display: flex;
+  flex-grow: 2;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
@@ -314,6 +314,7 @@ h1 {
   display: flex;
   flex-direction: column;
   grid-area: countries;
+  scroll-behavior: smooth;
 }
 .countries .quantity {
   font-size: .9rem;
@@ -558,11 +559,12 @@ hr.light__line {
     order: 0;
   }
   .charts{
+    /* margin: 0 20px; */
+    padding: 5px 20px;
     order: 1;
   }
   .map {
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px 20px;
     order: 1;
     position: relative;
     /* overflow: visible; */
@@ -573,18 +575,21 @@ hr.light__line {
     height: 400px;
   }
   .updated {
-    text-align: center;
     order: 0;
   }
   .countries {
+    padding: 5px 20px;
     display: flex;
     height: 400px;
     order: 2;
     
   }
   .global_cases {
-    text-align: center;
-    order: 5;
+    display: flex;
+    order: 0;
+  }
+  .global_cases > *{
+    align-self: center;
   }
   .recoveries {
     order: 6;
