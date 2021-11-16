@@ -162,6 +162,7 @@ overflow: hidden;
   justify-content: center;
   align-items: center;
   grid-area: updated;
+  text-align: center;
   background-color: rgb(64, 64, 64);
   }
 
