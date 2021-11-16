@@ -31576,7 +31576,7 @@ function sumChart(country) {
       Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
-      Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "steelblue");
+      Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "#55acee");
       document.querySelector(".chart__note").remove();
     });
   };
@@ -31841,7 +31841,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Updated; });
 /* harmony import */ var _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-component.js */ "./src/components/abstract-component.js");
 
+
 const monthNames = [
+  
   "January",
   "February",
   "March",
@@ -31850,8 +31852,7 @@ const monthNames = [
   "June",
   "July",
   "August",
-  "September",
-  "October",
+  "September","October",
   "November",
   "December",
 ];
@@ -31868,7 +31869,7 @@ const makeUpdatedMarkup = (date) => {
   const day = date.getDate();
 
   return `<div class="updated">
-      <p>Data as of ${month} ${day} at ${h}:${m}</p>
+      <p>Data as of <span>${month} ${day} at ${h}:${m}</span></p>
     </div>`;
 };
 
@@ -31882,7 +31883,6 @@ class Updated extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["defau
     return makeUpdatedMarkup(this._data);
   }
 }
-
 
 /***/ }),
 
@@ -31920,6 +31920,9 @@ class CountriesController {
     this._deaths = null;
     this._cases = null;
     this._global = null;
+    this._highlighted = null;
+
+    // console.log("constructor");
 
     this._chart = null;
   }
@@ -31930,32 +31933,35 @@ class CountriesController {
     this._countries = new _components_countries_js__WEBPACK_IMPORTED_MODULE_1__["default"](data, this._filter);
     this._deaths = new _components_deaths_js__WEBPACK_IMPORTED_MODULE_2__["default"](data, this._filter);
     this._cases = new _components_cases_js__WEBPACK_IMPORTED_MODULE_3__["default"](data, this._filter);
-    // console.log("here");
     this._chart = new _components_chart_chart_component_js__WEBPACK_IMPORTED_MODULE_5__["default"](data, this._filter);
+    
+    // console.log("render");
 
     this._countries.setClickHandler((evt) => {
       this.countriesClickHandler(evt, data);
     });
 
-    // this._deaths.setClickHandler((evt) => {
-    //   this.countriesClickHandler(evt, data);
-    // });
-
-    // this._cases.setClickHandler((evt) => {
-    //   this.countriesClickHandler(evt, data);
-    // });
-
     this.renderLists();
+  }
+  highlight(element){
+    if (this._highlighted) this._highlighted.classList.toggle("active");
+    element.classList.toggle("active");
+    this._highlighted = element;
+  }
+  reRender(){
+    // console.log("reRender");
+    this.reRenderLists();
   }
 
   countriesClickHandler(evt, data) {
     this.onFilterChange(evt, data);
   }
 
-  countriesRerender(data) {
+  countriesReRender(data) {
     this.removeLists();
     this.reCreateLists(data);
-    this.render();
+    // this.render();
+    this.reRender();
   }
 
   getParent(element) {
@@ -31968,35 +31974,45 @@ class CountriesController {
       return this.getCountryCode(this.getParent(element));
     }
   }
+  getTableRow(element, getParent) {
+    if (element.getAttribute("data-region-code")) {
+      return element;
+    } else {
+      return this.getTableRow(this.getParent(element));
+    }
+  }
 
-  onFilterChange(evt, data) {    
+  onFilterChange(evt, data) {
     evt.preventDefault();
     const countryCode = this.getCountryCode(evt.target);
     const newFilter = countryCode === "world" ? null : countryCode;
-    if (this.filter !== newFilter) {
-      this._filter = newFilter;
+    
+    if (this._filter !== newFilter) {
+      // console.log(this.getTableRow(evt.target));
+      
 
-      this.countriesRerender(data);
-      Object(_map_js__WEBPACK_IMPORTED_MODULE_6__["changeCoordinates"])(data, this._filter);
+      this._filter = newFilter;
+      this.highlight(this.getTableRow(evt.target));
+      this.countriesReRender(data);
+      Object(_map_js__WEBPACK_IMPORTED_MODULE_6__["changeCoordinates"])(this._filter);
     }
   }
 
   reCreateLists(data) {
-    const newCountries = new _components_countries_js__WEBPACK_IMPORTED_MODULE_1__["default"](data, this._filter);
+    // const newCountries = new CountriesComponent(data, this._filter);
     const newDeaths = new _components_deaths_js__WEBPACK_IMPORTED_MODULE_2__["default"](data, this._filter);
     const newCases = new _components_cases_js__WEBPACK_IMPORTED_MODULE_3__["default"](data, this._filter);
     const newGlobal = new _components_global_js__WEBPACK_IMPORTED_MODULE_4__["default"](data, this._filter);
     const chart = new _components_chart_chart_component_js__WEBPACK_IMPORTED_MODULE_5__["default"](data, this._filter);
-    this._countries = newCountries;
+    // this._countries = newCountries;
     this._deaths = newDeaths;
     this._cases = newCases;
     this._global = newGlobal;
-
     this._chart = chart;
   }
 
   removeLists() {
-    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._countries);
+    // remove(this._countries);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._deaths);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._cases);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["remove"])(this._global);
@@ -32010,6 +32026,12 @@ class CountriesController {
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._global, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._chart, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
   }
+  reRenderLists() {
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._deaths, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._cases, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._global, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
+    // render(this._container, this._chart, RenderPosition.BEFOREEND);
+  }
 }
 
 
@@ -32019,28 +32041,35 @@ class CountriesController {
 /*!********************************!*\
   !*** ./src/controllers/map.js ***!
   \********************************/
-/*! exports provided: mymap, changeCoordinates, default */
+/*! exports provided: mymap, coordinates, changeCoordinates, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mymap", function() { return mymap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coordinates", function() { return coordinates; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeCoordinates", function() { return changeCoordinates; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return drawMap; });
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./src/utils.js");
-
-
 let mymap = L.map("map");
 
-const changeCoordinates = (data, filter) => {
-  // console.log(filterById(data, filter));
-  const filtered = Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["filterById"])(data, filter);
-  if (filtered.countries.length > 1) {
-    mymap.setView([50, 10], 5);
+const coordinatesMap = {};
+
+const coordinates = (data) => {
+  data.forEach((country) => {
+    coordinatesMap[country.countryInfo.iso2] = [
+      country.countryInfo.lat,
+      country.countryInfo.long,
+    ];
+  });
+  // console.log(coordinatesMap);
+};
+const changeCoordinates = (filter) => {
+  if (filter) {
+    mymap.setView(coordinatesMap[filter], 5);
   } else {
-    mymap.setView([50, 10], 4);
+    mymap.setView([50, 10], 5);
   }
-}
+};
 
 function drawMap(filter) {
   // mymap.setView([50, 10], 5);
@@ -32064,12 +32093,11 @@ function drawMap(filter) {
     const url = `https://corona.lmao.ninja/v2/countries`;
     const res = await fetch(url);
     data = await res.json();
-    // console.log(data);
+
+    coordinates(data);
 
     const hasData = Array.isArray(data) && data.length > 0;
-
     if (!hasData) return;
-
     const geoJson = {
       type: "FeatureCollection",
       features: data.map((country = {}) => {
