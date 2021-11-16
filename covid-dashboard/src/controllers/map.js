@@ -1,5 +1,3 @@
-import { filterById } from "../utils.js";
-
 export let mymap = L.map("map");
 
 const coordinatesMap = {};
@@ -14,17 +12,11 @@ export const coordinates = (data) => {
   // console.log(coordinatesMap);
 };
 export const changeCoordinates = (filter) => {
-  // console.log(filter);
   if (filter) {
     mymap.setView(coordinatesMap[filter], 5);
   } else {
     mymap.setView([50, 10], 5);
   }
-  // const filtered = filterById(data, filter);
-  // if (filtered.countries.length > 1) {
-  // } else {
-  //   mymap.setView([50, 10], 4);
-  // }
 };
 
 export default function drawMap(filter) {

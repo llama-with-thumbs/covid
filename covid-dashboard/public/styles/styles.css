@@ -314,6 +314,7 @@ h1 {
   display: flex;
   flex-direction: column;
   grid-area: countries;
+  scroll-behavior: smooth;
 }
 .countries .quantity {
   font-size: .9rem;
