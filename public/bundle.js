@@ -31468,18 +31468,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function sumChart(country) {
-  // const chartsComponent = document.querySelector(".charts");
-  // if (document.querySelectorAll("charts-title").length === 0) {
-  //   const chartTitle = document.createElement("div");
-  //   chartTitle.classList.add("charts-title");
-  //   chartTitle.innerHTML = `Country: ${country}`;
-  //   chartsComponent.appendChild(chartTitle);
-  // } else {
-  //   chartsComponent.removeChild(document.querySelector(".charts-title"));
-  //   chartTitle.innerHTML = `Country: ${country}`;
-  // }
 
-  //clean section charts
   const charts = document.querySelector(".sum-chart");
   charts.innerHTML = "";
   if (document.querySelectorAll("sum-chart-title").length === 0) {
@@ -31843,7 +31832,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const monthNames = [
-  
   "January",
   "February",
   "March",
@@ -31852,7 +31840,8 @@ const monthNames = [
   "June",
   "July",
   "August",
-  "September","October",
+  "September",
+  "October",
   "November",
   "December",
 ];
@@ -31870,6 +31859,19 @@ const makeUpdatedMarkup = (date) => {
 
   return `<div class="updated">
       <p>Data as of <span>${month} ${day} at ${h}:${m}</span></p>
+
+      <div class="box">
+        <a class="button" href="#popup1">Data source</a>
+      </div>
+      
+      <div id="popup1" class="overlay">
+        <div class="popup">
+          <a class="close" href="#">&times;</a>
+          <div class="content">
+            <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">Data is sourced from Johns Hopkins CSSE</a>
+          </div>
+        </div>
+      </div>
     </div>`;
 };
 
@@ -31883,6 +31885,7 @@ class Updated extends _abstract_component_js__WEBPACK_IMPORTED_MODULE_0__["defau
     return makeUpdatedMarkup(this._data);
   }
 }
+
 
 /***/ }),
 
