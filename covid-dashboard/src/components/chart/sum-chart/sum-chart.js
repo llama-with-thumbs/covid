@@ -13,18 +13,7 @@ import {
 } from "d3";
 
 export default function sumChart(country) {
-  // const chartsComponent = document.querySelector(".charts");
-  // if (document.querySelectorAll("charts-title").length === 0) {
-  //   const chartTitle = document.createElement("div");
-  //   chartTitle.classList.add("charts-title");
-  //   chartTitle.innerHTML = `Country: ${country}`;
-  //   chartsComponent.appendChild(chartTitle);
-  // } else {
-  //   chartsComponent.removeChild(document.querySelector(".charts-title"));
-  //   chartTitle.innerHTML = `Country: ${country}`;
-  // }
 
-  //clean section charts
   const charts = document.querySelector(".sum-chart");
   charts.innerHTML = "";
   if (document.querySelectorAll("sum-chart-title").length === 0) {

@@ -1,7 +1,6 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractComponent from "./abstract-component.js";
 
 const monthNames = [
-  
   "January",
   "February",
   "March",
@@ -10,7 +9,8 @@ const monthNames = [
   "June",
   "July",
   "August",
-  "September","October",
+  "September",
+  "October",
   "November",
   "December",
 ];
@@ -28,6 +28,19 @@ export const makeUpdatedMarkup = (date) => {
 
   return `<div class="updated">
       <p>Data as of <span>${month} ${day} at ${h}:${m}</span></p>
+
+      <div class="box">
+        <a class="button" href="#popup1">Data source</a>
+      </div>
+      
+      <div id="popup1" class="overlay">
+        <div class="popup">
+          <a class="close" href="#">&times;</a>
+          <div class="content">
+            <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">Data is sourced from Johns Hopkins CSSE</a>
+          </div>
+        </div>
+      </div>
     </div>`;
 };
 
