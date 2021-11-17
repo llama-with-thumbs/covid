@@ -613,7 +613,6 @@ hr.light__line {
 /* overlay */
 .box {
   margin: 0 auto;
-  /* background: rgba(255,255,255,0.2); */
   border-radius: 2px;
   text-align: center;
 }
