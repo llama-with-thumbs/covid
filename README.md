@@ -9,6 +9,7 @@ Project-based course focusing on best practices (Airbnb style, Conventional Comm
 ![COVID-19 Dashboard](covid-dashboard/public/assets/app-interface.png "COVID-19 Dashboard interface")
 
 Technologies:
+- Model-View-Controller pattern
 - map: mapbox https://docs.mapbox.com/api/overview/
 - charts: D3.js https://d3js.org/
 - Webpack module bundler https://webpack.github.io/
