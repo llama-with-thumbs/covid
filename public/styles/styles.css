@@ -38,8 +38,8 @@
 
 html {
   font-size: 16px;
-  height: 100vh;
-  width: 100vw;
+  /* height: 100vh; */
+  /* width: 100vw; */
   margin: 0;
   padding: 0;
 
@@ -52,7 +52,7 @@ body {
   background-color: black;
   font-family: 'Quicksand', sans-serif;
 
-  height: 100vh;
+  /* height: 100vh; */
   padding: 0;
 }
 
@@ -61,7 +61,7 @@ body {
   grid-template-columns: 1.1fr 3fr repeat(2, .95fr);
   grid-template-rows: 0.3fr 0.9fr 0.3fr 2fr 1fr 0.3fr 0.3fr;
   gap: 5px;
-  width: 100vw;
+  /* width: 100vw; */
   margin: 0px auto 0px auto;
   height: 100vh;
   transition: .5s;
@@ -499,11 +499,6 @@ hr.light__line {
   padding-left: 20px;
 }
 
-.icon-marker:hover,.show .icon-marker-tooltip,.show {
-  display: block;
-  padding-left: 20px;
-}
-
 .icon-marker-tooltip {
   display: none;
   position: absolute;
@@ -613,7 +608,6 @@ hr.light__line {
 /* overlay */
 .box {
   margin: 0 auto;
-  /* background: rgba(255,255,255,0.2); */
   border-radius: 2px;
   text-align: center;
 }

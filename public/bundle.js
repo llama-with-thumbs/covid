@@ -31267,6 +31267,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const Chart = (countyName) => {
   // console.log(countyName);
+  
   Object(_daily_chart_daily_chart_js__WEBPACK_IMPORTED_MODULE_2__["default"])(countyName);
   Object(_sum_chart_sum_chart_js__WEBPACK_IMPORTED_MODULE_3__["default"])(countyName);
   return " ";
@@ -31438,6 +31439,7 @@ function dailyChart(country) {
     Object(d3__WEBPACK_IMPORTED_MODULE_0__["json"])(
       `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
     ).then((data) => {
+      // console.log(data);
       let previousDayNumber = 0;
       const newData = data.map((d) => {
         let numberInCurrentDay = +d.Cases - previousDayNumber;
@@ -31468,7 +31470,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function sumChart(country) {
-
   const charts = document.querySelector(".sum-chart");
   charts.innerHTML = "";
   if (document.querySelectorAll("sum-chart-title").length === 0) {
@@ -31565,7 +31566,7 @@ function sumChart(country) {
       Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
-      Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "#55acee");
+      Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "steelblue");
       document.querySelector(".chart__note").remove();
     });
   };
@@ -32033,7 +32034,7 @@ class CountriesController {
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._deaths, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._cases, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
     Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._global, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
-    // render(this._container, this._chart, RenderPosition.BEFOREEND);
+    Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["render"])(this._container, this._chart, _utils_js__WEBPACK_IMPORTED_MODULE_0__["RenderPosition"].BEFOREEND);
   }
 }
 
@@ -32058,6 +32059,7 @@ let mymap = L.map("map");
 const coordinatesMap = {};
 
 const coordinates = (data) => {
+  // console.log(data);
   data.forEach((country) => {
     coordinatesMap[country.countryInfo.iso2] = [
       country.countryInfo.lat,
@@ -32074,7 +32076,7 @@ const changeCoordinates = (filter) => {
   }
 };
 
-function drawMap(filter) {
+function drawMap(data) {
   // mymap.setView([50, 10], 5);
 
   L.tileLayer(
@@ -32090,12 +32092,7 @@ function drawMap(filter) {
     }
   ).addTo(mymap);
 
-  let data = null;
-
-  async function getData() {
-    const url = `https://corona.lmao.ninja/v2/countries`;
-    const res = await fetch(url);
-    data = await res.json();
+  function getData(data) {
 
     coordinates(data);
 
@@ -32211,7 +32208,7 @@ function drawMap(filter) {
     geoJsonLayerTwo.addTo(mymap);
     geoJsonLayerOne.addTo(mymap);
   }
-  getData();
+  getData(data);
   mymap.setView([50, 10], 5);
 }
 
@@ -32268,7 +32265,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_updated_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./controllers/updated.js */ "./src/controllers/updated.js");
 /* harmony import */ var _controllers_countries_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./controllers/countries.js */ "./src/controllers/countries.js");
 /* harmony import */ var _models_covid_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./models/covid.js */ "./src/models/covid.js");
-/* harmony import */ var _controllers_map__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./controllers/map */ "./src/controllers/map.js");
+/* harmony import */ var _controllers_map_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./controllers/map.js */ "./src/controllers/map.js");
 
 
 
@@ -32277,7 +32274,7 @@ __webpack_require__.r(__webpack_exports__);
 // import drawChart from './controllers/charts.js';
 
 const END_POINT = `https://api.covid19api.com`;
-const main = document.querySelector('#main');
+const main = document.querySelector("#main");
 
 const covidModel = new _models_covid_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
@@ -32288,6 +32285,8 @@ const loadData = () => {
     })
     .then((text) => {
       const api = JSON.parse(text);
+      // console.log(api);
+
       Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["renameObjKeys"])(api);
       Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["renameObjKeys"])(api.global);
       api.countries.map((item) => Object(_utils_js__WEBPACK_IMPORTED_MODULE_0__["renameObjKeys"])(item));
@@ -32296,24 +32295,31 @@ const loadData = () => {
       const countries = new _controllers_countries_js__WEBPACK_IMPORTED_MODULE_2__["default"](main, covidModel);
       updated.render();
       countries.render();
-      // console.log(api);
     });
- };
+};
 
-//отрисовка чарта
+const loadMapData = () => {
+  fetch(`https://corona.lmao.ninja/v2/countries`)
+    .then((res) => res.json())
+    .then((data) => {
+      Object(_controllers_map_js__WEBPACK_IMPORTED_MODULE_4__["default"])(data);
+      // console.log(data);
+    });
+};
 
-// drawChart();
+const checkCpia = (country) => {
+  fetch("../public/assets/CPIA.json")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(country);
+      console.log(data);
+    });
+};
 
-Object(_controllers_map__WEBPACK_IMPORTED_MODULE_4__["default"])();
+// checkCpia();
 
+loadMapData();
 loadData();
-
-// setTimeout(function(){ 
-//   const eConteiner = document.querySelector('.grid-container');
-//   console.log(document.getElementById('text'));
-
-
-// }, 100);
 
 
 /***/ }),
