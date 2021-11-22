@@ -31182,14 +31182,14 @@ __webpack_require__.r(__webpack_exports__);
 const makeRecRow = (countryData) => {
   const name = countryData.country;
   // console.log(countryData);
-  const totalCases = countryData.totalConfirmed;
-  const todayCases = countryData.newConfirmed;
+  const totalCases = countryData.totalConfirmed.toLocaleString();
+  const todayCases = (+countryData.newConfirmed) === 0 ? countryData.newConfirmed+"*" : countryData.newConfirmed.toLocaleString();
   const id = countryData.countryCode;
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td class="country__name">Total: <span class="red">${totalCases.toLocaleString()}</span><br>
-      Today: <span class="red">${todayCases.toLocaleString()}</span>
+      <td class="country__name">Total: <span class="red">${totalCases}</span><br>
+      Today: <span class="red">${todayCases}</span>
       </td>
     </tr>`
   );
@@ -31697,14 +31697,15 @@ __webpack_require__.r(__webpack_exports__);
 
 const makeDeathRow = (countryData) => {
   const name = countryData.country;
-  const newDeaths = countryData.newDeaths.toLocaleString();
   const totalDeaths = countryData.totalDeaths.toLocaleString();
+  const newDeaths = (+countryData.newDeaths) === 0 ? countryData.newDeaths+"*" : countryData.newDeaths.toLocaleString();
+  
   const id = countryData.countryCode;
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-    <td class="country__name">Total: <span class="black">${totalDeaths.toLocaleString()}</span><br>
-    Today: <span class="black">${newDeaths.toLocaleString()}</span>
+    <td class="country__name">Total: <span class="black">${totalDeaths}</span><br>
+    Today: <span class="black">${newDeaths}</span>
     </td>
       </td>
     </tr>`
@@ -31862,14 +31863,27 @@ const makeUpdatedMarkup = (date) => {
       <p>Data as of <span>${month} ${day} at ${h}:${m}</span></p>
 
       <div class="box">
-        <a class="button" href="#popup1">Data source</a>
+        <a class="button" href="#popup1">Data source and tips</a>
       </div>
       
       <div id="popup1" class="overlay">
         <div class="popup">
           <a class="close" href="#">&times;</a>
           <div class="content">
-            <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">Data is sourced from Johns Hopkins CSSE</a>
+            <h3>Aggregated data sources:</h3>
+            <ul>
+              <li><a href="https://github.com/CSSEGISandData/COVID-19">https://github.com/CSSEGISandData/COVID-19</a></li>
+              <li><a href="https://api.covid19api.com/">https://api.covid19api.com/</a></li>
+              <li><a href="https://corona.lmao.ninja/v2/countries">https://corona.lmao.ninja/v2/countries</a></li>
+            </ul>
+            <h3>* There could be several reasons for a zero data number:</h3>
+            <ul>
+              <li>the data is accurate</li>
+              <li>the data delayed and will be added later</li>
+              <li>the data is unfaithful. See CPIA transparency, accountability, 
+              and corruption in the public sector rating. World Bank Group, CPIA database (<a href="http://www.worldbank.org/ida">http://www.worldbank.org/ida</a>).
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -32303,20 +32317,23 @@ const loadMapData = () => {
     .then((res) => res.json())
     .then((data) => {
       Object(_controllers_map_js__WEBPACK_IMPORTED_MODULE_4__["default"])(data);
-      // console.log(data);
+
+      // data.forEach( country => {
+      //   console.log(country.countryInfo.iso3);
+      // });
     });
 };
 
-const checkCpia = (country) => {
-  fetch("../public/assets/CPIA.json")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(country);
-      console.log(data);
-    });
+const cpiaData = () =>
+  fetch("../public/assets/CPIA.json").then((res) => res.json());
+const getCpia = (country) => {
+  console.log(cpiaData());
+  // cpiaData.forEach((country) => {
+  //   console.log(country);
+  // });
 };
 
-// checkCpia();
+// getCpia();
 
 loadMapData();
 loadData();
