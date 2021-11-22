@@ -35,20 +35,23 @@ const loadMapData = () => {
     .then((res) => res.json())
     .then((data) => {
       drawMap(data);
-      // console.log(data);
+
+      // data.forEach( country => {
+      //   console.log(country.countryInfo.iso3);
+      // });
     });
 };
 
-const checkCpia = (country) => {
-  fetch("../public/assets/CPIA.json")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(country);
-      console.log(data);
-    });
+const cpiaData = () =>
+  fetch("../public/assets/CPIA.json").then((res) => res.json());
+const getCpia = (country) => {
+  console.log(cpiaData());
+  // cpiaData.forEach((country) => {
+  //   console.log(country);
+  // });
 };
 
-// checkCpia();
+// getCpia();
 
 loadMapData();
 loadData();

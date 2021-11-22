@@ -4,14 +4,14 @@ import {filterById} from '../utils.js';
 export const makeRecRow = (countryData) => {
   const name = countryData.country;
   // console.log(countryData);
-  const totalCases = countryData.totalConfirmed;
-  const todayCases = countryData.newConfirmed;
+  const totalCases = countryData.totalConfirmed.toLocaleString();
+  const todayCases = (+countryData.newConfirmed) === 0 ? countryData.newConfirmed+"*" : countryData.newConfirmed.toLocaleString();
   const id = countryData.countryCode;
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-      <td class="country__name">Total: <span class="red">${totalCases.toLocaleString()}</span><br>
-      Today: <span class="red">${todayCases.toLocaleString()}</span>
+      <td class="country__name">Total: <span class="red">${totalCases}</span><br>
+      Today: <span class="red">${todayCases}</span>
       </td>
     </tr>`
   );

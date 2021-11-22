@@ -3,14 +3,15 @@ import {filterById} from '../utils.js';
 
 export const makeDeathRow = (countryData) => {
   const name = countryData.country;
-  const newDeaths = countryData.newDeaths.toLocaleString();
   const totalDeaths = countryData.totalDeaths.toLocaleString();
+  const newDeaths = (+countryData.newDeaths) === 0 ? countryData.newDeaths+"*" : countryData.newDeaths.toLocaleString();
+  
   const id = countryData.countryCode;
   const trName = `c-${id}`;
   return (
     `<tr class="${trName}">
-    <td class="country__name">Total: <span class="black">${totalDeaths.toLocaleString()}</span><br>
-    Today: <span class="black">${newDeaths.toLocaleString()}</span>
+    <td class="country__name">Total: <span class="black">${totalDeaths}</span><br>
+    Today: <span class="black">${newDeaths}</span>
     </td>
       </td>
     </tr>`
