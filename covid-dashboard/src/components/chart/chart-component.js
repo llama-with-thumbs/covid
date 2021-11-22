@@ -5,6 +5,7 @@ import sumChart from "./sum-chart/sum-chart.js";
 
 const Chart = (countyName) => {
   // console.log(countyName);
+  
   dailyChart(countyName);
   sumChart(countyName);
   return " ";

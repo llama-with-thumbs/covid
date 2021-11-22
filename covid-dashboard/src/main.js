@@ -1,12 +1,12 @@
-import {renameObjKeys} from './utils.js';
-import UpdatedController from './controllers/updated.js';
-import CountriesController from './controllers/countries.js';
-import CovidModel from './models/covid.js';
-import drawMap from "./controllers/map";
+import { renameObjKeys } from "./utils.js";
+import UpdatedController from "./controllers/updated.js";
+import CountriesController from "./controllers/countries.js";
+import CovidModel from "./models/covid.js";
+import drawMap from "./controllers/map.js";
 // import drawChart from './controllers/charts.js';
 
 const END_POINT = `https://api.covid19api.com`;
-const main = document.querySelector('#main');
+const main = document.querySelector("#main");
 
 const covidModel = new CovidModel();
 
@@ -17,6 +17,8 @@ const loadData = () => {
     })
     .then((text) => {
       const api = JSON.parse(text);
+      // console.log(api);
+
       renameObjKeys(api);
       renameObjKeys(api.global);
       api.countries.map((item) => renameObjKeys(item));
@@ -25,21 +27,28 @@ const loadData = () => {
       const countries = new CountriesController(main, covidModel);
       updated.render();
       countries.render();
-      // console.log(api);
     });
- };
+};
 
-//отрисовка чарта
+const loadMapData = () => {
+  fetch(`https://corona.lmao.ninja/v2/countries`)
+    .then((res) => res.json())
+    .then((data) => {
+      drawMap(data);
+      // console.log(data);
+    });
+};
 
-// drawChart();
+const checkCpia = (country) => {
+  fetch("../public/assets/CPIA.json")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(country);
+      console.log(data);
+    });
+};
 
-drawMap();
+// checkCpia();
 
+loadMapData();
 loadData();
-
-// setTimeout(function(){ 
-//   const eConteiner = document.querySelector('.grid-container');
-//   console.log(document.getElementById('text'));
-
-
-// }, 100);

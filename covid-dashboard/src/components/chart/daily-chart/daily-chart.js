@@ -132,6 +132,7 @@ export default function dailyChart(country) {
     json(
       `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
     ).then((data) => {
+      // console.log(data);
       let previousDayNumber = 0;
       const newData = data.map((d) => {
         let numberInCurrentDay = +d.Cases - previousDayNumber;

@@ -13,7 +13,6 @@ import {
 } from "d3";
 
 export default function sumChart(country) {
-
   const charts = document.querySelector(".sum-chart");
   charts.innerHTML = "";
   if (document.querySelectorAll("sum-chart-title").length === 0) {
@@ -110,7 +109,7 @@ export default function sumChart(country) {
       select(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
-      select(this).style("fill", "#55acee");
+      select(this).style("fill", "steelblue");
       document.querySelector(".chart__note").remove();
     });
   };

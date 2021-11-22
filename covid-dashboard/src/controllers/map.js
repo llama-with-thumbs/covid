@@ -3,6 +3,7 @@ export let mymap = L.map("map");
 const coordinatesMap = {};
 
 export const coordinates = (data) => {
+  // console.log(data);
   data.forEach((country) => {
     coordinatesMap[country.countryInfo.iso2] = [
       country.countryInfo.lat,
@@ -19,7 +20,7 @@ export const changeCoordinates = (filter) => {
   }
 };
 
-export default function drawMap(filter) {
+export default function drawMap(data) {
   // mymap.setView([50, 10], 5);
 
   L.tileLayer(
@@ -35,12 +36,7 @@ export default function drawMap(filter) {
     }
   ).addTo(mymap);
 
-  let data = null;
-
-  async function getData() {
-    const url = `https://corona.lmao.ninja/v2/countries`;
-    const res = await fetch(url);
-    data = await res.json();
+  function getData(data) {
 
     coordinates(data);
 
@@ -156,6 +152,6 @@ export default function drawMap(filter) {
     geoJsonLayerTwo.addTo(mymap);
     geoJsonLayerOne.addTo(mymap);
   }
-  getData();
+  getData(data);
   mymap.setView([50, 10], 5);
 }

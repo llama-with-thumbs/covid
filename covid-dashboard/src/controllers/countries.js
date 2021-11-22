@@ -125,6 +125,6 @@ export default class CountriesController {
     render(this._container, this._deaths, RenderPosition.BEFOREEND);
     render(this._container, this._cases, RenderPosition.BEFOREEND);
     render(this._container, this._global, RenderPosition.BEFOREEND);
-    // render(this._container, this._chart, RenderPosition.BEFOREEND);
+    render(this._container, this._chart, RenderPosition.BEFOREEND);
   }
 }

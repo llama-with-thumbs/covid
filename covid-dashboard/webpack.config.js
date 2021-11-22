@@ -5,7 +5,7 @@ module.exports = {
   entry: `./src/main.js`,
   output: {
     filename: `bundle.js`,
-    path: path.join(__dirname, `public`)
+    path: path.join(__dirname, `public`),
   },
   module: {
     rules: [
@@ -19,13 +19,24 @@ module.exports = {
           // Compiles Sass to CSS
           "sass-loader",
         ],
+        rules: [
+          {
+            test: /\.csv$/,
+            loader: "csv-loader",
+            options: {
+              dynamicTyping: true,
+              header: true,
+              skipEmptyLines: true,
+            },
+          },
+        ],
       },
     ],
   },
   devtool: `source-map`,
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
+    contentBase: path.join(__dirname, "public"),
     watchContentBase: true,
     overlay: true,
-  }
+  },
 };
