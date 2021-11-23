@@ -18,14 +18,9 @@ export const makeDeathRow = (countryData) => {
   );
 };
 
-
 export const makeDeathsTableMarkup = (data, filter) => {
   let rows;
-  if (filter) {
-    const dataFiltered = filterById(data, filter);
-    const countries = dataFiltered.countries;
-    rows = countries.map((item) => makeDeathRow(item)).join('');
-  } else {
+  if (filter === "world") {
     const totalDeaths = data.global.totalDeaths;
     const newDeaths = data.global.newDeaths;
     rows =  `<tr>
@@ -33,14 +28,18 @@ export const makeDeathsTableMarkup = (data, filter) => {
     Today: <span class="black">${newDeaths.toLocaleString()}</span>
     </td>
   </tr>`
+  } else {
+    const dataFiltered = filterById(data, filter);
+    const countries = dataFiltered.countries;
+    rows = countries.map((item) => makeDeathRow(item)).join('');
   }
   return (
     `<div class="deaths">
     <h3 class="death__header">Deaths</h3>
-    <hr>
-      <table class="deaths__table">
-        ${rows}
-      </table>
+    <hr class="line-separator">
+    <table class="deaths__table">
+      ${rows}
+    </table>
     </div>`
   );
 };

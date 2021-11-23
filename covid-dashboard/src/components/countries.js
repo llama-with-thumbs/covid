@@ -6,9 +6,9 @@ export const makeCountryRow = (countryData, filter) => {
   const todayCases = countryData.newConfirmed.toLocaleString();
   const id = countryData.countryCode.toLowerCase();
   const trName = `c-${id}`;
-  const isActive = countryData.countryCode === filter ? `active` : ``;
+  // console.log(countryData);
   const countryCode = countryData.countryCode === "XK" ? "EU" : countryData.countryCode;
-  return `<tr class="${trName} ${isActive}" data-region-code="${countryCode}">
+  return `<tr class="${trName}" data-region-code="${countryCode}">
       <td class="quantity">${totalCases}</td>
       <td class="country-name">
         ${name}<img class="county-flag" src="https://www.countryflagicons.com/FLAT/24/${countryCode}.png" height="20" width="20" alt="flag">
@@ -19,14 +19,16 @@ export const makeCountryRow = (countryData, filter) => {
 export const makeWorldRow = (data, filter) => {
   const totalCases = data.global.totalConfirmed.toLocaleString();
   const todayCases = data.global.newConfirmed.toLocaleString();
-  const isActive = filter === null ? `active` : ``;
-  return `<tr class="c-world" ${isActive} data-region-code="world">
+  const worldActive = filter === "world" ? "active" : null;
+  return `<tr class="c-world ${worldActive}" data-region-code="world">
     <td class="quantity">${totalCases}</td>
     <td class="country-name">Worldwide <span class="county-flag">🌎</span></td>
     </tr>`;
 };
 
 export const makeCountriesTableMarkup = (data, filter) => {
+  // console.log("counties.component: ", filter);
+
   const countries = data.countries;
   const rows = countries.map((item) => makeCountryRow(item, filter)).join("");
   const world = makeWorldRow(data, filter);

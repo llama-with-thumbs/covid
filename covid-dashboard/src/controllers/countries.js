@@ -7,7 +7,7 @@ import ChartComponent from "../components/chart/chart-component.js";
 import {changeCoordinates} from "./map.js";
 
 export default class CountriesController {
-  constructor(container, model, filter = null) {
+  constructor(container, model, filter = "world") {
     this._container = container;
     this._model = model;
     this._filter = filter;
@@ -39,7 +39,11 @@ export default class CountriesController {
     this.renderLists();
   }
   highlight(element){
-    if (this._highlighted) this._highlighted.classList.toggle("active");
+    if (this._highlighted) {
+      this._highlighted.classList.toggle("active");
+    } else {
+      document.querySelector(".c-world").classList.toggle("active");
+    }
     element.classList.toggle("active");
     this._highlighted = element;
   }
@@ -55,7 +59,6 @@ export default class CountriesController {
   countriesReRender(data) {
     this.removeLists();
     this.reCreateLists(data);
-    // this.render();
     this.reRender();
   }
 
@@ -69,6 +72,7 @@ export default class CountriesController {
       return this.getCountryCode(this.getParent(element));
     }
   }
+
   getTableRow(element, getParent) {
     if (element.getAttribute("data-region-code")) {
       return element;
@@ -80,12 +84,12 @@ export default class CountriesController {
   onFilterChange(evt, data) {
     evt.preventDefault();
     const countryCode = this.getCountryCode(evt.target);
-    const newFilter = countryCode === "world" ? null : countryCode;
-    
-    if (this._filter !== newFilter) {
-      // console.log(this.getTableRow(evt.target));
-      
 
+    // const newFilter = countryCode === "world" ? null : countryCode;
+    const newFilter = countryCode;
+    
+    // console.log("countries.controllers: ",this._filter, newFilter, this._filter === newFilter);
+    if (this._filter !== newFilter) {
       this._filter = newFilter;
       this.highlight(this.getTableRow(evt.target));
       this.countriesReRender(data);
@@ -108,10 +112,10 @@ export default class CountriesController {
 
   removeLists() {
     // remove(this._countries);
-    remove(this._deaths);
-    remove(this._cases);
-    remove(this._global);
-    remove(this._chart);
+    if (this._deaths) remove(this._deaths);
+    if (this._cases) remove(this._cases);
+    if (this._global) remove(this._global);
+    if (this._chart) remove(this._chart);
   }
 
   renderLists() {

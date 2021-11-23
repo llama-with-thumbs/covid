@@ -1,12 +1,11 @@
 import AbstractComponent from './abstract-component.js';
 import {filterById} from '../utils.js';
 
-export const makeGlobalMarkup = (data, filter) => { 
-  
+export const makeGlobalMarkup = (data, filter) => {
   let sum = 0;
   let todaySum = 0;
   let region = 'Worldwide';
-  if (filter === null) {
+  if (filter === "world") {
     sum = data.global.totalConfirmed;
     todaySum = data.global.newConfirmed.toLocaleString();
   } else {
@@ -18,9 +17,10 @@ export const makeGlobalMarkup = (data, filter) => {
   return (
     `<div class="global_cases">
       <h2>${region}</h2>
+      <hr class="line-separator">
       <h4>Total Cases</h4>
+      <hr class="line-separator">
       <h2 class="global_cases__number">${sum.toLocaleString()}</h2>
-      <h2 class="global_cases__number>${todaySum}</h2>
     </div>`
   );
 };

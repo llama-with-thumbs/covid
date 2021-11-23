@@ -19,11 +19,7 @@ export const makeRecRow = (countryData) => {
 
 export const makeRecoveriesTableMarkup = (data, filter) => {
   let rows;
-  if (filter) {
-  const dataFiltered = filterById(data, filter);
-  const countries = dataFiltered.countries;
-  rows = countries.map((item) => makeRecRow(item, filter)).join('');
-  } else {
+  if (filter === "world") {
     const totalConfirmed = data.global.totalConfirmed;
     const newConfirmed = data.global.newConfirmed;
     rows =  `<tr>
@@ -31,11 +27,15 @@ export const makeRecoveriesTableMarkup = (data, filter) => {
     Today: <span class="red">${newConfirmed.toLocaleString()}</span>
     </td>
   </tr>`
+  } else {
+    const dataFiltered = filterById(data, filter);
+    const countries = dataFiltered.countries;
+    rows = countries.map((item) => makeRecRow(item, filter)).join('');
   }
   return (
     `<div class="recoveries">
       <h3 class="recovered__header">Cases</h3>
-      <hr>
+      <hr class="line-separator">
       <table class="recov__table">
         ${rows}
       </table>

@@ -13,10 +13,10 @@ export const coordinates = (data) => {
   // console.log(coordinatesMap);
 };
 export const changeCoordinates = (filter) => {
-  if (filter) {
-    mymap.setView(coordinatesMap[filter], 5);
-  } else {
+  if (filter === "world") {
     mymap.setView([50, 10], 5);
+  } else {
+    mymap.setView(coordinatesMap[filter], 5);
   }
 };
 
@@ -37,7 +37,6 @@ export default function drawMap(data) {
   ).addTo(mymap);
 
   function getData(data) {
-
     coordinates(data);
 
     const hasData = Array.isArray(data) && data.length > 0;
@@ -45,6 +44,7 @@ export default function drawMap(data) {
     const geoJson = {
       type: "FeatureCollection",
       features: data.map((country = {}) => {
+        // const countryFlag = country.countryInfo.flag;
         const { countryInfo = {} } = country;
         const { lat, long: lng } = countryInfo;
 
@@ -119,9 +119,9 @@ export default function drawMap(data) {
         if (updated) {
           updatedFormatted = new Date(updated).toLocaleString();
         }
-
+        
         const html = `
-          <span class="icon-marker" style="
+          <span class="icon-marker" data-country-name="${country}" style="
           width: ${logCases}px;
           height: ${logCases}px;
           transform: translate(-50%, -50%);
@@ -137,6 +137,7 @@ export default function drawMap(data) {
             ${casesString}
           </span>
         `;
+
         return new L.marker(latlng, {
           icon: L.divIcon({
             className: "icon",

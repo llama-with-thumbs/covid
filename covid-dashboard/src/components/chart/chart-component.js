@@ -5,16 +5,13 @@ import sumChart from "./sum-chart/sum-chart.js";
 
 const Chart = (countyName) => {
   // console.log(countyName);
-  
   dailyChart(countyName);
   sumChart(countyName);
   return " ";
 };
 
-
-
 export const getCountryName = (data, filter) => {
-  if (!filter) return "total" 
+  if (filter === "world") return "total";
   const dataFiltered = filterById(data, filter);
   const countryData = dataFiltered.countries[0];
   const name = countryData.country;
