@@ -10,6 +10,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings
@@ -18,17 +22,6 @@ module.exports = {
           "css-loader",
           // Compiles Sass to CSS
           "sass-loader",
-        ],
-        rules: [
-          {
-            test: /\.csv$/,
-            loader: "csv-loader",
-            options: {
-              dynamicTyping: true,
-              header: true,
-              skipEmptyLines: true,
-            },
-          },
         ],
       },
     ],

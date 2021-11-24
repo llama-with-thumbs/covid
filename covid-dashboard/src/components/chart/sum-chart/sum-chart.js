@@ -12,7 +12,7 @@ import {
   timeFormat,
 } from "d3";
 
-export default function sumChart(country) {
+export default function sumChart(country, data) {
   const charts = document.querySelector(".sum-chart");
   charts.innerHTML = "";
   if (document.querySelectorAll("sum-chart-title").length === 0) {
@@ -95,17 +95,18 @@ export default function sumChart(country) {
     });
 
     rect.on("mouseover", function () {
-      
       const chartNote = document.createElement("div");
       chartNote.classList.add("chart__note");
       chartNote.innerHTML = this.firstChild.innerHTML;
       document.querySelector(".sum-chart").appendChild(chartNote);
-      
-      let horizontal = this.getBoundingClientRect().left - chartNote.getBoundingClientRect().left;
+
+      let horizontal =
+        this.getBoundingClientRect().left -
+        chartNote.getBoundingClientRect().left;
       let vertical = this.getBoundingClientRect().height;
       chartNote.style.bottom = `${vertical}px`;
       chartNote.style.left = `${horizontal}px`;
-      
+
       select(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
@@ -119,21 +120,15 @@ export default function sumChart(country) {
       const formattedData = data.map((d) => {
         const cases = +d.cum_cases;
         const date = new Date(d.date);
-        return {cases, date} 
+        return { cases, date };
       });
       render(formattedData);
     });
   } else {
-    const currDate = new Date();
-    const newCountry = country.toLowerCase(); 
-    json(
-      `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
-    ).then((data) => {
-      const newData = data.map((d) => {
-        return { cases: +d.Cases, date: new Date(d.Date) };
-      });
-      render(newData);
+    const newData = data.map((d) => {
+      return { cases: +d.Cases, date: new Date(d.Date) };
     });
+    render(newData);
   }
 
   return " ";

@@ -12,8 +12,7 @@ import {
   timeFormat,
 } from "d3";
 
-export default function dailyChart(country) {
-
+export default function dailyChart(country, data) {
   //clean section charts
   const charts = document.querySelector(".daily-chart");
   charts.innerHTML = "";
@@ -116,32 +115,24 @@ export default function dailyChart(country) {
       document.querySelector(".chart__note").remove();
     });
   };
-  
+
   if (country === "total") {
     csv("./public/assets/covid-data.csv").then((data) => {
       const formattedData = data.map((d) => {
         const cases = +d.new_cases;
         const date = new Date(d.date);
-        return {cases, date} 
+        return { cases, date };
       });
       render(formattedData);
     });
   } else {
-    const currDate = new Date();
-    let newCountry = country.toLowerCase();
-    json(
-      `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
-    ).then((data) => {
-      // console.log(data);
-      let previousDayNumber = 0;
-      const newData = data.map((d) => {
-        let numberInCurrentDay = +d.Cases - previousDayNumber;
-        previousDayNumber = +d.Cases;
-        return { cases: Math.abs(numberInCurrentDay), date: new Date(d.Date) };
-      });
-      render(newData);
+    let previousDayNumber = 0;
+    const newData = data.map((d) => {
+      let numberInCurrentDay = +d.Cases - previousDayNumber;
+      previousDayNumber = +d.Cases;
+      return { cases: Math.abs(numberInCurrentDay), date: new Date(d.Date) };
     });
+    render(newData);
   }
-
   return " ";
 }
