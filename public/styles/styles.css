@@ -149,7 +149,7 @@ overflow: hidden;
 /*.map__right { grid-area: map__right; }*/
 .global_cases {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
   justify-content: space-around;
   padding: 10px;
