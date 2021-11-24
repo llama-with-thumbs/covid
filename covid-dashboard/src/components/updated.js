@@ -40,7 +40,7 @@ export const makeUpdatedMarkup = (date) => {
             <h3>Aggregated data sources:</h3>
             <ul>
               <li><a href="https://github.com/CSSEGISandData/COVID-19">https://github.com/CSSEGISandData/COVID-19</a></li>
-              <li><a href="https://api.covid19api.com/">https://api.covid19api.com/</a></li>
+              <li><a href="https://covid19api.com/">https://covid19api.com/</a></li>
               <li><a href="https://corona.lmao.ninja/v2/countries">https://corona.lmao.ninja/v2/countries</a></li>
             </ul>
             <h3>* There could be several reasons for a zero data number:</h3>

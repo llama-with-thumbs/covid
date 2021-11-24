@@ -31260,6 +31260,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils.js */ "./src/utils.js");
 /* harmony import */ var _daily_chart_daily_chart_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./daily-chart/daily-chart.js */ "./src/components/chart/daily-chart/daily-chart.js");
 /* harmony import */ var _sum_chart_sum_chart_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sum-chart/sum-chart.js */ "./src/components/chart/sum-chart/sum-chart.js");
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
+
 
 
 
@@ -31267,8 +31269,22 @@ __webpack_require__.r(__webpack_exports__);
 
 const Chart = (countyName) => {
   // console.log(countyName);
-  Object(_daily_chart_daily_chart_js__WEBPACK_IMPORTED_MODULE_2__["default"])(countyName);
-  Object(_sum_chart_sum_chart_js__WEBPACK_IMPORTED_MODULE_3__["default"])(countyName);
+  const currDate = new Date();
+  const newCountry = countyName.toLowerCase();
+
+  if (countyName === "total") {
+    Object(_sum_chart_sum_chart_js__WEBPACK_IMPORTED_MODULE_3__["default"])(countyName);
+    Object(_daily_chart_daily_chart_js__WEBPACK_IMPORTED_MODULE_2__["default"])(countyName);
+  } else {
+    Object(d3__WEBPACK_IMPORTED_MODULE_4__["json"])(
+      `https://api.covid19api.com/dayone/country/${newCountry}/status/confirmed`
+    ).then((data) => {
+      Object(_sum_chart_sum_chart_js__WEBPACK_IMPORTED_MODULE_3__["default"])(countyName, data);
+      Object(_daily_chart_daily_chart_js__WEBPACK_IMPORTED_MODULE_2__["default"])(countyName, data);
+    });
+  }
+
+  
   return " ";
 };
 
@@ -31316,8 +31332,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
 
 
-function dailyChart(country) {
-
+function dailyChart(country, data) {
   //clean section charts
   const charts = document.querySelector(".daily-chart");
   charts.innerHTML = "";
@@ -31420,33 +31435,25 @@ function dailyChart(country) {
       document.querySelector(".chart__note").remove();
     });
   };
-  
+
   if (country === "total") {
     Object(d3__WEBPACK_IMPORTED_MODULE_0__["csv"])("./public/assets/covid-data.csv").then((data) => {
       const formattedData = data.map((d) => {
         const cases = +d.new_cases;
         const date = new Date(d.date);
-        return {cases, date} 
+        return { cases, date };
       });
       render(formattedData);
     });
   } else {
-    const currDate = new Date();
-    let newCountry = country.toLowerCase();
-    Object(d3__WEBPACK_IMPORTED_MODULE_0__["json"])(
-      `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
-    ).then((data) => {
-      // console.log(data);
-      let previousDayNumber = 0;
-      const newData = data.map((d) => {
-        let numberInCurrentDay = +d.Cases - previousDayNumber;
-        previousDayNumber = +d.Cases;
-        return { cases: Math.abs(numberInCurrentDay), date: new Date(d.Date) };
-      });
-      render(newData);
+    let previousDayNumber = 0;
+    const newData = data.map((d) => {
+      let numberInCurrentDay = +d.Cases - previousDayNumber;
+      previousDayNumber = +d.Cases;
+      return { cases: Math.abs(numberInCurrentDay), date: new Date(d.Date) };
     });
+    render(newData);
   }
-
   return " ";
 }
 
@@ -31466,7 +31473,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
 
 
-function sumChart(country) {
+function sumChart(country, data) {
   const charts = document.querySelector(".sum-chart");
   charts.innerHTML = "";
   if (document.querySelectorAll("sum-chart-title").length === 0) {
@@ -31549,17 +31556,18 @@ function sumChart(country) {
     });
 
     rect.on("mouseover", function () {
-      
       const chartNote = document.createElement("div");
       chartNote.classList.add("chart__note");
       chartNote.innerHTML = this.firstChild.innerHTML;
       document.querySelector(".sum-chart").appendChild(chartNote);
-      
-      let horizontal = this.getBoundingClientRect().left - chartNote.getBoundingClientRect().left;
+
+      let horizontal =
+        this.getBoundingClientRect().left -
+        chartNote.getBoundingClientRect().left;
       let vertical = this.getBoundingClientRect().height;
       chartNote.style.bottom = `${vertical}px`;
       chartNote.style.left = `${horizontal}px`;
-      
+
       Object(d3__WEBPACK_IMPORTED_MODULE_0__["select"])(this).style("fill", "red");
     });
     rect.on("mouseleave", function () {
@@ -31573,21 +31581,15 @@ function sumChart(country) {
       const formattedData = data.map((d) => {
         const cases = +d.cum_cases;
         const date = new Date(d.date);
-        return {cases, date} 
+        return { cases, date };
       });
       render(formattedData);
     });
   } else {
-    const currDate = new Date();
-    const newCountry = country.toLowerCase(); 
-    Object(d3__WEBPACK_IMPORTED_MODULE_0__["json"])(
-      `https://api.covid19api.com/country/${newCountry}/status/confirmed?from=2020-01-01T00:00:00Z&to=${currDate}`
-    ).then((data) => {
-      const newData = data.map((d) => {
-        return { cases: +d.Cases, date: new Date(d.Date) };
-      });
-      render(newData);
+    const newData = data.map((d) => {
+      return { cases: +d.Cases, date: new Date(d.Date) };
     });
+    render(newData);
   }
 
   return " ";
@@ -31871,7 +31873,7 @@ const makeUpdatedMarkup = (date) => {
             <h3>Aggregated data sources:</h3>
             <ul>
               <li><a href="https://github.com/CSSEGISandData/COVID-19">https://github.com/CSSEGISandData/COVID-19</a></li>
-              <li><a href="https://api.covid19api.com/">https://api.covid19api.com/</a></li>
+              <li><a href="https://covid19api.com/">https://covid19api.com/</a></li>
               <li><a href="https://corona.lmao.ninja/v2/countries">https://corona.lmao.ninja/v2/countries</a></li>
             </ul>
             <h3>* There could be several reasons for a zero data number:</h3>

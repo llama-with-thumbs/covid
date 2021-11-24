@@ -18,8 +18,8 @@ Aggregated data sources:
 - Main:
   - COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University https://github.com/CSSEGISandData/COVID-19
 - Additional:
-  - Charts: https://api.covid19api.com/
-  - Map: https://corona.lmao.ninja/v2/countries;
+  - https://api.covid19api.com/
+  - https://corona.lmao.ninja/v2/countries;
 
 \* CPIA transparency, accountability, and corruption in the public sector rating (1=low to 6=high).
 
